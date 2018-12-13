@@ -12,6 +12,7 @@ import {
     import Country from "./src/screens/Country";
     import Teams from "./src/screens/Teams";
     import Team from "./src/screens/Team";
+    import Match from "./src/screens/Match";
 
     const AppNavigator = createStackNavigator({
       Splash: {
@@ -40,6 +41,9 @@ import {
     },
     Team: {
       screen: Team
+    },
+    Match: {
+      screen: Match
     }
     });
 

@@ -72,13 +72,11 @@ class Team extends React.Component {
 
 _renderItem = ({item}) => (
   <Button
-   id={item.id}
-    onPress={() => this.props.navigation.navigate('Team',
+    onPress={() => this.props.navigation.navigate('Match',
     {
-      token: this.state.token,
-      id: item.id
+       match: item
     })}
-    title={item.label}
+    title={item.headline}
   />
 );
 
@@ -87,6 +85,11 @@ _renderItem = ({item}) => (
     return (
      <View style={styles.container}>
      <Text>{this.state.team.team.label}</Text>
+     <FlatList
+       data={this.state.team.matches}
+       renderItem={this._renderItem}
+       keyExtractor={(item, index) => index}
+     />
       </View>
     );
   }
@@ -102,7 +105,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#1be215',
     alignItems: 'stretch',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
   }
 });
 

@@ -1,0 +1,67 @@
+import React from 'react';
+import {
+  StackNavigator,
+} from 'react-navigation';
+
+import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
+import {teams} from "../api/DataService";
+
+
+class Teams extends React.Component {
+  constructor(props) {
+   super(props);
+
+   this.state = {
+     token: props.navigation.state.params.token,
+     type: props.navigation.state.params.type,
+     country: props.navigation.state.params.country,
+     competition: props.navigation.state.params.competition,
+     teams: ''
+   };
+
+   setDataSource(this);
+}
+
+
+_renderItem = ({item}) => (
+  <Button
+   id={item.id}
+    onPress={() => this.props.navigation.navigate('Team',
+    {
+      token: this.state.token,
+      id: item.id
+    })}
+    title={item.label}
+  />
+);
+
+
+  render() {
+    return (
+     <View style={styles.container}>
+     <Text>{this.state.competition}</Text>
+     <FlatList
+        data={this.state.teams}
+        renderItem={this._renderItem}
+        keyExtractor={(item, index) => index}
+      />
+      </View>
+    );
+  }
+}
+
+function setDataSource(component){
+  teams(component.state.type, component.state.country, component.state.competition, component.state.token)
+  .then( data => component.setState({teams : data}));
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#1be215',
+    alignItems: 'stretch',
+    justifyContent: 'center',
+  }
+});
+
+export default Teams;

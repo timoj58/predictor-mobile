@@ -11,9 +11,9 @@ class Match extends React.Component {
    super(props);
 
    this.state = {
+     token: props.navigation.state.params.token,
       match: props.navigation.state.params.match};
 }
-
 
 _renderItem = ({item}) => (
   <Text>{item.name}  {item.duration}</Text>

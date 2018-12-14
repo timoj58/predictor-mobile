@@ -1,5 +1,5 @@
-const DATA_API = 'http://ec2-54-163-2-255.compute-1.amazonaws.com:8080/api/prediction';
-const CLIENT_SERVICES_API = 'http://ec2-54-163-2-255.compute-1.amazonaws.com:8080/api/prediction/client-services';
+const DATA_API = 'http://ec2-18-212-97-135.compute-1.amazonaws.com:8080/api/prediction';
+const CLIENT_SERVICES_API = 'http://ec2-18-212-97-135.compute-1.amazonaws.com:8080/api/prediction/client-services';
 
 
 
@@ -41,4 +41,12 @@ export function teams(type, country, competition, token) {
 
 export function teamForm(id, token) {
   return get(CLIENT_SERVICES_API+'/form/team/'+id, token);
+}
+
+export function players(team, token) {
+  return get(DATA_API+"/players/team/"+team+'?current=true', token);
+}
+
+export function player(player, token) {
+  return get(CLIENT_SERVICES_API+"/form/player/"+player, token);
 }

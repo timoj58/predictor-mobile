@@ -38,7 +38,6 @@ _renderItem = ({item}) => (
   render() {
     return (
      <View style={styles.container}>
-     <Text>{this.state.country}</Text>
      <FlatList
         data={this.state.competitions}
         renderItem={this._renderItem}

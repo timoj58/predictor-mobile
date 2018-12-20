@@ -5,7 +5,7 @@ import {
 
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import * as Progress from 'react-native-progress';
-import {teamForm} from "../api/DataService";
+import {team} from "../api/DataService";
 
 
 class Team extends React.Component {
@@ -55,7 +55,7 @@ class Team extends React.Component {
 }
 
 function setDataSource(component){
-  teamForm(component.state.id, component.state.token)
+  team(component.state.id, component.state.token)
   .then(data =>
     component.setState({team : data, disabledButton: false, loading: false})
   )

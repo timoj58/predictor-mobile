@@ -10,13 +10,17 @@ import {
     import RegisterUsername from "./src/screens/RegisterUsername";
     import RegisterPassword from "./src/screens/RegisterPassword";
     import Country from "./src/screens/Country";
+    import Competition from "./src/screens/Competition";
     import Teams from "./src/screens/Teams";
     import Team from "./src/screens/Team";
     import Match from "./src/screens/Match";
     import Matches from "./src/screens/Matches";
     import MatchYears from "./src/screens/MatchYears";
+    import MatchMonths from "./src/screens/MatchMonths";
     import Players from "./src/screens/Players";
     import Player from "./src/screens/Player";
+    import Events from "./src/screens/Events";
+    import Event from "./src/screens/Event";
 
 
     const AppNavigator = createStackNavigator({
@@ -41,6 +45,15 @@ import {
     Country: {
       screen: Country
     },
+    Competition: {
+      screen: Competition
+    },
+    Events: {
+      screen: Events
+    },
+    Event: {
+      screen: Event
+    },
     Teams: {
       screen: Teams
     },
@@ -55,6 +68,9 @@ import {
     },
     MatchYears: {
       screen: MatchYears
+    },
+    MatchMonths: {
+      screen: MatchMonths
     },
     Players: {
       screen: Players

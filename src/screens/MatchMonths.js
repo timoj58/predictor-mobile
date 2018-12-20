@@ -5,13 +5,13 @@ import {
 
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 
-class MatchYears extends React.Component {
+class MatchMonths extends React.Component {
   constructor(props) {
    super(props);
 
    this.state = {
      token: props.navigation.state.params.token,
-     matches: props.navigation.state.params.matches
+     months: props.navigation.state.params.months
     };
 
 }
@@ -19,9 +19,9 @@ class MatchYears extends React.Component {
 
 _renderItem = ({item}) => (
   <Button
-    onPress={() => this.props.navigation.navigate('MatchMonths',
+    onPress={() => this.props.navigation.navigate('Matches',
     {  token: this.state.token,
-       months: item.data
+       matches: item.data
     })}
     title={item.title}
   />
@@ -32,7 +32,7 @@ _renderItem = ({item}) => (
     return (
      <View style={styles.container}>
      <FlatList
-        data={this.state.matches}
+        data={this.state.months}
         renderItem={this._renderItem}
         keyExtractor={(item, index) => index}
       />
@@ -50,4 +50,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default MatchYears;
+export default MatchMonths;

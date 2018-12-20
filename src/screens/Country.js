@@ -24,7 +24,7 @@ class Country extends React.Component {
 
 _renderItem = ({item}) => (
   <Button
-    onPress={() => this.props.navigation.navigate('Teams',
+    onPress={() => this.props.navigation.navigate('Competition',
     {
       token: this.state.token,
       type: this.state.type,

@@ -5,7 +5,7 @@ import {
 
 import { StyleSheet, Text, View, Button } from 'react-native';
 
-class Home extends React.Component {
+class SelectedBetsHome extends React.Component {
   constructor(props) {
    super(props);
 
@@ -15,38 +15,25 @@ class Home extends React.Component {
 
 }
 
+
   render() {
     return (
       <View style={styles.container}>
       <Button
-        onPress={() => this.props.navigation.navigate('Betting',
-        {
-          token: this.state.token
-        })}
-        title='Betting'
-      />
-      <Button
-        onPress={() => this.props.navigation.navigate('GlobalRatings',
+        onPress={() => this.props.navigation.navigate('SelectedResultsBets',
         {
           token: this.state.token,
-          market: 'results'
+          market: "results"
         })}
-        title='Global Ratings - Results'
+        title='Results'
       />
       <Button
-        onPress={() => this.props.navigation.navigate('GlobalRatings',
+        onPress={() => this.props.navigation.navigate('SelectedGoalsBets',
         {
           token: this.state.token,
-          market: 'goals'
+          market: "goals"
         })}
-        title='Global Ratings - Goals'
-      />
-      <Button
-        onPress={() => this.props.navigation.navigate('Countries',
-        {
-          token: this.state.token
-        })}
-        title='Countries'
+        title='Goals'
       />
       </View>
     );
@@ -62,4 +49,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Home;
+export default SelectedBetsHome;

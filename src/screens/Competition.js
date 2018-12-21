@@ -40,6 +40,15 @@ class Competition extends React.Component {
          competition: this.state.competition })}
        title='Events'
      />
+     <Button
+       onPress={() => this.props.navigation.navigate('Accuracy',
+       {
+         token: this.state.token,
+         key: this.state.competition
+       })}
+       title='Accuracy'
+     />
+
       </View>
     );
   }

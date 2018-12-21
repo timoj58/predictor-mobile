@@ -21,6 +21,18 @@ import {
     import Player from "./src/screens/Player";
     import Events from "./src/screens/Events";
     import Event from "./src/screens/Event";
+    import Accuracy from "./src/screens/Accuracy";
+    import GlobalRatings from "./src/screens/GlobalRatings";
+    import TeamRating from "./src/screens/TeamRating";
+    import Countries from "./src/screens/Countries";
+    import Betting from "./src/screens/Betting";
+    import SelectedBets from "./src/screens/SelectedBets";
+    import SelectedBetHistory from "./src/screens/SelectedBetHistory";
+    import SelectedBetsHome from "./src/screens/SelectedBetsHome";
+    import SelectedResultsBets from "./src/screens/SelectedResultsBets";
+    import SelectedGoalsBets from "./src/screens/SelectedGoalsBets";
+
+
 
 
     const AppNavigator = createStackNavigator({
@@ -41,6 +53,9 @@ import {
     },
     Home: {
       screen: Home
+    },
+    Countries: {
+      screen: Countries
     },
     Country: {
       screen: Country
@@ -77,8 +92,37 @@ import {
     },
     Player: {
       screen: Player
-    }
-    });
+    },
+    GlobalRatings: {
+      screen: GlobalRatings
+    },
+    SelectedBets: {
+      screen: SelectedBets
+    },
+    SelectedBetHistory: {
+      screen: SelectedBetHistory
+    },
+    SelectedBetsHome: {
+      screen: SelectedBetsHome
+    },
+    SelectedResultsBets: {
+      screen: SelectedResultsBets
+    },
+    SelectedGoalsBets: {
+      screen: SelectedGoalsBets
+    },
+    SelectedBetsHome: {
+      screen: SelectedBetsHome
+    },
+    TeamRating: {
+      screen: TeamRating
+    },
+    Accuracy: {
+      screen: Accuracy
+    },
+    Betting: {
+      screen: Betting
+    }});
 
 const App = createAppContainer(AppNavigator);
 

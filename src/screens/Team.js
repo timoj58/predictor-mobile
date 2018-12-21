@@ -49,6 +49,16 @@ class Team extends React.Component {
        disabled={this.state.disabledButton}
        title='Players'
      />}
+     {!this.state.loading &&
+       <Button
+       onPress={() => this.props.navigation.navigate('Accuracy',
+       {
+         token: this.state.token,
+         key: this.state.team.team.label
+       })}
+       disabled={this.state.disabledButton}
+       title='Accuracy'
+     />}
       </View>
     );
   }

@@ -1,4 +1,4 @@
-const HOST = 'http://ec2-3-81-227-4.compute-1.amazonaws.com:8080';
+const HOST = 'http://ec2-52-23-156-118.compute-1.amazonaws.com:8080';
 const DATA_API = HOST+'/api/prediction';
 const CLIENT_SERVICES_API = HOST+'/api/prediction/client-services';
 
@@ -68,4 +68,20 @@ export function predictions(type, country, competition, team, token){
 
 export function previousMeetings(home, away, token){
   return get(CLIENT_SERVICES_API+'/form/teams/previous-meetings?home='+home+'&away='+away, token);
+}
+
+export function accuracy(key, token){
+  return get(CLIENT_SERVICES_API+'/performance/accuracy?key='+key, token);
+}
+
+export function globalRatings(market, token){
+  return get(CLIENT_SERVICES_API+'/performance?market='+market, token);
+}
+
+export function selectedBets(market, event, token){
+  return get(CLIENT_SERVICES_API+'/prediction/selected-bets?market='+market+'&event='+event, token);
+}
+
+export function betHistory(token){
+  return get(CLIENT_SERVICES_API+'/bet-history', token);
 }

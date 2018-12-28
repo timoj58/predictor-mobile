@@ -4,6 +4,7 @@ import {
 } from 'react-navigation';
 
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
+import { ListItem } from 'react-native-elements'
 import {teams} from "../api/DataService";
 
 
@@ -15,7 +16,8 @@ class Teams extends React.Component {
      token: props.navigation.state.params.token,
      type: props.navigation.state.params.type,
      country: props.navigation.state.params.country,
-     competition: props.navigation.state.params.competition,
+     styles: props.navigation.state.params.styles,
+    competition: props.navigation.state.params.competition,
      teams: ''
    };
 
@@ -24,21 +26,23 @@ class Teams extends React.Component {
 
 
 _renderItem = ({item}) => (
-  <Button
+  <ListItem
    id={item.id}
     onPress={() => this.props.navigation.navigate('Team',
     {
       token: this.state.token,
+      styles: this.state.styles,
       id: item.id
     })}
     title={item.label}
+    titleStyle={this.state.styles.listItem}
   />
 );
 
 
   render() {
     return (
-     <View style={styles.container}>
+     <View style={this.state.styles.container}>
      <FlatList
         data={this.state.teams}
         renderItem={this._renderItem}
@@ -53,14 +57,5 @@ function setDataSource(component){
   teams(component.state.type, component.state.country, component.state.competition, component.state.token)
   .then( data => component.setState({teams : data}));
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#1be215',
-    alignItems: 'stretch',
-    justifyContent: 'center',
-  }
-});
 
 export default Teams;

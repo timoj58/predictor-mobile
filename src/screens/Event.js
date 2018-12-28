@@ -17,6 +17,7 @@ class Event extends React.Component {
    this.state = {
       token: props.navigation.state.params.token,
       event: props.navigation.state.params.event,
+      styles: props.navigation.state.params.styles,
       loading: true,
       loadingPreviousMeetings: true,
       predictions: '',
@@ -41,7 +42,7 @@ _renderPreviousMeeting = ({item}) => (
 
 
 _renderItem = ({item}) => (
-  <View style={styles.container}>
+  <View style={this.state.styles.container}>
   <Text>Event {item.eventType} Rating {item.rating}</Text>
   <FlatList
    data={item.predictions.result}
@@ -53,7 +54,7 @@ _renderItem = ({item}) => (
 
   render() {
     return (
-     <View style={styles.container}>
+     <View style={this.state.styles.container}>
      <Text>Home: {this.state.event.home.label}</Text>
      <Text>Away: {this.state.event.away.label}</Text>
      <Text>Date: {this.state.event.eventDate}</Text>
@@ -94,15 +95,5 @@ function setDataSourcePreviousMeetings(component){
   .then( data => component.setState({previousMeetings: data, loadingPreviousMeetings: false}));
 }
 
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#1be215',
-    alignItems: 'stretch',
-    justifyContent: 'flex-start',
-  }
-});
 
 export default Event;

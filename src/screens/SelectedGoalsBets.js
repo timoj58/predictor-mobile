@@ -3,7 +3,9 @@ import {
   StackNavigator,
 } from 'react-navigation';
 
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
+import { Tile } from 'react-native-elements'
+import {renderTile} from "../util/RenderUtils";
 
 class SelectedGoalsBets extends React.Component {
   constructor(props) {
@@ -11,45 +13,58 @@ class SelectedGoalsBets extends React.Component {
 
    this.state = {
      token: props.navigation.state.params.token,
-     market: props.navigation.state.params.market
+     market: props.navigation.state.params.market,
+     styles: props.navigation.state.params.styles,
+     type: props.navigation.state.params.type,
+     tiles: [
+       {
+        title: 'Over 2.5 Goals',
+        screen: 'SelectedBets',
+        imageSrc: require('./img/plus.jpg'),
+        props: {
+          token: props.navigation.state.params.token,
+          market: props.navigation.state.params.market,
+          styles: props.navigation.state.params.styles,
+          type: props.navigation.state.params.type,
+          event: '2.5'
+       }
+      },
+      {
+       title: 'Under 2.5 Goals',
+       screen: 'SelectedBets',
+       imageSrc: require('./img/minus.jpg'),
+       props: {
+         token: props.navigation.state.params.token,
+         market: props.navigation.state.params.market,
+         styles: props.navigation.state.params.styles,
+         type: props.navigation.state.params.type,
+         event: '-2.5'
+      }
+    }
+    ]
     };
 
 }
 
 
+_renderTile = ({item}) => (
+   renderTile(this, item)
+);
+
+
+
   render() {
     return (
-      <View style={styles.container}>
-      <Button
-        onPress={() => this.props.navigation.navigate('SelectedBets',
-        {
-          token: this.state.token,
-          market: this.state.market,
-          event: '2.5'
-        })}
-        title='Over 2.5 Goals'
-      />
-      <Button
-        onPress={() => this.props.navigation.navigate('SelectedBets',
-        {
-          token: this.state.token,
-          market: this.state.market,
-          event: '-2.5'
-        })}
-        title='Under 2.5 Goals'
+      <View style={this.state.styles.container}>
+      <FlatList
+        data={this.state.tiles}
+        renderItem={this._renderTile}
+        keyExtractor={(item, index) => index}
       />
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#1be215',
-    alignItems: 'stretch',
-    justifyContent: 'center',
-  }
-});
 
 export default SelectedGoalsBets;

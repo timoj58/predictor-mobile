@@ -7,48 +7,43 @@ import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import { Tile } from 'react-native-elements'
 import {renderTile} from "../util/RenderUtils";
 
-class SelectedBetsHome extends React.Component {
+
+
+class GlobalRatingsHome extends React.Component {
   constructor(props) {
    super(props);
 
    this.state = {
      token: props.navigation.state.params.token,
      styles: props.navigation.state.params.styles,
-     type: props.navigation.state.params.type,
      tiles: [
        {
          title: 'Results',
-         screen: 'SelectedResultsBets',
+         screen: 'GlobalRatings',
          imageSrc: require('./img/winning.jpg'),
          props: {
            token: props.navigation.state.params.token,
            styles: props.navigation.state.params.styles,
-           type: props.navigation.state.params.type,
            market: 'results'
          }
        },
        {
          title: 'Goals',
-         screen: 'SelectedGoalsBets',
+         screen: 'GlobalRatings',
          imageSrc: require('./img/goal.jpg'),
          props: {
            token: props.navigation.state.params.token,
            styles: props.navigation.state.params.styles,
-           type: props.navigation.state.params.type,
            market: 'goals'
          }
        }
-
      ]
     };
 
 }
 
-
 _renderTile = ({item}) => (
-   renderTile(this, item)
-);
-
+  renderTile(this, item));
 
 
   render() {
@@ -65,4 +60,4 @@ _renderTile = ({item}) => (
 }
 
 
-export default SelectedBetsHome;
+export default GlobalRatingsHome;

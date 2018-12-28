@@ -12,7 +12,8 @@ class Match extends React.Component {
 
    this.state = {
      token: props.navigation.state.params.token,
-      match: props.navigation.state.params.match};
+     styles: props.navigation.state.params.styles,
+     match: props.navigation.state.params.match};
 }
 
 _renderItem = ({item}) => (
@@ -23,7 +24,7 @@ _renderItem = ({item}) => (
 
   render() {
     return (
-     <View style={styles.container}>
+     <View style={this.state.tyles.container}>
      <Text>{this.state.match.headline}</Text>
      <Text>{this.state.match.date}</Text>
      <Text>Starting</Text>
@@ -42,14 +43,5 @@ _renderItem = ({item}) => (
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#1be215',
-    alignItems: 'stretch',
-    justifyContent: 'flex-start',
-  }
-});
 
 export default Match;

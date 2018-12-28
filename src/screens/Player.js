@@ -16,6 +16,7 @@ class Player extends React.Component {
    this.state = {
       token: props.navigation.state.params.token,
       playerId: props.navigation.state.params.playerId,
+      styles: props.navigation.state.params.styles,
       loading: true,
       player: ''
     };
@@ -30,7 +31,7 @@ _renderItem = ({item}) => (
 
   render() {
     return (
-     <View style={styles.container}>
+     <View style={this.state.styles.container}>
      {this.state.loading && <Progress.Circle size={50} indeterminate={true} />}
      {!this.state.loading && <Text>{this.state.player.player.label}</Text>}
      {!this.state.loading && <Text>Yellow Card</Text>}
@@ -49,14 +50,5 @@ function setDataSource(component){
   .then( data => component.setState({player : data, loading: false}));
 }
 
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#1be215',
-    alignItems: 'stretch',
-    justifyContent: 'flex-start',
-  }
-});
 
 export default Player;

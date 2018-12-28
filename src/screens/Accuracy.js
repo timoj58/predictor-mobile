@@ -5,6 +5,7 @@ import {
 
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import {accuracy} from "../api/DataService";
+import { ListItem } from 'react-native-elements';
 
 
 class Accuracy extends React.Component {
@@ -14,6 +15,7 @@ class Accuracy extends React.Component {
    this.state = {
      token: props.navigation.state.params.token,
      key: props.navigation.state.params.key,
+     styles: props.navigation.state.params.styles,
      accuracy: ''
    };
 
@@ -23,16 +25,23 @@ class Accuracy extends React.Component {
 
 
 _renderItem = ({item}) => (
-  <View style={styles.container}>
-  <Text>{item.type}</Text>
-  <Text>{item.validations[this.state.key]['correct']} / {item.validations[this.state.key]['total']} {item.validations[this.state.key]['accuracy']}%</Text>
-  </View>
+  <ListItem
+    title={item.type}
+    badge={{ value:  item.validations[this.state.key]['accuracy'], textStyle: { color: 'orange' }, containerStyle: { marginTop: -20 } }}
+    hideChevron
+    titleStyle={this.state.styles.listItem}
+    subtitle={
+      <View style={this.state.styles.listItem}>
+          <Text style={this.state.styles.ratingText}>{item.validations[this.state.key]['correct']} / {item.validations[this.state.key]['total']}</Text>
+      </View>
+      }
+      />
 );
 
 
   render() {
     return (
-     <View style={styles.container}>
+     <View style={this.state.styles.container}>
      <FlatList
         data={this.state.accuracy}
         renderItem={this._renderItem}
@@ -48,13 +57,5 @@ function setDataSource(component){
   .then( data => component.setState({accuracy : data}));
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#1be215',
-    alignItems: 'stretch',
-    justifyContent: 'center',
-  }
-});
 
 export default Accuracy;

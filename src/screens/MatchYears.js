@@ -11,6 +11,7 @@ class MatchYears extends React.Component {
 
    this.state = {
      token: props.navigation.state.params.token,
+     styles: props.navigation.state.params.styles,
      matches: props.navigation.state.params.matches
     };
 
@@ -21,6 +22,7 @@ _renderItem = ({item}) => (
   <Button
     onPress={() => this.props.navigation.navigate('MatchMonths',
     {  token: this.state.token,
+       styles: this.state.styles,
        months: item.data
     })}
     title={item.title}
@@ -30,7 +32,7 @@ _renderItem = ({item}) => (
 
   render() {
     return (
-     <View style={styles.container}>
+     <View style={this.state.styles.container}>
      <FlatList
         data={this.state.matches}
         renderItem={this._renderItem}
@@ -40,14 +42,5 @@ _renderItem = ({item}) => (
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#1be215',
-    alignItems: 'stretch',
-    justifyContent: 'center',
-  }
-});
 
 export default MatchYears;

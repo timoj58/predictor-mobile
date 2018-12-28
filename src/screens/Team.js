@@ -16,6 +16,7 @@ class Team extends React.Component {
      token: props.navigation.state.params.token,
      id: props.navigation.state.params.id,
      disabledButton: true,
+     styles: props.navigation.state.params.styles,
      loading: true,
      team: ''
 };
@@ -26,7 +27,7 @@ class Team extends React.Component {
 
   render() {
     return (
-     <View style={styles.container}>
+     <View style={this.state.styles.container}>
      {this.state.loading && <Progress.Circle size={50} indeterminate={true} />}
 
      {!this.state.loading &&
@@ -70,14 +71,5 @@ function setDataSource(component){
     component.setState({team : data, disabledButton: false, loading: false})
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#1be215',
-    alignItems: 'stretch',
-    justifyContent: 'flex-start',
-  }
-});
 
 export default Team;

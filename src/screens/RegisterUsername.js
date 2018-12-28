@@ -12,13 +12,14 @@ import {isUsernameOnFile} from "../api/AuthService";
     super(props);
     this.state = {
       username: '',
+      styles: props.navigation.state.params.styles,
       disabledButton: true
     };
   }
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={this.state.styles.container}>
       <TextInput
        style={{
          height: 40,
@@ -28,7 +29,9 @@ import {isUsernameOnFile} from "../api/AuthService";
          onChangeText={(username) => checkUsername(this, username)}
          value={this.state.username}/>
         <Button
-        onPress={() => this.props.navigation.navigate('RegisterPassword', {username: this.state.username})}
+         onPress={() => this.props.navigation.navigate('RegisterPassword',
+         {username: this.state.username,
+          styles: this.state.styles})}
          title="Next"
          disabled={this.state.disabledButton}
          color="#841584"
@@ -49,14 +52,5 @@ function checkUsername(component, username) {
  component.setState({username: username,disabledButton: true});
 }
 
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#1be215',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }
-});
 
 export default RegisterUsername;

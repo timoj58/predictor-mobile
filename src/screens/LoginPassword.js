@@ -13,26 +13,22 @@ import {authenticate} from "../api/AuthService";
     this.state = {
       token: '',
       username: props.navigation.state.params.username,
+      styles: props.navigation.state.params.styles,
       password: ''};
   }
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={this.state.styles.container}>
        <TextInput secureTextEntry={true}
-        style={{
-          height: 40,
-          alignSelf: 'stretch',
-          borderColor: 'gray',
-          borderWidth: 1}}
+        style={this.state.styles.inputField}
         onChangeText={(password) => this.setState({password})}/>
         <Button
         onPress={() =>  login(this)}
          title="Login"
-         color="#841584"
+         color="green"
          accessibilityLabel="Next"
          />
-
     </View>
     );
   }
@@ -42,21 +38,13 @@ function login(component) {
   authenticate(component.state.username, component.state.password)
   .then(token => {
     if(token !== ""){
-        component.props.navigation.navigate('Home', {token: token});
+        component.props.navigation.navigate('Home', {
+          token: token,
+          styles: component.state.styles});
     }
 
   });
 
  } // end username null
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#1be215',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }
-});
 
 export default LoginPassword;

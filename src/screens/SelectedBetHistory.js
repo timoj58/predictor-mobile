@@ -15,6 +15,8 @@ class SelectedBetHistory extends React.Component {
 
    this.state = {
      token: props.navigation.state.params.token,
+     type: props.navigation.state.params.type,
+     styles: props.navigation.state.params.styles,
      loading: true,
      history:''
     };
@@ -27,6 +29,7 @@ _renderItem = ({item}) => (
   <Button
     onPress={() => this.props.navigation.navigate('BetHistoryBatch',
     {  token: this.state.token,
+       styles: this.state.styles,
        batch: item
     })}
     title={item.batchStartDate+ ' - '+item.batchEndDate}
@@ -36,8 +39,16 @@ _renderItem = ({item}) => (
 
   render() {
     return (
-     <View style={styles.container}>
-     {this.state.loading && <Progress.Circle size={50} indeterminate={true} />}
+     <View style={this.state.styles.container}>
+     {this.state.loading &&
+       <View style={this.state.styles.progressContainer}>
+         <Progress.Circle
+          size={Dimensions.get('window').width/2}
+          indeterminate={true}
+          color='black'
+          thickness={20} />
+        </View>
+      }
      {!this.state.loading &&
        <FlatList
         data={this.state.history}
@@ -50,18 +61,9 @@ _renderItem = ({item}) => (
 }
 
 function setDataSource(component){
-  betHistory( component.state.token)
+  betHistory(component.state.type, component.state.token)
   .then( data => component.setState({history : data, loading: false}));
 }
 
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#1be215',
-    alignItems: 'stretch',
-    justifyContent: 'flex-start',
-  }
-});
 
 export default SelectedBetHistory;

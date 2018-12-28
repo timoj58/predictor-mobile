@@ -5,8 +5,8 @@ import {
 
 import { StyleSheet, Text, View, FlatList, Button } from 'react-native';
 import {countries} from "../api/DataService";
+import { ListItem } from 'react-native-elements'
 
-const type = 'FOOTBALL';
 
 
 class Countries extends React.Component {
@@ -15,30 +15,34 @@ class Countries extends React.Component {
 
    this.state = {
      token: props.navigation.state.params.token,
+     type: props.navigation.state.params.type,
+     styles: props.navigation.state.params.styles,
      countries: ''
    };
 
-   setDataSource(this, type);
+   setDataSource(this);
 
 }
 
 _renderItem = ({item}) => (
-  <Button
+  <ListItem
     onPress={() => this.props.navigation.navigate('Country',
     {
       token: this.state.token,
-      type: type,
+      type: this.state.type,
+      styles: this.state.styles,
       country: item.country
     })}
     title={item.country}
-  />
+    titleStyle={this.state.styles.listItem}
+   />
 );
 
 
 
   render() {
     return (
-     <View style={styles.container}>
+     <View style={this.state.styles.container}>
      <FlatList
        data={this.state.countries}
        renderItem={this._renderItem}
@@ -49,20 +53,10 @@ _renderItem = ({item}) => (
   }
 }
 
-function setDataSource(component, type){
-  countries(type, component.state.token).then(
+function setDataSource(component){
+  countries(component.state.type, component.state.token).then(
     data => component.setState({countries : data}));
 }
 
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#1be215',
-    alignItems: 'stretch',
-    justifyContent: 'center',
-  }
-});
 
 export default Countries;

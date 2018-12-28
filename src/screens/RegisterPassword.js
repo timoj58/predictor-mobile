@@ -12,13 +12,14 @@ import {create} from "../api/AuthService";
     this.state = {
       token: '',
       username: props.navigation.state.params.username,
+      styles: props.navigation.state.params.styles,
       disabledButton: true,
       password: ''};
   }
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={this.state.styles.container}>
        <TextInput secureTextEntry={true}
         style={{
           height: 40,
@@ -38,14 +39,5 @@ import {create} from "../api/AuthService";
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#1be215',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }
-});
 
 export default RegisterPassword;

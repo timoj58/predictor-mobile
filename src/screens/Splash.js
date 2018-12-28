@@ -4,21 +4,28 @@ import {
 } from 'react-navigation';
 
 import { StyleSheet, Text, View, Button } from 'react-native';
+import { ListItem } from 'react-native-elements'
 
 export default class Splash extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Button
-        onPress={() =>this.props.navigation.navigate('RegisterUsername')}
+        <ListItem
+        onPress={() =>this.props.navigation.navigate('RegisterUsername',
+        {
+          styles: styles
+        })}
          title="Register"
-         color="#841584"
+         titleStyle={styles.listItem}
          accessibilityLabel="Not got an account? Register now"
          />
-         <Button
-         onPress={() => this.props.navigation.navigate('LoginUsername')}
+         <ListItem
+         onPress={() => this.props.navigation.navigate('LoginUsername',
+         {
+           styles: styles
+        })}
           title="Login"
-          color="#841584"
+          titleStyle={styles.listItem}
           accessibilityLabel="Login to your account"
           />
       </View>
@@ -29,8 +36,31 @@ export default class Splash extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1be215',
+    backgroundColor: '#36454f',
     alignItems: 'stretch',
     justifyContent: 'center',
+   },
+   progressContainer: {
+     flex: 1,
+     backgroundColor: '#36454f',
+     alignItems: 'center',
+     justifyContent: 'center',
+    },
+   listItem: {
+    color: 'white',
+    fontWeight: 'bold'
+  },
+  ratingText: {
+   color: 'grey',
+   fontWeight: 'bold'
+ },
+  inputField: {
+      height: 40,
+      alignSelf: 'stretch',
+      textAlign: "center",
+      borderColor:  'gray',
+      borderWidth: 1,
+      color: "black",
+      backgroundColor: 'white'
   }
 });

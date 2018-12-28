@@ -3,7 +3,9 @@ import {
   StackNavigator,
 } from 'react-navigation';
 
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
+import { Tile } from 'react-native-elements'
+import {renderTile} from "../util/RenderUtils";
 
 
 class Competition extends React.Component {
@@ -14,54 +16,65 @@ class Competition extends React.Component {
      token: props.navigation.state.params.token,
      type: props.navigation.state.params.type,
      country: props.navigation.state.params.country,
-     competition: props.navigation.state.params.competition
+     styles: props.navigation.state.params.styles,
+     competition: props.navigation.state.params.competition,
+     tiles: [
+        {
+          title: 'Teams',
+          screen: 'Teams',
+          imageSrc: require('./img/team.jpeg'),
+          props: {
+            token: props.navigation.state.params.token,
+            type: props.navigation.state.params.type,
+            country: props.navigation.state.params.country,
+            styles: props.navigation.state.params.styles,
+            competition: props.navigation.state.params.competition
+          }
+        },
+        {
+          title: 'Events',
+          screen: 'Events',
+          imageSrc: require('./img/calendar.jpg'),
+          props: {
+            token: props.navigation.state.params.token,
+            type: props.navigation.state.params.type,
+            country: props.navigation.state.params.country,
+            styles: props.navigation.state.params.styles,
+            competition: props.navigation.state.params.competition
+          }
+        },
+        {
+        title: 'Accuracy',
+        screen: 'Accuracy',
+        imageSrc: require('./img/target.png'),
+        props: {
+          token: props.navigation.state.params.token,
+          styles: props.navigation.state.params.styles,
+          key: props.navigation.state.params.competition
+        }
+      }
+     ]
    };
 
 }
 
+
+_renderTile = ({item}) => (
+  renderTile(this, item));
+
+
   render() {
     return (
-     <View style={styles.container}>
-     <Button
-       onPress={() => this.props.navigation.navigate('Teams',
-       {
-         token: this.state.token,
-         type: this.state.type,
-         country: this.state.country,
-         competition: this.state.competition })}
-       title='Teams'
+     <View style={this.state.styles.container}>
+     <FlatList
+       data={this.state.tiles}
+       renderItem={this._renderTile}
+       keyExtractor={(item, index) => index}
      />
-     <Button
-       onPress={() => this.props.navigation.navigate('Events',
-       {
-         token: this.state.token,
-         type: this.state.type,
-         country: this.state.country,
-         competition: this.state.competition })}
-       title='Events'
-     />
-     <Button
-       onPress={() => this.props.navigation.navigate('Accuracy',
-       {
-         token: this.state.token,
-         key: this.state.competition
-       })}
-       title='Accuracy'
-     />
-
       </View>
     );
   }
 }
 
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#1be215',
-    alignItems: 'stretch',
-    justifyContent: 'center',
-  }
-});
 
 export default Competition;

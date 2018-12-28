@@ -6,6 +6,7 @@ import {
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import {players} from "../api/DataService";
 import * as Progress from 'react-native-progress';
+import { ListItem } from 'react-native-elements'
 
 
 class Players extends React.Component {
@@ -15,6 +16,7 @@ class Players extends React.Component {
    this.state = {
      token: props.navigation.state.params.token,
      team: props.navigation.state.params.teamId,
+     styles: props.navigation.state.params.styles,
      loading: true,
      players: ''
    };
@@ -24,11 +26,12 @@ class Players extends React.Component {
 
 
 _renderItem = ({item}) => (
-  <Button
+  <ListItem
    id={item.id}
     onPress={() => this.props.navigation.navigate('Player',
     {
       token: this.state.token,
+      styles: this.state.styles,
       playerId: item.id
     })}
     title={item.label}
@@ -38,7 +41,7 @@ _renderItem = ({item}) => (
 
   render() {
     return (
-     <View style={styles.container}>
+     <View style={this.state.styles.container}>
      {this.state.loading && <Progress.Circle size={50} indeterminate={true} />}
      {!this.state.loading && <FlatList
         data={this.state.players}
@@ -54,14 +57,5 @@ function setDataSource(component){
   players(component.state.team, component.state.token)
   .then( data => component.setState({players : data, loading: false}));
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#1be215',
-    alignItems: 'stretch',
-    justifyContent: 'flex-start',
-  }
-});
 
 export default Players;

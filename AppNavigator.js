@@ -31,6 +31,7 @@ import {
     import SelectedBetsHome from "./src/screens/SelectedBetsHome";
     import SelectedResultsBets from "./src/screens/SelectedResultsBets";
     import SelectedGoalsBets from "./src/screens/SelectedGoalsBets";
+    import GlobalRatingsHome from "./src/screens/GlobalRatingsHome";
 
 
 
@@ -95,6 +96,9 @@ import {
     },
     GlobalRatings: {
       screen: GlobalRatings
+    },
+    GlobalRatingsHome: {
+      screen: GlobalRatingsHome
     },
     SelectedBets: {
       screen: SelectedBets

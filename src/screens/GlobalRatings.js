@@ -5,8 +5,11 @@ import {
 
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import * as Progress from 'react-native-progress';
-
+import { Dimensions } from 'react-native';
 import {globalRatings} from "../api/DataService";
+import { ListItem } from 'react-native-elements';
+import { Rating } from 'react-native-elements';
+import {renderProgress} from "../util/RenderUtils";
 
 
 class GlobalRatings extends React.Component {
@@ -15,6 +18,7 @@ class GlobalRatings extends React.Component {
 
    this.state = {
      token: props.navigation.state.params.token,
+     styles: props.navigation.state.params.styles,
      market: props.navigation.state.params.market,
      loading: true,
      teams :''
@@ -25,20 +29,31 @@ class GlobalRatings extends React.Component {
 
 
 _renderItem = ({item}) => (
-  <Button
+  <ListItem
     onPress={() => this.props.navigation.navigate('TeamRating',
     {  token: this.state.token,
+       styles: this.state.styles,
        teamRating: item
     })}
-    title={item.team +' '+ getRating(this.state.market, item.marketRatings)}
+    title={item.team}
+    badge={{ value:  getRating(this.state.market, item.marketRatings), textStyle: { color: 'orange' }, containerStyle: { marginTop: -20 } }}
+    titleStyle={this.state.styles.listItem}
   />
 );
 
 
   render() {
     return (
-     <View style={styles.container}>
-     {this.state.loading && <Progress.Circle size={50} indeterminate={true} />}
+     <View style={this.state.styles.container}>
+     {this.state.loading &&
+       <View style={this.state.styles.progressContainer}>
+       <Progress.Circle
+          size={Dimensions.get('window').width/2}
+          indeterminate={true}
+          color='black'
+        />
+        </View>
+     }
      {!this.state.loading &&
        <FlatList
         data={this.state.teams}
@@ -59,14 +74,5 @@ function setDataSource(component){
   .then( data => component.setState({teams : data, loading: false}));
 }
 
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#1be215',
-    alignItems: 'stretch',
-    justifyContent: 'flex-start',
-  }
-});
 
 export default GlobalRatings;

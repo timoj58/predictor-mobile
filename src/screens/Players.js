@@ -7,6 +7,7 @@ import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import {players} from "../api/DataService";
 import * as Progress from 'react-native-progress';
 import { ListItem } from 'react-native-elements'
+import { Dimensions } from 'react-native';
 
 
 class Players extends React.Component {
@@ -35,6 +36,7 @@ _renderItem = ({item}) => (
       playerId: item.id
     })}
     title={item.label}
+    titleStyle={this.state.styles.listItem}
   />
 );
 
@@ -42,12 +44,21 @@ _renderItem = ({item}) => (
   render() {
     return (
      <View style={this.state.styles.container}>
-     {this.state.loading && <Progress.Circle size={50} indeterminate={true} />}
-     {!this.state.loading && <FlatList
+     {this.state.loading &&
+       <View style={this.state.styles.progressContainer}>
+        <Progress.Circle
+          size={Dimensions.get('window').width/2}
+          indeterminate={true}
+          color='black'
+          thickness={20} />
+          </View>
+      }
+      {!this.state.loading && <FlatList
         data={this.state.players}
         renderItem={this._renderItem}
-        keyExtractor={(item, index) => index}
-      />}
+        keyExtractor={(item, index) => index.toString()}
+      />
+      }
       </View>
     );
   }

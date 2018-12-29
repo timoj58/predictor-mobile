@@ -8,7 +8,6 @@ import * as Progress from 'react-native-progress';
 import { Dimensions } from 'react-native';
 import {globalRatings} from "../api/DataService";
 import { ListItem } from 'react-native-elements';
-import { Rating } from 'react-native-elements';
 import {renderProgress} from "../util/RenderUtils";
 
 
@@ -33,10 +32,11 @@ _renderItem = ({item}) => (
     onPress={() => this.props.navigation.navigate('TeamRating',
     {  token: this.state.token,
        styles: this.state.styles,
+       market: this.state.market,
        teamRating: item
     })}
     title={item.team}
-    badge={{ value:  getRating(this.state.market, item.marketRatings), textStyle: { color: 'orange' }, containerStyle: { marginTop: -20 } }}
+    badge={{ value:  getRating(this.state.market, item.marketRatings).toFixed(2), textStyle: { color: 'orange' }, containerStyle: { marginTop: -20 } }}
     titleStyle={this.state.styles.listItem}
   />
 );
@@ -58,7 +58,7 @@ _renderItem = ({item}) => (
        <FlatList
         data={this.state.teams}
         renderItem={this._renderItem}
-        keyExtractor={(item, index) => index}
+        keyExtractor={(item, index) => index.toString()}
       />}
       </View>
     );

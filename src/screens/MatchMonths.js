@@ -4,6 +4,7 @@ import {
 } from 'react-navigation';
 
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
+import { ListItem } from 'react-native-elements'
 
 class MatchMonths extends React.Component {
   constructor(props) {
@@ -19,13 +20,14 @@ class MatchMonths extends React.Component {
 
 
 _renderItem = ({item}) => (
-  <Button
+  <ListItem
     onPress={() => this.props.navigation.navigate('Matches',
     {  token: this.state.token,
        styles: this.state.styles,
        matches: item.data
     })}
     title={item.title}
+    titleStyle={this.state.styles.listItem}
   />
 );
 
@@ -36,7 +38,7 @@ _renderItem = ({item}) => (
      <FlatList
         data={this.state.months}
         renderItem={this._renderItem}
-        keyExtractor={(item, index) => index}
+        keyExtractor={(item, index) => index.toString()}
       />
       </View>
     );

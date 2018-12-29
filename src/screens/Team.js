@@ -6,6 +6,9 @@ import {
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import * as Progress from 'react-native-progress';
 import {team} from "../api/DataService";
+import { Tile } from 'react-native-elements'
+import {renderTile} from "../util/RenderUtils";
+import { Dimensions } from 'react-native'
 
 
 class Team extends React.Component {
@@ -18,48 +21,37 @@ class Team extends React.Component {
      disabledButton: true,
      styles: props.navigation.state.params.styles,
      loading: true,
-     team: ''
+     team: '',
+     tiles: []
 };
 
    setDataSource(this);
 }
 
 
+_renderTile = ({item}) => (
+  renderTile(this, item));
+
+
   render() {
     return (
      <View style={this.state.styles.container}>
-     {this.state.loading && <Progress.Circle size={50} indeterminate={true} />}
-
+     {this.state.loading &&
+       <View style={this.state.styles.progressContainer}>
+       <Progress.Circle
+          size={Dimensions.get('window').width/2}
+          indeterminate={true}
+          color='black'
+          thickness={20} />
+        </View>
+     }
      {!this.state.loading &&
-       <Button
-       onPress={() => this.props.navigation.navigate('MatchYears',
-       {
-          token: this.state.token,
-          matches: this.state.team.matchesByYear
-       })}
-       disabled={this.state.disabledButton}
-       title='Matches'
-     />}
-     {!this.state.loading &&
-       <Button
-       onPress={() => this.props.navigation.navigate('Players',
-       {
-         token: this.state.token,
-         teamId: this.state.team.team.id
-       })}
-       disabled={this.state.disabledButton}
-       title='Players'
-     />}
-     {!this.state.loading &&
-       <Button
-       onPress={() => this.props.navigation.navigate('Accuracy',
-       {
-         token: this.state.token,
-         key: this.state.team.team.label
-       })}
-       disabled={this.state.disabledButton}
-       title='Accuracy'
-     />}
+       <FlatList
+         data={this.state.tiles}
+         renderItem={this._renderTile}
+         keyExtractor={(item, index) => index.toString()}
+       />
+      }
       </View>
     );
   }
@@ -67,9 +59,47 @@ class Team extends React.Component {
 
 function setDataSource(component){
   team(component.state.id, component.state.token)
-  .then(data =>
-    component.setState({team : data, disabledButton: false, loading: false})
+  .then(data => update(component, data)
   )
+}
+
+ function update(component, team){
+  component.setState({
+    team: team,
+    loading: false,
+     tiles: [
+       {
+          title: 'Matches',
+          screen: 'MatchYears',
+          icon: 'trophy',
+          props: {
+           token: component.state.token,
+           styles: component.state.styles,
+           matches: team.matchesByYear
+         }
+      },
+      {
+        title: 'Players',
+        screen: 'Players',
+        icon: 'group',
+        props: {
+          token: component.state.token,
+          styles: component.state.styles,
+          teamId: team.team.id
+      }
+    },
+    {
+      title: 'Accuracy',
+      screen: 'Accuracy',
+      icon: 'crosshairs',
+      props: {
+        token: component.state.token,
+        styles: component.state.styles,
+        key: team.team.label
+     }
+   }
+  ]
+    });
 }
 
 export default Team;

@@ -40,6 +40,10 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     justifyContent: 'center',
    },
+   scrollViewContainer: {
+     flex: 1,
+     backgroundColor: '#36454f'
+  },
    progressContainer: {
      flex: 1,
      backgroundColor: '#36454f',
@@ -50,6 +54,21 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold'
   },
+  listItemSuccess: {
+   color: 'white',
+   fontWeight: 'bold',
+   backgroundColor: 'green'
+ },
+ listItemFail: {
+  color: 'white',
+  fontWeight: 'bold',
+  backgroundColor: 'red'
+},
+  titleListItem: {
+   color: 'black',
+   fontWeight: 'bold',
+   fontSize: 30
+ },
   ratingText: {
    color: 'grey',
    fontWeight: 'bold'

@@ -20,7 +20,7 @@ class Betting extends React.Component {
        {
          title: 'Selected Bets',
          screen: 'SelectedBetsHome',
-         imageSrc: require('./img/bet-slip.png'),
+         icon: 'sticky-note',
          props: {
            token: props.navigation.state.params.token,
            type: props.navigation.state.params.type,
@@ -30,7 +30,7 @@ class Betting extends React.Component {
        {
          title: 'History',
          screen: 'SelectedBetHistory',
-         imageSrc: require('./img/history.jpg'),
+         icon: 'history',
          props: {
            token: props.navigation.state.params.token,
            type: props.navigation.state.params.type,
@@ -53,7 +53,7 @@ _renderTile = ({item}) => (
       <FlatList
         data={this.state.tiles}
         renderItem={this._renderTile}
-        keyExtractor={(item, index) => index}
+        keyExtractor={(item, index) => index.toString()}
       />
       </View>
     );

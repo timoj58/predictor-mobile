@@ -38,7 +38,7 @@ _renderItem = ({item}) => (
      {!this.state.loading && <FlatList
        data={this.state.player.stats["Yellow Card"]}
        renderItem={this._renderItem}
-       keyExtractor={(item, index) => index}
+       keyExtractor={(item, index) => index.toString()}
      />}
       </View>
     );

@@ -7,7 +7,6 @@ import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import * as Progress from 'react-native-progress';
 import { ListItem } from 'react-native-elements'
 import { Dimensions } from 'react-native'
-import { Rating } from 'react-native-elements';
 
 import {selectedBets} from "../api/DataService";
 
@@ -39,23 +38,7 @@ _renderItem = ({item}) => (
     })}
     title={item.home + ' vs '+item.away}
     titleStyle={this.state.styles.listItem}
-    badge={{ value: item.rating, textStyle: { color: 'orange' }, containerStyle: { marginTop: -20 } }}
-    subtitle={
-      <View style={this.state.styles.listItem}>
-         <Text style={this.state.styles.ratingText}>Competition Rating</Text>
-           <Rating
-           startingValue={item.countryRating/20}
-           readonly
-           paddingVertical={10}
-           backgroundColor= {'#36454f'}
-           ratingColor={'green'}
-           imageSize={20}
-           type={'custom'}
-           ratingColor='green'
-          />
-        </View>
-      }
-
+    badge={{ value: item.rating.toFixed(2), textStyle: { color: 'orange' }, containerStyle: { marginTop: -20 } }}
   />
 );
 
@@ -76,7 +59,7 @@ _renderItem = ({item}) => (
        <FlatList
         data={this.state.bets}
         renderItem={this._renderItem}
-        keyExtractor={(item, index) => index}
+        keyExtractor={(item, index) => index.toString()}
       />}
       </View>
     );

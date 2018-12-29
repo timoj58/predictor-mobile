@@ -25,9 +25,10 @@ class Accuracy extends React.Component {
 
 
 _renderItem = ({item}) => (
-  <ListItem
+  item.validations[this.state.key].hasOwnProperty('accuracy')
+  && <ListItem
     title={item.type}
-    badge={{ value:  item.validations[this.state.key]['accuracy'], textStyle: { color: 'orange' }, containerStyle: { marginTop: -20 } }}
+    badge={{ value:  item.validations[this.state.key]['accuracy'].toFixed(2), textStyle: { color: 'orange' }, containerStyle: { marginTop: -20 } }}
     hideChevron
     titleStyle={this.state.styles.listItem}
     subtitle={
@@ -45,7 +46,7 @@ _renderItem = ({item}) => (
      <FlatList
         data={this.state.accuracy}
         renderItem={this._renderItem}
-        keyExtractor={(item, index) => index}
+        keyExtractor={(item, index) => index.toString()}
       />
       </View>
     );

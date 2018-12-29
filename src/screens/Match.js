@@ -24,20 +24,20 @@ _renderItem = ({item}) => (
 
   render() {
     return (
-     <View style={this.state.tyles.container}>
+     <View style={this.state.styles.container}>
      <Text>{this.state.match.headline}</Text>
      <Text>{this.state.match.date}</Text>
      <Text>Starting</Text>
      <FlatList
        data={this.state.match.starting}
        renderItem={this._renderItem}
-       keyExtractor={(item, index) => index}
+       keyExtractor={(item, index) => index.toString()}
      />
      <Text>Subs</Text>
      <FlatList
        data={this.state.match.subs}
        renderItem={this._renderItem}
-       keyExtractor={(item, index) => index}
+       keyExtractor={(item, index) => index.toString()}
      />
       </View>
     );

@@ -53,7 +53,7 @@ _renderItem = ({item}) => (
        <FlatList
         data={this.state.history}
         renderItem={this._renderItem}
-        keyExtractor={(item, index) => index}
+        keyExtractor={(item, index) => index.toString()}
       />}
       </View>
     );

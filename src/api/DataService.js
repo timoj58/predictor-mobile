@@ -1,4 +1,4 @@
-const HOST = 'http://ec2-3-80-118-8.compute-1.amazonaws.com:8080';
+const HOST = 'http://ec2-34-228-166-229.compute-1.amazonaws.com:8080';
 const DATA_API = HOST+'/api/prediction';
 const CLIENT_SERVICES_API = HOST+'/api/prediction/client-services';
 

@@ -21,7 +21,7 @@ class Home extends React.Component {
        {
          title: 'Betting',
          screen: 'Betting',
-         imageSrc: require('./img/money.jpeg'),
+         icon: 'dollar',
          props: {
            token: props.navigation.state.params.token,
            styles: props.navigation.state.params.styles,
@@ -31,7 +31,7 @@ class Home extends React.Component {
        {
          title: 'Ratings',
          screen: 'GlobalRatingsHome',
-         imageSrc: require('./img/stock-market-3.jpg'),
+         icon: 'bar-chart-o',
          props: {
            token: props.navigation.state.params.token,
            styles: props.navigation.state.params.styles
@@ -40,7 +40,7 @@ class Home extends React.Component {
        {
          title: 'Countries',
          screen: 'Countries',
-         imageSrc: require('./img/un-flags.jpg'),
+         icon: 'globe',
          props: {
            token: props.navigation.state.params.token,
            styles: props.navigation.state.params.styles,
@@ -62,7 +62,7 @@ _renderTile = ({item}) => (
       <FlatList
         data={this.state.tiles}
         renderItem={this._renderTile}
-        keyExtractor={(item, index) => index}
+        keyExtractor={(item, index) => index.toString()}
       />
       </View>
     );

@@ -1,4 +1,4 @@
-const AUTH_API = 'http://ec2-3-80-118-8.compute-1.amazonaws.com:8080/api/prediction/authenticate';
+const AUTH_API = 'http://ec2-34-228-166-229.compute-1.amazonaws.com:8080/api/prediction/authenticate';
 
 
 export function isUsernameOnFile(username) {

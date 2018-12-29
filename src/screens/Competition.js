@@ -22,7 +22,7 @@ class Competition extends React.Component {
         {
           title: 'Teams',
           screen: 'Teams',
-          imageSrc: require('./img/team.jpeg'),
+          icon: 'group',
           props: {
             token: props.navigation.state.params.token,
             type: props.navigation.state.params.type,
@@ -34,7 +34,7 @@ class Competition extends React.Component {
         {
           title: 'Events',
           screen: 'Events',
-          imageSrc: require('./img/calendar.jpg'),
+          icon: 'calendar',
           props: {
             token: props.navigation.state.params.token,
             type: props.navigation.state.params.type,
@@ -46,7 +46,7 @@ class Competition extends React.Component {
         {
         title: 'Accuracy',
         screen: 'Accuracy',
-        imageSrc: require('./img/target.png'),
+        icon: 'crosshairs',
         props: {
           token: props.navigation.state.params.token,
           styles: props.navigation.state.params.styles,
@@ -69,7 +69,7 @@ _renderTile = ({item}) => (
      <FlatList
        data={this.state.tiles}
        renderItem={this._renderTile}
-       keyExtractor={(item, index) => index}
+       keyExtractor={(item, index) => index.toString()}
      />
       </View>
     );

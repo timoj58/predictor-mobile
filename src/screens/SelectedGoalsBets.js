@@ -20,7 +20,7 @@ class SelectedGoalsBets extends React.Component {
        {
         title: 'Over 2.5 Goals',
         screen: 'SelectedBets',
-        imageSrc: require('./img/plus.jpg'),
+        icon: 'plus-square-o',
         props: {
           token: props.navigation.state.params.token,
           market: props.navigation.state.params.market,
@@ -32,7 +32,7 @@ class SelectedGoalsBets extends React.Component {
       {
        title: 'Under 2.5 Goals',
        screen: 'SelectedBets',
-       imageSrc: require('./img/minus.jpg'),
+       icon: 'minus-square-o',
        props: {
          token: props.navigation.state.params.token,
          market: props.navigation.state.params.market,
@@ -59,7 +59,7 @@ _renderTile = ({item}) => (
       <FlatList
         data={this.state.tiles}
         renderItem={this._renderTile}
-        keyExtractor={(item, index) => index}
+        keyExtractor={(item, index) => index.toString()}
       />
       </View>
     );

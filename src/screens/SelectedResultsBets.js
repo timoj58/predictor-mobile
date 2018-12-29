@@ -20,7 +20,7 @@ class SelectedResultsBets extends React.Component {
        {
         title: 'Home Wins',
         screen: 'SelectedBets',
-        imageSrc: require('./img/home.jpg'),
+        icon: 'home',
         props: {
           token: props.navigation.state.params.token,
           market: props.navigation.state.params.market,
@@ -32,7 +32,7 @@ class SelectedResultsBets extends React.Component {
       {
        title: 'Away Wins',
        screen: 'SelectedBets',
-       imageSrc: require('./img/away.jpg'),
+       icon: 'home',
        props: {
          token: props.navigation.state.params.token,
          market: props.navigation.state.params.market,
@@ -44,7 +44,7 @@ class SelectedResultsBets extends React.Component {
      {
       title: 'Draws',
       screen: 'SelectedBets',
-      imageSrc: require('./img/draw.jpg'),
+      icon: 'handshake-o',
       props: {
         token: props.navigation.state.params.token,
         market: props.navigation.state.params.market,
@@ -70,7 +70,7 @@ _renderTile = ({item}) => (
       <FlatList
         data={this.state.tiles}
         renderItem={this._renderTile}
-        keyExtractor={(item, index) => index}
+        keyExtractor={(item, index) => index.toString()}
       />
     </View>
     );

@@ -3,11 +3,12 @@ import {
   StackNavigator,
 } from 'react-navigation';
 
-import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Button, FlatList, ScrollView } from 'react-native';
 import * as Progress from 'react-native-progress';
 
 import {predictions} from "../api/DataService";
 import {previousMeetings} from "../api/DataService";
+import { ListItem } from 'react-native-elements';
 
 
 class Event extends React.Component {
@@ -32,50 +33,78 @@ class Event extends React.Component {
 
 _renderPrediction = ({item}) => (
     item.score > 0 &&
-    <Text>{item.key} - {item.score}%</Text>
+    <ListItem
+    title={item.key}
+    hideChevron
+    titleStyle={this.state.styles.listItem}
+    badge={{ value:  item.score.toFixed(2), textStyle: { color: 'orange' }, containerStyle: { marginTop: -20 } }}
+  />
 );
 
 
 _renderPreviousMeeting = ({item}) => (
-    <Text>{item.home} {item.homeScore} - {item.awayScore} {item.away} {item.date}</Text>
+    <ListItem
+    title={previousMeetingTitle(item)}
+    hideChevron
+    titleStyle={this.state.styles.listItem}
+    subtitle={
+      <View style={this.state.styles.listItem}>
+          <Text style={this.state.styles.ratingText}>{item.date}</Text>
+      </View>
+      }
+    />
 );
 
 
 _renderItem = ({item}) => (
   <View style={this.state.styles.container}>
-  <Text>Event {item.eventType} Rating {item.rating}</Text>
+  <ListItem
+   title={item.eventType}
+   hideChevron
+   titleStyle={this.state.styles.titleListItem}
+   />
   <FlatList
    data={item.predictions.result}
    renderItem={this._renderPrediction}
-   keyExtractor={(item, index) => index}
+   keyExtractor={(item, index) => index.toString()}
  />
  </View>
 );
 
   render() {
     return (
-     <View style={this.state.styles.container}>
-     <Text>Home: {this.state.event.home.label}</Text>
-     <Text>Away: {this.state.event.away.label}</Text>
-     <Text>Date: {this.state.event.eventDate}</Text>
+     <ScrollView style={this.state.styles.scrollViewContainer}>
      {this.state.loading && <Progress.Circle size={50} indeterminate={true} />}
      {!this.state.loading &&
        <FlatList
         data={this.state.predictions}
         renderItem={this._renderItem}
-        keyExtractor={(item, index) => index}
+        keyExtractor={(item, index) => index.toString()}
       />}
       {this.state.loadingPreviousMeetings && <Progress.Circle size={50} indeterminate={true} />}
       {!this.state.loadingPreviousMeetings &&
+        <View>
+        <ListItem
+         title={'Previous Meetings'}
+         hideChevron
+         titleStyle={this.state.styles.titleListItem}
+         />
         <FlatList
          data={this.state.previousMeetings}
          renderItem={this._renderPreviousMeeting}
-         keyExtractor={(item, index) => index}
-       />}
-  </View>
+         keyExtractor={(item, index) => index.toString()}
+       />
+     </View>}
+  </ScrollView>
     );
   }
 }
+
+
+function previousMeetingTitle(item) {
+  return item.home +' '+ item.homeScore + '-' + item.awayScore + ' '+ item.away
+};
+
 
 function setDataSource(component){
   predictions(

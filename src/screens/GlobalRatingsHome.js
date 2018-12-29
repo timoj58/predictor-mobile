@@ -20,7 +20,7 @@ class GlobalRatingsHome extends React.Component {
        {
          title: 'Results',
          screen: 'GlobalRatings',
-         imageSrc: require('./img/winning.jpg'),
+         icon: 'trophy',
          props: {
            token: props.navigation.state.params.token,
            styles: props.navigation.state.params.styles,
@@ -30,7 +30,7 @@ class GlobalRatingsHome extends React.Component {
        {
          title: 'Goals',
          screen: 'GlobalRatings',
-         imageSrc: require('./img/goal.jpg'),
+         icon: 'soccer-ball-o',
          props: {
            token: props.navigation.state.params.token,
            styles: props.navigation.state.params.styles,
@@ -52,7 +52,7 @@ _renderTile = ({item}) => (
       <FlatList
         data={this.state.tiles}
         renderItem={this._renderTile}
-        keyExtractor={(item, index) => index}
+        keyExtractor={(item, index) => index.toString()}
       />
       </View>
     );

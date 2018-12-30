@@ -51,6 +51,7 @@ _renderItem = ({item}) => (
           size={Dimensions.get('window').width/2}
           indeterminate={true}
           color='black'
+          thickness={50}
         />
         </View>
      }

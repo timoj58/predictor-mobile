@@ -8,6 +8,7 @@ import * as Progress from 'react-native-progress';
 import { ListItem } from 'react-native-elements'
 import { Dimensions } from 'react-native';
 import {events} from "../api/DataService";
+import {todaysEvents} from "../api/DataService";
 
 
 class Events extends React.Component {
@@ -21,6 +22,7 @@ class Events extends React.Component {
      country: props.navigation.state.params.country,
      competition: props.navigation.state.params.competition,
      loading: true,
+     today: props.navigation.state.params.today,
      events:''
     };
 
@@ -33,6 +35,7 @@ _renderItem = ({item}) => (
     onPress={() => this.props.navigation.navigate('Event',
     {  token: this.state.token,
        styles: this.state.styles,
+       market: 'all',
        event: item
     })}
     title={item.home.label + ' vs '+item.away.label}
@@ -65,8 +68,17 @@ _renderItem = ({item}) => (
 }
 
 function setDataSource(component){
-  events(component.state.type, component.state.country, component.state.competition, component.state.token)
-  .then( data => component.setState({events : data, loading: false}));
+  if(component.state.today === true){
+    todaysEvents(component.state.type,component.state.token)
+    .then( data => {
+      console.log(data);
+      component.setState({events : data, loading: false});
+    });
+  }
+  else{
+   events(component.state.type, component.state.country, component.state.competition, component.state.token)
+   .then( data => component.setState({events : data, loading: false}));
+ }
 }
 
 

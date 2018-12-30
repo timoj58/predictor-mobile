@@ -19,6 +19,19 @@ class Home extends React.Component {
      styles: props.navigation.state.params.styles,
      tiles: [
        {
+         title: 'Now',
+         screen: 'Events',
+         icon: 'calendar-check-o',
+         props: {
+           token: props.navigation.state.params.token,
+           styles: props.navigation.state.params.styles,
+           today: true,
+           country: null,
+           competition: null,
+           type: type
+         }
+       },
+       {
          title: 'Betting',
          screen: 'Betting',
          icon: 'dollar',
@@ -38,7 +51,7 @@ class Home extends React.Component {
          }
        },
        {
-         title: 'Countries',
+         title: 'Leagues',
          screen: 'Countries',
          icon: 'globe',
          props: {

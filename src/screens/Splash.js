@@ -73,11 +73,20 @@ const styles = StyleSheet.create({
    color: 'grey',
    fontWeight: 'bold'
  },
+ ratingTextPlus: {
+  color: 'green',
+  fontWeight: 'bold'
+},
+ratingTextLMinus: {
+ color: 'red',
+ fontWeight: 'bold'
+},
   inputField: {
       height: 40,
       alignSelf: 'stretch',
       textAlign: "center",
       borderColor:  'gray',
+      fontSize: 20,
       borderWidth: 1,
       color: "black",
       backgroundColor: 'white'

@@ -3,7 +3,8 @@ import {
   StackNavigator,
 } from 'react-navigation';
 
-import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Button, FlatList, ScrollView } from 'react-native';
+import { ListItem } from 'react-native-elements';
 
 
 class Match extends React.Component {
@@ -17,29 +18,65 @@ class Match extends React.Component {
 }
 
 _renderItem = ({item}) => (
-  <Text>{item.name}  {item.duration}</Text>
+  <ListItem
+   title={item.name}
+   hideChevron
+   titleStyle={this.state.styles.listItem}
+   badge={{ value:  item.duration, textStyle: { color: 'green' }, containerStyle: { marginTop: -20 } }}
+  />
 );
 
+_renderStat = ({item}) => (
+  this.state.match.teamStats[item] > 0 &&
+  <ListItem
+   title={item}
+   hideChevron
+   titleStyle={this.state.styles.listItem}
+   badge={{ value: this.state.match.teamStats[item], textStyle: { color: 'green' }, containerStyle: { marginTop: -20 } }}
+  />
+);
 
 
   render() {
     return (
-     <View style={this.state.styles.container}>
-     <Text>{this.state.match.headline}</Text>
-     <Text>{this.state.match.date}</Text>
-     <Text>Starting</Text>
+    <ScrollView style={this.state.styles.scrollViewContainer}>
+    <View>
+    <ListItem
+     title={'Lineup'}
+     hideChevron
+     titleStyle={this.state.styles.titleListItem}
+     />
      <FlatList
-       data={this.state.match.starting}
+        data={this.state.match.starting}
        renderItem={this._renderItem}
        keyExtractor={(item, index) => index.toString()}
      />
-     <Text>Subs</Text>
-     <FlatList
-       data={this.state.match.subs}
-       renderItem={this._renderItem}
-       keyExtractor={(item, index) => index.toString()}
-     />
+     </View>
+     <View>
+     <ListItem
+      title={'Substitutes'}
+      hideChevron
+      titleStyle={this.state.styles.titleListItem}
+      />
+      <FlatList
+         data={this.state.match.subs}
+        renderItem={this._renderItem}
+        keyExtractor={(item, index) => index.toString()}
+      />
       </View>
+      <View>
+      <ListItem
+       title={'Statistics'}
+       hideChevron
+       titleStyle={this.state.styles.titleListItem}
+       />
+       <FlatList
+          data={Object.keys(this.state.match.teamStats)}
+         renderItem={this._renderStat}
+         keyExtractor={(item, index) => index.toString()}
+       />
+       </View>
+    </ScrollView>
     );
   }
 }

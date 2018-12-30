@@ -1,7 +1,6 @@
-const HOST = 'http://ec2-34-228-166-229.compute-1.amazonaws.com:8080';
+const HOST = 'http://ec2-107-22-148-47.compute-1.amazonaws.com:8080';
 const DATA_API = HOST+'/api/prediction';
 const CLIENT_SERVICES_API = HOST+'/api/prediction/client-services';
-
 
 
 export function get(url, token) {
@@ -52,9 +51,19 @@ export function player(player, token) {
   return get(CLIENT_SERVICES_API+'/form/player/'+player, token);
 }
 
+export function event(home, away, token){
+  return get(DATA_API+'/events/upcoming-event?home='+home+'&away='+away, token);
+}
+
+
 export function events(type, country, competition, token){
   return get(DATA_API+'/events/upcoming-events?type='+type+'&country='+country+'&competition='+competition, token);
 }
+
+export function todaysEvents(type, token){
+  return get(DATA_API+'/events/upcoming-events?type='+type, token);
+}
+
 
 export function predictions(type, country, competition, team, token){
   return get(CLIENT_SERVICES_API+'/prediction/prices-with-predictions?type='
@@ -71,12 +80,17 @@ export function previousMeetings(home, away, token){
 }
 
 export function accuracy(key, token){
-  return get(CLIENT_SERVICES_API+'/performance/accuracy?key='+key, token);
+  return get(CLIENT_SERVICES_API+'/performance/accuracy?key='+encodeURIComponent(key), token);
 }
 
 export function globalRatings(market, token){
   return get(CLIENT_SERVICES_API+'/performance?market='+market, token);
 }
+
+export function globalRating(team, market, token){
+  return get(CLIENT_SERVICES_API+'/performance/'+team+'?market='+market, token);
+}
+
 
 export function selectedBets(type, market, event, token){
   return get(CLIENT_SERVICES_API+'/prediction/selected-bets?type='+type+'&market='+market+'&event='+event, token);

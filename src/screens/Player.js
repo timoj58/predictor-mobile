@@ -5,6 +5,8 @@ import {
 
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import * as Progress from 'react-native-progress';
+import { Dimensions } from 'react-native';
+import { ListItem } from 'react-native-elements';
 
 import {player} from "../api/DataService";
 
@@ -24,22 +26,45 @@ class Player extends React.Component {
     setDataSource(this);
 }
 
+
 _renderItem = ({item}) => (
-  <Text> {item} </Text>
+  <ListItem
+    title={item}
+    hideChevron
+    badge={{ value:  this.state.player.stats[item].length, textStyle: { color: 'green' }, containerStyle: { marginTop: -20 } }}
+    titleStyle={this.state.styles.listItem}
+  />
 );
+
 
 
   render() {
     return (
      <View style={this.state.styles.container}>
-     {this.state.loading && <Progress.Circle size={50} indeterminate={true} />}
-     {!this.state.loading && <Text>{this.state.player.player.label}</Text>}
-     {!this.state.loading && <Text>Yellow Card</Text>}
-     {!this.state.loading && <FlatList
-       data={this.state.player.stats["Yellow Card"]}
-       renderItem={this._renderItem}
-       keyExtractor={(item, index) => index.toString()}
-     />}
+     {this.state.loading &&
+       <View style={this.state.styles.progressContainer}>
+        <Progress.Circle
+          size={Dimensions.get('window').width/2}
+          indeterminate={true}
+          color='black'
+          thickness={50} />
+          </View>
+    }
+     {!this.state.loading &&
+      <View style={this.state.styles.container}>
+       <ListItem
+        title={'Appearances'}
+        hideChevron
+        badge={{ value:  this.state.player.playerAppearances.length, textStyle: { color: 'green' }, containerStyle: { marginTop: -20 } }}
+        titleStyle={this.state.styles.listItem}
+       />
+       <FlatList
+        data={Object.keys(this.state.player.stats)}
+        renderItem={this._renderItem}
+        keyExtractor={(item, index) => index.toString()}
+      />
+     </View>
+     }
       </View>
     );
   }
@@ -47,7 +72,7 @@ _renderItem = ({item}) => (
 
 function setDataSource(component){
   player(component.state.playerId, component.state.token)
-  .then( data => component.setState({player : data, loading: false}));
+  .then( data =>   component.setState({player : data, loading: false}));
 }
 
 

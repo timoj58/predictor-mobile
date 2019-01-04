@@ -14,3 +14,15 @@ export function renderTile(component, item) {
          imageSrc={require('../screens/img/tile.png')}
          />
      }
+
+export function getBetRatingColor(value){
+       if (value >= 40){
+         return 'green';
+       }
+
+       if(value < 40 && value >= 15){
+         return 'orange';
+       }
+
+       return 'red';
+}

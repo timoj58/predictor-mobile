@@ -22,6 +22,7 @@ import {authenticate} from "../api/AuthService";
       <View style={this.state.styles.container}>
        <TextInput secureTextEntry={true}
         style={this.state.styles.inputField}
+        placeholder='Your password'
         onChangeText={(password) => this.setState({password})}/>
         <Button
         onPress={() =>  login(this)}
@@ -35,9 +36,11 @@ import {authenticate} from "../api/AuthService";
 }
 
 function login(component) {
+  console.log('calling auth service');
   authenticate(component.state.username, component.state.password)
   .then(token => {
     if(token !== ""){
+      console.log(token);
         component.props.navigation.navigate('Home', {
           token: token,
           styles: component.state.styles});

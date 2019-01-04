@@ -21,11 +21,8 @@ import {isUsernameOnFile} from "../api/AuthService";
     return (
       <View style={this.state.styles.container}>
       <TextInput
-       style={{
-         height: 40,
-         alignSelf: 'stretch',
-         borderColor:  'gray',
-         borderWidth: 1}}
+         style={this.state.styles.inputField}
+         placeholder='Button will go green if username free'
          onChangeText={(username) => checkUsername(this, username)}
          value={this.state.username}/>
         <Button
@@ -34,7 +31,7 @@ import {isUsernameOnFile} from "../api/AuthService";
           styles: this.state.styles})}
          title="Next"
          disabled={this.state.disabledButton}
-         color="#841584"
+         color="green"
          accessibilityLabel="Next"
          />
 
@@ -46,8 +43,7 @@ import {isUsernameOnFile} from "../api/AuthService";
 function checkUsername(component, username) {
   if(username !== "" && username.length > 6){
     isUsernameOnFile(username).then((value) => {
-     console.log(value);
-     component.setState({username: username,disabledButton: value})});
+     component.setState({disabledButton: value})});
  } // end username null
  component.setState({username: username,disabledButton: true});
 }

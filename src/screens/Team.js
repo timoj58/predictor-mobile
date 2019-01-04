@@ -75,7 +75,8 @@ function setDataSource(component){
           props: {
            token: component.state.token,
            styles: component.state.styles,
-           matches: team.matchesByYear
+           matches: team.matchesByYear,
+           label: team.team.label
          }
       },
       {
@@ -85,7 +86,8 @@ function setDataSource(component){
         props: {
           token: component.state.token,
           styles: component.state.styles,
-          teamId: team.team.id
+          teamId: team.team.id,
+          label: team.team.label
       }
     },
     {

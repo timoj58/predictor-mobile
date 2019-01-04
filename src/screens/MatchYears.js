@@ -13,7 +13,8 @@ class MatchYears extends React.Component {
    this.state = {
      token: props.navigation.state.params.token,
      styles: props.navigation.state.params.styles,
-     matches: props.navigation.state.params.matches
+     matches: props.navigation.state.params.matches,
+     label: props.navigation.state.params.label
     };
 
 }
@@ -24,7 +25,8 @@ _renderItem = ({item}) => (
     onPress={() => this.props.navigation.navigate('MatchMonths',
     {  token: this.state.token,
        styles: this.state.styles,
-       months: item.data
+       months: item.data,
+       label: this.state.label
     })}
     title={item.title}
     titleStyle={this.state.styles.listItem}

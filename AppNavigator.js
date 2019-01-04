@@ -32,97 +32,205 @@ import {
     import SelectedResultsBets from "./src/screens/SelectedResultsBets";
     import SelectedGoalsBets from "./src/screens/SelectedGoalsBets";
     import GlobalRatingsHome from "./src/screens/GlobalRatingsHome";
-    
+    import CompetitionRatings from "./src/screens/CompetitionRatings";
+
     const AppNavigator = createStackNavigator({
       Splash: {
        screen: Splash
      },
       RegisterUsername: {
-       screen: RegisterUsername
+       screen: RegisterUsername,
+       navigationOptions: ({ navigation }) => ({
+        title: 'Register',
+      })
      },
      RegisterPassword: {
-       screen: RegisterPassword
+       screen: RegisterPassword,
+       navigationOptions: ({ navigation }) => ({
+        title: 'Register',
+      })
      },
      LoginUsername: {
-      screen: LoginUsername
+      screen: LoginUsername,
+      navigationOptions: ({ navigation }) => ({
+       title: 'Login',
+     })
     },
     LoginPassword: {
-      screen: LoginPassword
+      screen: LoginPassword,
+      navigationOptions: ({ navigation }) => ({
+       title: 'Login',
+     })
     },
     Home: {
       screen: Home
     },
     Countries: {
-      screen: Countries
+      screen: Countries,
+      navigationOptions: ({ navigation }) => ({
+       title: 'Countries',
+       headerStyle: { backgroundColor: 'orange' }
+     })
     },
     Country: {
-      screen: Country
+      screen: Country,
+      navigationOptions: ({ navigation }) => ({
+       title: `${navigation.state.params.country}`,
+       headerStyle: { backgroundColor: 'orange' }
+     })
     },
     Competition: {
-      screen: Competition
+      screen: Competition,
+      navigationOptions: ({ navigation }) => ({
+       title: `${navigation.state.params.competition}`,
+       headerStyle: { backgroundColor: 'orange' }
+     })
+    },
+    CompetitionRatings: {
+      screen: CompetitionRatings,
+      navigationOptions: ({ navigation }) => ({
+       title: 'Competition Ranking',
+       headerStyle: { backgroundColor: 'orange' }
+     })
     },
     Events: {
-      screen: Events
+      screen: Events,
+      navigationOptions: ({ navigation }) => ({
+       title: `${navigation.state.params.label}`,
+       headerStyle: { backgroundColor: 'orange' }
+     })
     },
     Event: {
-      screen: Event
+      screen: Event,
+      navigationOptions: ({ navigation }) => ({
+       title: `${navigation.state.params.label}`,
+       headerStyle: { backgroundColor: 'orange' }
+     })
     },
     Teams: {
-      screen: Teams
+      screen: Teams,
+      navigationOptions: ({ navigation }) => ({
+       title: `${navigation.state.params.competition}`,
+       headerStyle: { backgroundColor: 'orange' }
+     })
     },
     Team: {
-      screen: Team
+      screen: Team,
+      navigationOptions: ({ navigation }) => ({
+       title: `${navigation.state.params.label}`,
+       headerStyle: { backgroundColor: 'orange' }
+     })
     },
     Match: {
-      screen: Match
+      screen: Match,
+      navigationOptions: ({ navigation }) => ({
+      title: `${navigation.state.params.label}`,
+      headerStyle: { backgroundColor: 'orange' }
+     })
     },
     Matches: {
-      screen: Matches
+      screen: Matches,
+      navigationOptions: ({ navigation }) => ({
+       title: `${navigation.state.params.label}`,
+       headerStyle: { backgroundColor: 'orange' }
+     })
     },
     MatchYears: {
-      screen: MatchYears
+      screen: MatchYears,
+      navigationOptions: ({ navigation }) => ({
+       title: `${navigation.state.params.label}`,
+       headerStyle: { backgroundColor: 'orange' }
+     })
     },
     MatchMonths: {
-      screen: MatchMonths
+      screen: MatchMonths,
+      navigationOptions: ({ navigation }) => ({
+       title: `${navigation.state.params.label}`,
+       headerStyle: { backgroundColor: 'orange' }
+     })
     },
     Players: {
-      screen: Players
+      screen: Players,
+      navigationOptions: ({ navigation }) => ({
+       title: `${navigation.state.params.label}`,
+       headerStyle: { backgroundColor: 'orange' }
+     })
     },
     Player: {
-      screen: Player
+      screen: Player,
+      navigationOptions: ({ navigation }) => ({
+       title: `${navigation.state.params.label}`,
+       headerStyle: { backgroundColor: 'orange' }
+     })
     },
     GlobalRatings: {
-      screen: GlobalRatings
+      screen: GlobalRatings,
+      navigationOptions: ({ navigation }) => ({
+       title: `${navigation.state.params.label}`,
+       headerStyle: { backgroundColor: 'orange' }
+     })
     },
     GlobalRatingsHome: {
       screen: GlobalRatingsHome
     },
     SelectedBets: {
-      screen: SelectedBets
+      screen: SelectedBets,
+      navigationOptions: ({ navigation }) => ({
+       title: `${navigation.state.params.label}`,
+       headerStyle: { backgroundColor: 'orange' }
+     })
     },
     SelectedBetHistory: {
       screen: SelectedBetHistory
     },
     SelectedBetsHome: {
-      screen: SelectedBetsHome
+      screen: SelectedBetsHome,
+      navigationOptions: ({ navigation }) => ({
+       title: 'Selected Bets',
+       headerStyle: { backgroundColor: 'orange' }
+     })
     },
     SelectedResultsBets: {
-      screen: SelectedResultsBets
+      screen: SelectedResultsBets,
+      navigationOptions: ({ navigation }) => ({
+       title: 'Selected Results Bets',
+       headerStyle: { backgroundColor: 'orange' }
+     })
     },
     SelectedGoalsBets: {
-      screen: SelectedGoalsBets
+      screen: SelectedGoalsBets,
+      navigationOptions: ({ navigation }) => ({
+       title: 'Selected Goals Bets',
+       headerStyle: { backgroundColor: 'orange' }
+     })
     },
     SelectedBetsHome: {
-      screen: SelectedBetsHome
+      screen: SelectedBetsHome,
+      navigationOptions: ({ navigation }) => ({
+       title: 'Selected Bets',
+       headerStyle: { backgroundColor: 'orange' }
+     })
     },
     TeamRating: {
-      screen: TeamRating
-    },
+      screen: TeamRating,
+      navigationOptions: ({ navigation }) => ({
+       title: `${navigation.state.params.teamRating.team}`+ ' - '+`${navigation.state.params.market}`,
+       headerStyle: { backgroundColor: 'orange' }
+     })
+  },
     Accuracy: {
-      screen: Accuracy
+      screen: Accuracy,
+      navigationOptions: ({ navigation }) => ({
+       title: `${navigation.state.params.key}`,
+       headerStyle: { backgroundColor: 'orange' }
+     })
     },
     Betting: {
-      screen: Betting
+      screen: Betting,
+      navigationOptions: ({ navigation }) => ({
+       title: 'Betting',
+       headerStyle: { backgroundColor: 'orange' }
+     })
     }});
 
 const App = createAppContainer(AppNavigator);

@@ -5,6 +5,8 @@ import {
 
 import { StyleSheet, Text, View, Button, FlatList, ScrollView } from 'react-native';
 import { ListItem } from 'react-native-elements';
+import {getBetRatingColor} from "../util/RenderUtils";
+
 
 
 class TeamRating extends React.Component {
@@ -23,7 +25,7 @@ class TeamRating extends React.Component {
 _renderItem = ({item}) => (
   <ListItem
     title={item.type}
-    badge={{ value:  item.accuracy.toFixed(2), textStyle: { color: 'orange' }, containerStyle: { marginTop: -20 } }}
+    badge={{ value:  item.accuracy.toFixed(2), textStyle: { color: getBetRatingColor(item.accuracy) }, containerStyle: { marginTop: -5 } }}
     hideChevron
     titleStyle={this.state.styles.listItem}
     subtitle={
@@ -37,7 +39,7 @@ _renderItem = ({item}) => (
 _renderPredictionItem = ({item}) => (
   item.score > 0 &&  <ListItem
      title={item.key}
-     badge={{ value:  item.score.toFixed(2), textStyle: { color: 'orange' }, containerStyle: { marginTop: -20 } }}
+     badge={{ value:  item.score.toFixed(2), textStyle: { color: 'orange' }, containerStyle: { marginTop: -5 } }}
      hideChevron
      titleStyle={this.state.styles.listItem}
      />

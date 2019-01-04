@@ -6,23 +6,22 @@ import {
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import * as Progress from 'react-native-progress';
 import { Dimensions } from 'react-native';
-import {globalRatings} from "../api/DataService";
+import {competitionRatings} from "../api/DataService";
 import { ListItem } from 'react-native-elements';
 import {renderProgress} from "../util/RenderUtils";
 import {getBetRatingColor} from "../util/RenderUtils";
 
 
 
-class GlobalRatings extends React.Component {
+class CompetitionRatings extends React.Component {
   constructor(props) {
    super(props);
 
    this.state = {
      token: props.navigation.state.params.token,
      styles: props.navigation.state.params.styles,
-     market: props.navigation.state.params.market,
      loading: true,
-     teams :''
+     competitions :''
     };
 
   setDataSource(this);
@@ -31,16 +30,16 @@ class GlobalRatings extends React.Component {
 
 _renderItem = ({item}) => (
   <ListItem
-    onPress={() => this.props.navigation.navigate('TeamRating',
-    {  token: this.state.token,
-       styles: this.state.styles,
-       market: this.state.market,
-       teamRating: item
-    })}
-    title={item.team}
-    badge={{ value:  getRating(this.state.market, item.marketRatings).toFixed(2), textStyle: { color: getBetRatingColor(getRating(this.state.market, item.marketRatings)) }, containerStyle: { marginTop: -5 } }}
+    title={item.competition +' '+item.type}
+    badge={{ value: item.accuracy.toFixed(2), textStyle: { color: getBetRatingColor(item.accuracy) }, containerStyle: { marginTop: -5 } }}
     titleStyle={this.state.styles.listItem}
-  />
+    hideChevron
+    subtitle={
+      <View style={this.state.styles.listItem}>
+          <Text style={this.state.styles.ratingText}>{item.success} / {item.total}</Text>
+      </View>
+      }
+      />
 );
 
 
@@ -59,7 +58,7 @@ _renderItem = ({item}) => (
      }
      {!this.state.loading &&
        <FlatList
-        data={this.state.teams}
+        data={this.state.competitions}
         renderItem={this._renderItem}
         keyExtractor={(item, index) => index.toString()}
       />}
@@ -73,9 +72,9 @@ function getRating(market, marketRatings){
 }
 
 function setDataSource(component){
-  globalRatings(component.state.market, component.state.token)
-  .then( data => component.setState({teams : data, loading: false}));
+  competitionRatings(component.state.token)
+  .then( data => component.setState({competitions : data, loading: false}));
 }
 
 
-export default GlobalRatings;
+export default CompetitionRatings;

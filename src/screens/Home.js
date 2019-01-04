@@ -6,6 +6,8 @@ import {
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import { Tile } from 'react-native-elements'
 import {renderTile} from "../util/RenderUtils";
+import {renderFlatList} from "../util/RenderUtils";
+
 
 
 const type = 'FOOTBALL';
@@ -14,9 +16,12 @@ class Home extends React.Component {
   constructor(props) {
    super(props);
 
+   var start = new Date().getTime();
+
    this.state = {
      token: props.navigation.state.params.token,
      styles: props.navigation.state.params.styles,
+     start: start,
      tiles: [
        {
          title: 'Now',
@@ -28,7 +33,9 @@ class Home extends React.Component {
            today: true,
            country: null,
            competition: null,
-           type: type
+           type: type,
+           start: start,
+           label: 'Todays Events'
          }
        },
        {
@@ -38,7 +45,8 @@ class Home extends React.Component {
          props: {
            token: props.navigation.state.params.token,
            styles: props.navigation.state.params.styles,
-           type: type
+           type: type,
+           start: start
          }
        },
        {
@@ -47,7 +55,8 @@ class Home extends React.Component {
          icon: 'bar-chart-o',
          props: {
            token: props.navigation.state.params.token,
-           styles: props.navigation.state.params.styles
+           styles: props.navigation.state.params.styles,
+           start: start
          }
        },
        {
@@ -57,7 +66,8 @@ class Home extends React.Component {
          props: {
            token: props.navigation.state.params.token,
            styles: props.navigation.state.params.styles,
-           type: type
+           type: type,
+           start: start
          }
        }
      ]

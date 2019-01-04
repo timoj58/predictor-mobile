@@ -24,7 +24,8 @@ _renderItem = ({item}) => (
     onPress={() => this.props.navigation.navigate('Match',
     {  token: this.state.token,
        styles: this.state.styles,
-       match: item
+       match: item,
+       label: item.headline
     })}
     title={item.headline}
     titleStyle={this.state.styles.listItem}

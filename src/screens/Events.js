@@ -9,6 +9,8 @@ import { ListItem } from 'react-native-elements'
 import { Dimensions } from 'react-native';
 import {events} from "../api/DataService";
 import {todaysEvents} from "../api/DataService";
+import {expires} from "../util/TokenUtils";
+import {refresh} from "../api/AuthService";
 
 
 class Events extends React.Component {
@@ -26,6 +28,7 @@ class Events extends React.Component {
      events:''
     };
 
+  refreshToken(this);
   setDataSource(this);
 }
 
@@ -36,6 +39,7 @@ _renderItem = ({item}) => (
     {  token: this.state.token,
        styles: this.state.styles,
        market: 'all',
+       label: item.home.label + ' vs '+item.away.label,
        event: item
     })}
     title={item.home.label + ' vs '+item.away.label}
@@ -79,6 +83,12 @@ function setDataSource(component){
    events(component.state.type, component.state.country, component.state.competition, component.state.token)
    .then( data => component.setState({events : data, loading: false}));
  }
+}
+
+async function refreshToken(component){
+  if(expires(component.state.start)){
+    refresh(component.state.token).then(token => component.setState({token: token}) )
+  }
 }
 
 

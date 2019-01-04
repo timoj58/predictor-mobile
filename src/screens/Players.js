@@ -33,7 +33,8 @@ _renderItem = ({item}) => (
     {
       token: this.state.token,
       styles: this.state.styles,
-      playerId: item.id
+      playerId: item.id,
+      label: item.label
     })}
     title={item.label}
     titleStyle={this.state.styles.listItem}

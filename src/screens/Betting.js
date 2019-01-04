@@ -6,6 +6,8 @@ import {
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import { Tile } from 'react-native-elements'
 import {renderTile} from "../util/RenderUtils";
+import {expires} from "../util/TokenUtils";
+import {refresh} from "../api/AuthService";
 
 
 class Betting extends React.Component {
@@ -24,7 +26,8 @@ class Betting extends React.Component {
          props: {
            token: props.navigation.state.params.token,
            type: props.navigation.state.params.type,
-           styles: props.navigation.state.params.styles
+           styles: props.navigation.state.params.styles,
+           start: props.navigation.state.params.start
          }
        },
        {
@@ -39,6 +42,8 @@ class Betting extends React.Component {
        }
      ]
     };
+
+    refreshToken(this);
 
 }
 
@@ -57,6 +62,12 @@ _renderTile = ({item}) => (
       />
       </View>
     );
+  }
+}
+
+async function refreshToken(component){
+  if(expires(component.state.start)){
+    refresh(component.state.token).then(token => component.setState({token: token}) )
   }
 }
 

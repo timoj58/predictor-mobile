@@ -1,4 +1,23 @@
-const AUTH_API = 'http://ec2-107-22-148-47.compute-1.amazonaws.com:8080/api/prediction/authenticate';
+const AUTH_API = 'http://ec2-3-85-248-39.compute-1.amazonaws.com/api/prediction/authenticate';
+
+
+export function refresh(token) {
+  return fetch(AUTH_API+'/refresh', {
+    headers: {
+         'Accept': 'application/json',
+         'Content-Type': 'application/json',
+         'application-token': token
+       }
+  })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      console.log(responseJson);
+      return responseJson.applicationToken;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
 
 
 export function isUsernameOnFile(username) {
@@ -19,8 +38,8 @@ export function authenticate(username, password) {
    method: 'POST',
    headers: {
      'Accept': 'application/json',
-     'Content-Type': 'application/json',
-   },
+     'Content-Type': 'application/json'
+  },
    body: JSON.stringify({
      username: username,
      password: password,
@@ -36,7 +55,7 @@ export function authenticate(username, password) {
 }
 
 export function create(username, password) {
-  return fetch(AUTH_API+'/create',
+  return fetch(AUTH_API+'/create-user-account',
   {
    method: 'POST',
    headers: {

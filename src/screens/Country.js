@@ -17,6 +17,7 @@ class Country extends React.Component {
      type: props.navigation.state.params.type,
      country: props.navigation.state.params.country,
      styles: props.navigation.state.params.styles,
+     start: props.navigation.state.params.start,
      competitions: ''
    };
 
@@ -32,6 +33,7 @@ _renderItem = ({item}) => (
       type: this.state.type,
       country: this.state.country,
       styles: this.state.styles,
+      start: this.state.start,
       competition: item })}
     title={item}
     titleStyle={this.state.styles.listItem}

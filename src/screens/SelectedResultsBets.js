@@ -26,7 +26,9 @@ class SelectedResultsBets extends React.Component {
           market: props.navigation.state.params.market,
           styles: props.navigation.state.params.styles,
           type: props.navigation.state.params.type,
-          event: 'homeWin'
+          start: props.navigation.state.params.start,
+          event: 'homeWin',
+          label: 'Selected Home Wins'
        }
       },
       {
@@ -38,8 +40,10 @@ class SelectedResultsBets extends React.Component {
          market: props.navigation.state.params.market,
          styles: props.navigation.state.params.styles,
          type: props.navigation.state.params.type,
-         event: 'awayWin'
-      }
+         start: props.navigation.state.params.start,
+         event: 'awayWin',
+         label: 'Selected Away Wins'
+     }
      },
      {
       title: 'Draws',
@@ -50,8 +54,10 @@ class SelectedResultsBets extends React.Component {
         market: props.navigation.state.params.market,
         styles: props.navigation.state.params.styles,
         type: props.navigation.state.params.type,
-        event: 'draw'
-      }
+        start: props.navigation.state.params.start,
+        event: 'draw',
+        label: 'Selected Draws'
+    }
     }
     ]
   };

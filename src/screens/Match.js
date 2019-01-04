@@ -22,7 +22,7 @@ _renderItem = ({item}) => (
    title={item.name}
    hideChevron
    titleStyle={this.state.styles.listItem}
-   badge={{ value:  item.duration, textStyle: { color: 'green' }, containerStyle: { marginTop: -20 } }}
+   badge={{ value:  item.duration, textStyle: { color: 'green' }, containerStyle: { marginTop: -5 } }}
   />
 );
 
@@ -32,7 +32,7 @@ _renderStat = ({item}) => (
    title={item}
    hideChevron
    titleStyle={this.state.styles.listItem}
-   badge={{ value: this.state.match.teamStats[item], textStyle: { color: 'green' }, containerStyle: { marginTop: -20 } }}
+   badge={{ value: this.state.match.teamStats[item], textStyle: { color: 'green' }, containerStyle: { marginTop: -5 } }}
   />
 );
 

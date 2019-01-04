@@ -28,7 +28,7 @@ _renderItem = ({item}) => (
   item.validations[this.state.key].hasOwnProperty('accuracy')
   && <ListItem
     title={item.type}
-    badge={{ value:  item.validations[this.state.key]['accuracy'].toFixed(2), textStyle: { color: 'orange' }, containerStyle: { marginTop: -20 } }}
+    badge={{ value:  item.validations[this.state.key]['accuracy'].toFixed(2), textStyle: { color: 'orange' }, containerStyle: { marginTop: -5 } }}
     hideChevron
     titleStyle={this.state.styles.listItem}
     subtitle={

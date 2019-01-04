@@ -41,7 +41,9 @@ class Competition extends React.Component {
             country: props.navigation.state.params.country,
             styles: props.navigation.state.params.styles,
             competition: props.navigation.state.params.competition,
-            today: false
+            start: props.navigation.state.params.start,
+            today: false,
+            label: props.navigation.state.params.competition
           }
         },
         {

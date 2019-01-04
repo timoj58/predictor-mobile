@@ -10,6 +10,7 @@ import {predictions} from "../api/DataService";
 import {globalRating} from "../api/DataService";
 import {previousMeetings} from "../api/DataService";
 import { ListItem } from 'react-native-elements';
+import {getBetRatingColor} from "../util/RenderUtils";
 
 
 class Event extends React.Component {
@@ -23,6 +24,8 @@ class Event extends React.Component {
       market: props.navigation.state.params.market,
       loading: true,
       loadingPreviousMeetings: true,
+      goalsRating: 0,
+      resultsRating: 0,
       predictions: '',
       previousMeetings: '',
       homeResultsRating: 0,
@@ -30,6 +33,7 @@ class Event extends React.Component {
       awayResultsRating: 0,
       awayResultRatingSubTitle: ''
     };
+
 
     setDataSource(this);
     setDataSourcePreviousMeetings(this);
@@ -42,7 +46,7 @@ _renderPrediction = ({item}) => (
     title={item.key}
     hideChevron
     titleStyle={this.state.styles.listItem}
-    badge={{ value:  item.score.toFixed(2), textStyle: { color: 'orange' }, containerStyle: { marginTop: -20 } }}
+    badge={{ value:  item.score.toFixed(2), textStyle: { color: 'orange' }, containerStyle: { marginTop: -5 } }}
   />
 );
 
@@ -64,11 +68,17 @@ _renderPreviousMeeting = ({item}) => (
 _renderItem = ({item}) => (
   renderForMarket(this.state.market, item.eventType) &&
   <View style={this.state.styles.container}>
-  <ListItem
+  {item.eventType === 'PREDICT_SCORES' && <ListItem
    title={item.eventType}
    hideChevron
    titleStyle={this.state.styles.titleListItem}
-   />
+   />}
+   {item.eventType !== 'PREDICT_SCORES' && <ListItem
+    title={item.eventType}
+    hideChevron
+    titleStyle={this.state.styles.titleListItem}
+    badge={{ value:  getBetRating(item.eventType, this.state).toFixed(2), textStyle: { color: getBetRatingColor(getBetRating(item.eventType, this.state)), fontSize: 35 }, containerStyle: { marginTop: 5 } }}
+    />}
   <FlatList
    data={item.predictions.result}
    renderItem={this._renderPrediction}
@@ -92,7 +102,7 @@ _renderItem = ({item}) => (
         title={this.state.event.home.label +' '+ getType(this.state.predictions, true, this.state.market)}
         hideChevron
         titleStyle={getStyle(this.state.styles, this.state.homeResultsRating, this.state.awayResultsRating, true)}
-        badge={{ value:  this.state.homeResultsRating.toFixed(2), textStyle: { color: 'orange' }, containerStyle: { marginTop: -20 } }}
+        badge={{ value:  this.state.homeResultsRating.toFixed(2), textStyle: { color: 'orange' }, containerStyle: { marginTop: -5 } }}
         subtitle={
           <View style={this.state.styles.listItem}>
               <Text style={this.state.styles.ratingText}>
@@ -104,7 +114,7 @@ _renderItem = ({item}) => (
           title={this.state.event.away.label +' '+ getType(this.state.predictions, false, this.state.market)}
           hideChevron
           titleStyle={getStyle(this.state.styles, this.state.homeResultsRating, this.state.awayResultsRating, false)}
-          badge={{ value:  this.state.awayResultsRating.toFixed(2), textStyle: { color: 'orange' }, containerStyle: { marginTop: -20 } }}
+          badge={{ value:  this.state.awayResultsRating.toFixed(2), textStyle: { color: 'orange' }, containerStyle: { marginTop: -5 } }}
           subtitle={
             <View style={this.state.styles.listItem}>
                 <Text style={this.state.styles.ratingText}>
@@ -137,6 +147,8 @@ _renderItem = ({item}) => (
   }
 }
 
+
+
 function renderForMarket(market, eventType){
   if (market === 'all'){
     return true;
@@ -156,10 +168,10 @@ function renderForMarket(market, eventType){
 function getType(prediction, home, market){
 
 
-  var predictions = prediction.filter(f => f.eventType === 'PREDICT_RESULTS').shift();
-  var result = predictions.predictions.result[0].key;
-
   if (market === 'all' || market === 'results'){
+   var predictions = prediction.filter(f => f.eventType === 'PREDICT_RESULTS').shift();
+   var result = predictions.predictions.result[0].key;
+
    if(result === 'homeWin' && home){
      return "HOME_WIN";
    }
@@ -179,7 +191,8 @@ function getType(prediction, home, market){
  if(market === 'goals'){
    var predictions = prediction.filter(f => f.eventType === 'PREDICT_GOALS').shift();
 
-   if(getGoalsPrediction(predictions.predictions.result) > 2.5){
+
+   if(getGoalsPrediction(predictions.predictions.result) >= 2.5){
     return 'OVER_2_5';
    }
 
@@ -213,7 +226,16 @@ function setDataSource(component){
     component.state.event.home.id,
     component.state.token)
   .then( data => {
-     component.setState({predictions: data, loading: false});
+
+    var goals = data.filter(f => f.eventType === 'PREDICT_GOALS').shift();
+
+     component.setState({
+       predictions: data,
+       loading: false,
+       goalsRating: (getAccuracy(goals.homeOutcomes.accuracy, getType(data,true, 'goals'))
+       +
+       getAccuracy(goals.awayOutcomes.accuracy, getType(data, false, 'goals'))) /2,
+       resultsRating: data.filter(f => f.eventType === 'PREDICT_RESULTS').shift().rating});
      if(component.state.market === 'all' || component.state.market === 'results'){
       setDataSourceHomeResultsRatings(component, 'results', component.state.event.home.id);
       setDataSourceAwayResultsRatings(component, 'results', component.state.event.away.id);
@@ -224,7 +246,6 @@ function setDataSource(component){
     }
    });
 }
-
 
 function setDataSourceHomeResultsRatings(component, market, team){
   globalRating(team,
@@ -280,6 +301,22 @@ function setDataSourcePreviousMeetings(component){
     component.state.event.away.id,
     component.state.token)
   .then( data => component.setState({previousMeetings: data, loadingPreviousMeetings: false}));
+}
+
+
+function getBetRating(type, state){
+  if(type === 'PREDICT_RESULTS'){
+    return state.resultsRating;
+  }
+
+  if(type === 'PREDICT_GOALS'){
+    if(state.goalsRating === null){
+      return 0;
+    }
+    return state.goalsRating;
+  }
+
+  return -1;
 }
 
 function getStyle(styles, homeScore, awayScore, home){

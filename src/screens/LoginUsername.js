@@ -21,6 +21,7 @@ import {isUsernameOnFile} from "../api/AuthService";
       <View style={this.state.styles.container}>
       <TextInput
        style={this.state.styles.inputField}
+       placeholder='Your username'
        onChangeText={(username) => checkUsername(this, username)}/>
         <Button
         onPress={() => this.props.navigation.navigate('LoginPassword',

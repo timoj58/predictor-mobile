@@ -17,7 +17,7 @@ class Teams extends React.Component {
      type: props.navigation.state.params.type,
      country: props.navigation.state.params.country,
      styles: props.navigation.state.params.styles,
-    competition: props.navigation.state.params.competition,
+     competition: props.navigation.state.params.competition,
      teams: ''
    };
 
@@ -32,7 +32,8 @@ _renderItem = ({item}) => (
     {
       token: this.state.token,
       styles: this.state.styles,
-      id: item.id
+      id: item.id,
+      label: item.label
     })}
     title={item.label}
     titleStyle={this.state.styles.listItem}

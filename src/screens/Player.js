@@ -31,7 +31,7 @@ _renderItem = ({item}) => (
   <ListItem
     title={item}
     hideChevron
-    badge={{ value:  this.state.player.stats[item].length, textStyle: { color: 'green' }, containerStyle: { marginTop: -20 } }}
+    badge={{ value:  this.state.player.stats[item].length, textStyle: { color: 'green' }, containerStyle: { marginTop: -5 } }}
     titleStyle={this.state.styles.listItem}
   />
 );
@@ -55,7 +55,7 @@ _renderItem = ({item}) => (
        <ListItem
         title={'Appearances'}
         hideChevron
-        badge={{ value:  this.state.player.playerAppearances.length, textStyle: { color: 'green' }, containerStyle: { marginTop: -20 } }}
+        badge={{ value:  this.state.player.playerAppearances.length, textStyle: { color: 'green' }, containerStyle: { marginTop: -5 } }}
         titleStyle={this.state.styles.listItem}
        />
        <FlatList

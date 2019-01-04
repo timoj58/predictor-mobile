@@ -9,7 +9,8 @@ import { ListItem } from 'react-native-elements'
 import { Dimensions } from 'react-native'
 
 import {selectedBets} from "../api/DataService";
-import {predictions} from "../api/DataService";
+import {getBetRatingColor} from "../util/RenderUtils";
+
 
 class SelectedBets extends React.Component {
   constructor(props) {
@@ -22,6 +23,7 @@ class SelectedBets extends React.Component {
      event: props.navigation.state.params.event,
      styles: props.navigation.state.params.styles,
      loading: true,
+     start: props.navigation.state.params.start,
      bets:''
     };
 
@@ -33,7 +35,7 @@ _renderItem = ({item}) => (
     onPress={() => loadEvent(this, item)}
     title={item.home + ' vs '+item.away}
     titleStyle={this.state.styles.listItem}
-    badge={{ value: item.rating.toFixed(2), textStyle: { color: 'orange' }, containerStyle: { marginTop: -20 } }}
+    badge={{ value: item.rating.toFixed(2), textStyle: { color: getBetRatingColor(item.rating) }, containerStyle: { marginTop: -5 } }}
   />
 );
 
@@ -68,20 +70,26 @@ function setDataSource(component){
 
 
 async function loadEvent(component, item){
-  predictions(
-      component.state.type,
-      item.country,
-      item.competition,
-      item.homeId,
-      component.state.token)
-  .then(data => component.props.navigation.navigate('Event',
+component.props.navigation.navigate('Event',
   {  token: component.state.token,
      styles: component.state.styles,
      market: component.state.market,
-     event: data.filter(f => f.eventType === 'PREDICT_RESULTS').shift()
-  }))
-  ;
-
+     start: component.state.start,
+     label: item.home + ' vs '+item.away,
+     event: {
+       home: {
+        type: component.state.type,
+        country: item.country,
+        competition: item.competition,
+        id: item.homeId,
+        label: item.home
+      },
+        away: {
+          id: item.awayId,
+          label: item.away
+        }
+     }
+  });
 }
 
 export default SelectedBets;

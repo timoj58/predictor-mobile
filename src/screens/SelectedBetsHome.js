@@ -24,6 +24,7 @@ class SelectedBetsHome extends React.Component {
            token: props.navigation.state.params.token,
            styles: props.navigation.state.params.styles,
            type: props.navigation.state.params.type,
+           start: props.navigation.state.params.start,
            market: 'results'
          }
        },
@@ -35,6 +36,7 @@ class SelectedBetsHome extends React.Component {
            token: props.navigation.state.params.token,
            styles: props.navigation.state.params.styles,
            type: props.navigation.state.params.type,
+           start: props.navigation.state.params.start,
            market: 'goals'
          }
        }

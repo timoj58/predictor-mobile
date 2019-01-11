@@ -8,6 +8,8 @@ import * as Progress from 'react-native-progress';
 import { Dimensions } from 'react-native';
 import { ListItem, Avatar } from 'react-native-elements';
 import {getBetRatingColor} from "../util/RenderUtils";
+import {getAvatarColor} from "../util/RenderUtils";
+
 
 
 
@@ -70,18 +72,6 @@ _renderItem = ({item}) => (
 
 function getRating(market, marketRatings){
   return marketRatings.filter(f => f.market === market).shift().rating;
-}
-
-function getAvatarColor(movement){
-  if(movement === 'arrow-up'){
-    return 'green';
-  }
-
-  if(movement === 'arrow-down'){
-    return 'red';
-  }
-
-  return 'orange';
 }
 
 

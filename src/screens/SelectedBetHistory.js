@@ -6,8 +6,9 @@ import {
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import * as Progress from 'react-native-progress';
 
+import { ListItem } from 'react-native-elements'
+import { Dimensions } from 'react-native';
 import {betHistory} from "../api/DataService";
-
 
 class SelectedBetHistory extends React.Component {
   constructor(props) {
@@ -18,7 +19,7 @@ class SelectedBetHistory extends React.Component {
      type: props.navigation.state.params.type,
      styles: props.navigation.state.params.styles,
      loading: true,
-     history:''
+     history: ''
     };
 
   setDataSource(this);
@@ -26,13 +27,15 @@ class SelectedBetHistory extends React.Component {
 
 
 _renderItem = ({item}) => (
-  <Button
+  <ListItem
     onPress={() => this.props.navigation.navigate('BetHistoryBatch',
     {  token: this.state.token,
        styles: this.state.styles,
+       label: item.batchStartDate +' - '+item.batchEndDate, 
        batch: item
     })}
-    title={item.batchStartDate+ ' - '+item.batchEndDate}
+    title={item.batchStartDate + ' - '+item.batchEndDate}
+    titleStyle={this.state.styles.listItem}
   />
 );
 

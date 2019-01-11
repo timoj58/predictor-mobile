@@ -136,7 +136,7 @@ function getStyle(item, styles, market, goals){
    const actual = item.score.replace(/\s+/g, '').split("-");
    const total = actual.map(m => parseInt(m)).reduce(reducer);
 
-   if ((goals > 2.5 && total > 2.5) || (goals < 2.5 && total < 2.5)){
+   if ((goals >= 2.5 && total > 2.5) || (goals < 2.5 && total < 2.5)){
      return styles.listItemSuccess;
   }
 

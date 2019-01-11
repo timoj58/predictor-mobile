@@ -14,6 +14,7 @@ import {authenticate} from "../api/AuthService";
       token: '',
       username: props.navigation.state.params.username,
       styles: props.navigation.state.params.styles,
+      buttonColor: 'green',
       password: ''};
   }
 
@@ -23,11 +24,11 @@ import {authenticate} from "../api/AuthService";
        <TextInput secureTextEntry={true}
         style={this.state.styles.inputField}
         placeholder='Your password'
-        onChangeText={(password) => this.setState({password})}/>
+        onChangeText={(password) => this.setState({password: password, buttonColor: 'green'})}/>
         <Button
         onPress={() =>  login(this)}
          title="Login"
-         color="green"
+         color={this.state.buttonColor}
          accessibilityLabel="Next"
          />
     </View>
@@ -36,14 +37,14 @@ import {authenticate} from "../api/AuthService";
 }
 
 function login(component) {
-  console.log('calling auth service');
   authenticate(component.state.username, component.state.password)
   .then(token => {
-    if(token !== ""){
-      console.log(token);
+    if(typeof token !== 'undefined'){
         component.props.navigation.navigate('Home', {
           token: token,
           styles: component.state.styles});
+    }else{
+      component.setState({buttonColor: 'red'});
     }
 
   });

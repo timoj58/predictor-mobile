@@ -30,7 +30,7 @@ class GlobalRatingsHome extends React.Component {
        },
        {
          title: 'Results',
-         screen: 'GlobalRatings',
+         screen: 'GlobalRatingsRanked',
          icon: 'trophy',
          props: {
            token: props.navigation.state.params.token,
@@ -41,7 +41,7 @@ class GlobalRatingsHome extends React.Component {
        },
        {
          title: 'Goals',
-         screen: 'GlobalRatings',
+         screen: 'GlobalRatingsRanked',
          icon: 'soccer-ball-o',
          props: {
            token: props.navigation.state.params.token,

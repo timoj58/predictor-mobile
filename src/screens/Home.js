@@ -6,8 +6,6 @@ import {
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import { Tile } from 'react-native-elements'
 import {renderTile} from "../util/RenderUtils";
-import {renderFlatList} from "../util/RenderUtils";
-
 
 
 const type = 'FOOTBALL';
@@ -24,7 +22,7 @@ class Home extends React.Component {
      start: start,
      tiles: [
        {
-         title: 'Now',
+         title: 'Today',
          screen: 'Events',
          icon: 'calendar-check-o',
          props: {

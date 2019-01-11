@@ -6,9 +6,7 @@ import {
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import * as Progress from 'react-native-progress';
 import { Dimensions } from 'react-native';
-import {globalRatings} from "../api/DataService";
-import { ListItem } from 'react-native-elements';
-import {renderProgress} from "../util/RenderUtils";
+import { ListItem, Avatar } from 'react-native-elements';
 import {getBetRatingColor} from "../util/RenderUtils";
 
 
@@ -21,11 +19,9 @@ class GlobalRatings extends React.Component {
      token: props.navigation.state.params.token,
      styles: props.navigation.state.params.styles,
      market: props.navigation.state.params.market,
-     loading: true,
-     teams :''
+     teams : props.navigation.state.params.teams
     };
 
-  setDataSource(this);
 }
 
 
@@ -38,6 +34,10 @@ _renderItem = ({item}) => (
        teamRating: item
     })}
     title={item.team}
+    avatar={<Avatar
+             rounded
+             icon={{name: item.movement, color: getAvatarColor(item.movement), type: 'font-awesome'}}
+            />}
     badge={{ value:  getRating(this.state.market, item.marketRatings).toFixed(2), textStyle: { color: getBetRatingColor(getRating(this.state.market, item.marketRatings)) }, containerStyle: { marginTop: -5 } }}
     titleStyle={this.state.styles.listItem}
   />
@@ -72,9 +72,16 @@ function getRating(market, marketRatings){
   return marketRatings.filter(f => f.market === market).shift().rating;
 }
 
-function setDataSource(component){
-  globalRatings(component.state.market, component.state.token)
-  .then( data => component.setState({teams : data, loading: false}));
+function getAvatarColor(movement){
+  if(movement === 'arrow-up'){
+    return 'green';
+  }
+
+  if(movement === 'arrow-down'){
+    return 'red';
+  }
+
+  return 'orange';
 }
 
 

@@ -6,22 +6,23 @@ import {
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import * as Progress from 'react-native-progress';
 import { Dimensions } from 'react-native';
-import {competitionRatings} from "../api/DataService";
-import { ListItem, Avatar } from 'react-native-elements';
-import {renderProgress} from "../util/RenderUtils";
+import {globalRatings} from "../api/DataService";
+import { ListItem } from 'react-native-elements';
 import {getBetRatingColor} from "../util/RenderUtils";
-import {getAvatarColor} from "../util/RenderUtils";
 
 
-class CompetitionRatings extends React.Component {
+
+class GlobalRatingRanked extends React.Component {
   constructor(props) {
    super(props);
 
    this.state = {
      token: props.navigation.state.params.token,
      styles: props.navigation.state.params.styles,
+     market: props.navigation.state.params.market,
      loading: true,
-     competitions :''
+     teams :'',
+     boundaries: []
     };
 
   setDataSource(this);
@@ -30,20 +31,16 @@ class CompetitionRatings extends React.Component {
 
 _renderItem = ({item}) => (
   <ListItem
-    title={item.competition +' ('+item.type+')'}
-    badge={{ value: item.accuracy.toFixed(2), textStyle: { color: getBetRatingColor(item.accuracy) }, containerStyle: { marginTop: -5 } }}
+    onPress={() => this.props.navigation.navigate('GlobalRatings',
+    {  token: this.state.token,
+       styles: this.state.styles,
+       market: this.state.market,
+       label: item.title,
+       teams: this.state.teams.slice(item.start, item.end)
+    })}
+    title={item.title}
     titleStyle={this.state.styles.listItem}
-    avatar={<Avatar
-             rounded
-             icon={{name: item.movement, color: getAvatarColor(item.movement), type: 'font-awesome'}}
-            />}
-  hideChevron
-    subtitle={
-      <View style={this.state.styles.listItem}>
-          <Text style={this.state.styles.ratingText}>{item.success} / {item.total}</Text>
-      </View>
-      }
-      />
+  />
 );
 
 
@@ -62,7 +59,7 @@ _renderItem = ({item}) => (
      }
      {!this.state.loading &&
        <FlatList
-        data={this.state.competitions}
+        data={this.state.boundaries}
         renderItem={this._renderItem}
         keyExtractor={(item, index) => index.toString()}
       />}
@@ -76,9 +73,32 @@ function getRating(market, marketRatings){
 }
 
 function setDataSource(component){
-  competitionRatings(component.state.token)
-  .then( data => component.setState({competitions : data, loading: false}));
+  globalRatings(component.state.market, component.state.token)
+  .then( data => component.setState({teams : data, loading: false, boundaries: createBoundaries(data.length)}));
 }
 
+function createBoundaries(total){
+   var boundaries = [];
+   var boundaryTotal = 50;
 
-export default CompetitionRatings;
+   var noOfBoundaries = Math.ceil(total / boundaryTotal);
+
+   for (var i = 0; i < noOfBoundaries; i++){
+
+    var title = (i*boundaryTotal+1)+' - '+(i*boundaryTotal+boundaryTotal);
+    if(i === 0){
+      title = 'Top '+boundaryTotal;
+    }
+
+     boundaries.push(
+       {
+         title: title,
+         start: i*boundaryTotal,
+         end: (i*boundaryTotal) + (boundaryTotal-1)
+       });
+     }
+
+ return boundaries;
+}
+
+export default GlobalRatingRanked;

@@ -6,6 +6,7 @@ import {
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import {accuracy} from "../api/DataService";
 import { ListItem } from 'react-native-elements';
+import {getBetRatingColor} from "../util/RenderUtils";
 
 
 class Accuracy extends React.Component {
@@ -28,7 +29,7 @@ _renderItem = ({item}) => (
   item.validations[this.state.key].hasOwnProperty('accuracy')
   && <ListItem
     title={item.type}
-    badge={{ value:  item.validations[this.state.key]['accuracy'].toFixed(2), textStyle: { color: 'orange' }, containerStyle: { marginTop: -5 } }}
+    badge={{ value:  item.validations[this.state.key]['accuracy'].toFixed(2), textStyle: { color: getBetRatingColor(item.validations[this.state.key]['accuracy']) }, containerStyle: { marginTop: -5 } }}
     hideChevron
     titleStyle={this.state.styles.listItem}
     subtitle={

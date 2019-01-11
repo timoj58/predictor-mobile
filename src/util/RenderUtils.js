@@ -5,6 +5,7 @@ import {
 } from 'react-navigation';
 
 
+
 export function renderTile(component, item) {
   return <Tile
       onPress={() => component.props.navigation.navigate(item.screen,item.props)}
@@ -17,12 +18,24 @@ export function renderTile(component, item) {
 
 export function getBetRatingColor(value){
        if (value >= 40){
-         return 'green';
+         return 'limegreen';
        }
 
        if(value < 40 && value >= 15){
-         return 'orange';
+         return 'yellow';
        }
 
        return 'red';
+}
+
+export function getAvatarColor(movement){
+  if(movement === 'arrow-up'){
+    return 'green';
+  }
+
+  if(movement === 'arrow-down'){
+    return 'red';
+  }
+
+  return 'orange';
 }

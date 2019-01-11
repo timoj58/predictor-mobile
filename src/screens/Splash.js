@@ -51,16 +51,16 @@ const styles = StyleSheet.create({
      justifyContent: 'center',
     },
    listItem: {
-    color: 'white',
+    color: 'silver',
     fontWeight: 'bold'
   },
   listItemSuccess: {
-   color: 'white',
+   color: 'silver',
    fontWeight: 'bold',
    backgroundColor: 'green'
  },
  listItemFail: {
-  color: 'white',
+  color: 'silver',
   fontWeight: 'bold',
   backgroundColor: 'red'
 },

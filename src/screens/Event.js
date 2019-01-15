@@ -11,6 +11,7 @@ import {globalRating} from "../api/DataService";
 import {previousMeetings} from "../api/DataService";
 import { ListItem } from 'react-native-elements';
 import {getBetRatingColor} from "../util/RenderUtils";
+import {predictedGoals} from "../util/GoalsUtils";
 
 
 class Event extends React.Component {
@@ -192,25 +193,17 @@ function getType(prediction, home, market){
    var predictions = prediction.filter(f => f.eventType === 'PREDICT_GOALS').shift();
 
 
-   if(getGoalsPrediction(predictions.predictions.result) >= 2.5){
+   if(predictedGoals(predictions.predictions.result) >= 2.5){
     return 'OVER_2_5';
    }
 
-   if(getGoalsPrediction(predictions.predictions.result) < 2.5){
+   if(predictedGoals(predictions.predictions.result) < 2.5){
     return 'UNDER_2_5';
    }
  }
 };
 
 const reducer = (accumulator, currentValue) => accumulator + currentValue;
-
-
-function getGoalsPrediction(result){
-
-  const filtered = result.filter(score => score.score > 0).map(m => parseInt(m.key));
-
-  return filtered.reduce(reducer) / filtered.length;
-};
 
 
 function previousMeetingTitle(item) {

@@ -35,6 +35,11 @@ export function competitions(type, country, token) {
   return get(DATA_API+'/cache/competitions?type='+type+'&country='+country, token);
 }
 
+export function allTeams(type, token) {
+  return get(DATA_API+'/teams?type='+type, token);
+}
+
+
 export function teams(type, country, competition, token) {
   return get(DATA_API+'/teams?type='+type+'&country='+country+'&competition='+competition, token);
 }

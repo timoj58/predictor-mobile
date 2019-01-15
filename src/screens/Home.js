@@ -3,10 +3,9 @@ import {
   StackNavigator,
 } from 'react-navigation';
 
-import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
+import { Dimensions, StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import { Tile } from 'react-native-elements'
 import {renderTile} from "../util/RenderUtils";
-
 
 const type = 'FOOTBALL';
 
@@ -20,7 +19,7 @@ class Home extends React.Component {
      token: props.navigation.state.params.token,
      styles: props.navigation.state.params.styles,
      start: start,
-     tiles: [
+     tilesLeft: [
        {
          title: 'Today',
          screen: 'Events',
@@ -46,7 +45,9 @@ class Home extends React.Component {
            type: type,
            start: start
          }
-       },
+       }
+     ],
+     tilesRight: [
        {
          title: 'Ratings',
          screen: 'GlobalRatingsHome',
@@ -54,6 +55,7 @@ class Home extends React.Component {
          props: {
            token: props.navigation.state.params.token,
            styles: props.navigation.state.params.styles,
+           type: type,
            start: start
          }
        },
@@ -74,17 +76,31 @@ class Home extends React.Component {
 }
 
 _renderTile = ({item}) => (
+    //renderTile(this, item, 75, Dimensions.get('window').width/2, Dimensions.get('window').height/3)
     renderTile(this, item)
 );
+
+/*
+<Text style={
+  {
+    height: Dimensions.get('window').height/4,
+    width: Dimensions.get('window').width
+}} h1>Placeholder - do something? </Text>
+{this._renderTile(this.state.tilesLeft[0])}
+{this._renderTile(this.state.tilesLeft[1])}
+{this._renderTile(this.state.tilesRight[0])}
+{this._renderTile(this.state.tilesRight[1])}
+
+*/
 
   render() {
     return (
       <View style={this.state.styles.container}>
-      <FlatList
-        data={this.state.tiles}
-        renderItem={this._renderTile}
-        keyExtractor={(item, index) => index.toString()}
-      />
+            <FlatList
+              data={this.state.tilesLeft.concat(this.state.tilesRight)}
+              renderItem={this._renderTile}
+              keyExtractor={(item, index) => index.toString()}
+            />
       </View>
     );
   }

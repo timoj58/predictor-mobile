@@ -25,7 +25,8 @@ class GlobalRatingsHome extends React.Component {
          icon: 'globe',
          props: {
            token: props.navigation.state.params.token,
-           styles: props.navigation.state.params.styles
+           styles: props.navigation.state.params.styles,
+           type: props.navigation.state.params.type
          }
        },
        {
@@ -35,6 +36,7 @@ class GlobalRatingsHome extends React.Component {
          props: {
            token: props.navigation.state.params.token,
            styles: props.navigation.state.params.styles,
+           type: props.navigation.state.params.type,
            market: 'results',
            label: 'Results Rankings'
          }
@@ -46,6 +48,7 @@ class GlobalRatingsHome extends React.Component {
          props: {
            token: props.navigation.state.params.token,
            styles: props.navigation.state.params.styles,
+           type: props.navigation.state.params.type,
            market: 'goals',
            label: 'Goals (OVER / UNDER) Rankings'
          }

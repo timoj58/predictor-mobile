@@ -31,10 +31,10 @@ _renderItem = ({item}) => (
     onPress={() => this.props.navigation.navigate('BetHistoryBatch',
     {  token: this.state.token,
        styles: this.state.styles,
-       label: item.batchStartDate +' - '+item.batchEndDate, 
+       label: item.batchStartDate +' - '+item.batchEndDate,
        batch: item
     })}
-    title={item.batchStartDate + ' - '+item.batchEndDate}
+    title={item.batchStartDate + ' to '+item.batchEndDate}
     titleStyle={this.state.styles.listItem}
   />
 );

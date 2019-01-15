@@ -1,4 +1,5 @@
 import React from 'react';
+import { Dimensions } from 'react-native';
 import { Tile } from 'react-native-elements'
 import {
   StackNavigator,
@@ -6,12 +7,21 @@ import {
 
 
 
-export function renderTile(component, item) {
+export function renderTile(
+  component,
+  item,
+  iconSize=150,
+  width=Dimensions.get('window').width,
+  height=Dimensions.get('window').height/2) {
+
   return <Tile
       onPress={() => component.props.navigation.navigate(item.screen,item.props)}
          title={item.title}
-         icon={{ name: item.icon, type: 'font-awesome', size: 150 }}
+         titleStyle={{color: 'silver',fontWeight: 'bold'}}
+         icon={{ name: item.icon, type: 'font-awesome', size: iconSize }}
          featured
+         width={width}
+         height={height}
          imageSrc={require('../screens/img/tile.png')}
          />
      }

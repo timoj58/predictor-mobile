@@ -6,6 +6,7 @@ import {
 import { StyleSheet, Text, View, Button, FlatList, ScrollView } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import {getBetRatingColor} from "../util/RenderUtils";
+import {predictedGoals} from "../util/GoalsUtils";
 
 
 
@@ -117,9 +118,7 @@ function getGoalsPrediction(result, market){
    return;
  }
 
-  const filtered = result.filter(score => score.score > 0).map(m => parseInt(m.key));
-
-  return filtered.reduce(reducer) / filtered.length;
+  return predictedGoals(result);
 };
 
 function getStyle(item, styles, market, goals){

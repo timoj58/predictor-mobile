@@ -40,6 +40,14 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     justifyContent: 'center',
    },
+   tileContainer: {
+     flex: 1,
+     flexDirection: 'row',
+     flexWrap: 'wrap',
+     backgroundColor: '#36454f',
+     alignItems: 'stretch',
+     justifyContent: 'center',
+    },
    scrollViewContainer: {
      flex: 1,
      backgroundColor: '#36454f'

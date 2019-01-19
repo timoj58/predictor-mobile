@@ -28,7 +28,8 @@ class Competition extends React.Component {
             type: props.navigation.state.params.type,
             country: props.navigation.state.params.country,
             styles: props.navigation.state.params.styles,
-            competition: props.navigation.state.params.competition
+            competition: props.navigation.state.params.competition,
+            label: props.navigation.state.params.label
           }
         },
         {
@@ -43,8 +44,10 @@ class Competition extends React.Component {
             competition: props.navigation.state.params.competition,
             start: props.navigation.state.params.start,
             today: false,
-            label: props.navigation.state.params.competition
-          }
+            label: props.navigation.state.params.label,
+            adUnitID: props.navigation.state.params.adUnitID,
+            adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
+         }
         },
         {
         title: 'Accuracy',
@@ -53,7 +56,8 @@ class Competition extends React.Component {
         props: {
           token: props.navigation.state.params.token,
           styles: props.navigation.state.params.styles,
-          key: props.navigation.state.params.competition
+          key: props.navigation.state.params.competition,
+          label: props.navigation.state.params.label
         }
       }
      ]

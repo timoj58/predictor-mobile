@@ -11,6 +11,9 @@ import { ListItem, Avatar } from 'react-native-elements';
 import {renderProgress} from "../util/RenderUtils";
 import {getBetRatingColor} from "../util/RenderUtils";
 import {getAvatarColor} from "../util/RenderUtils";
+import {
+  PublisherBanner
+} from 'expo';
 
 
 class CompetitionRatings extends React.Component {
@@ -21,10 +24,13 @@ class CompetitionRatings extends React.Component {
      token: props.navigation.state.params.token,
      styles: props.navigation.state.params.styles,
      loading: true,
-     competitions :''
+     competitions :'',
+     adUnitID: props.navigation.state.params.adUnitID,
+     adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
     };
 
-  setDataSource(this);
+
+    setDataSource(this);
 }
 
 
@@ -61,11 +67,19 @@ _renderItem = ({item}) => (
         </View>
      }
      {!this.state.loading &&
-       <FlatList
+       <View style={this.state.styles.container}>
+       <PublisherBanner
+         bannerSize="fullBanner"
+         adUnitID={this.state.adUnitID}
+         onDidFailToReceiveAdWithError={this.bannerError}
+         onAdMobDispatchAppEvent={this.adMobEvent} />
+     <FlatList
         data={this.state.competitions}
         renderItem={this._renderItem}
         keyExtractor={(item, index) => index.toString()}
-      />}
+      />
+     </View>
+    }
       </View>
     );
   }
@@ -77,7 +91,8 @@ function getRating(market, marketRatings){
 
 function setDataSource(component){
   competitionRatings(component.state.token)
-  .then( data => component.setState({competitions : data, loading: false}));
+  .then( data => component.setState({competitions : data, loading: false}))
+  .catch((error) => component.props.navigation.navigate('Splash',{}));
 }
 
 

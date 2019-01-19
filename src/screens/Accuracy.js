@@ -56,7 +56,9 @@ _renderItem = ({item}) => (
 
 function setDataSource(component){
   accuracy(component.state.key, component.state.token)
-  .then( data => component.setState({accuracy : data}));
+  .then( data => component.setState({accuracy : data}))
+  .catch((error) => component.props.navigation.navigate('Splash',{}));
+
 }
 
 

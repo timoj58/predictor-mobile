@@ -17,8 +17,9 @@ class Country extends React.Component {
      type: props.navigation.state.params.type,
      country: props.navigation.state.params.country,
      styles: props.navigation.state.params.styles,
-     start: props.navigation.state.params.start,
-     competitions: ''
+     competitions: '',
+     adUnitID: props.navigation.state.params.adUnitID,
+     adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
    };
 
    setDataSource(this);
@@ -33,9 +34,12 @@ _renderItem = ({item}) => (
       type: this.state.type,
       country: this.state.country,
       styles: this.state.styles,
-      start: this.state.start,
-      competition: item })}
-    title={item}
+      competition: item.competition,
+      label: item.label,
+      adUnitID: this.state.adUnitID,
+      adUnitRewardsID: this.state.adUnitRewardsID
+     })}
+    title={item.label}
     titleStyle={this.state.styles.listItem}
 
   />
@@ -57,7 +61,9 @@ _renderItem = ({item}) => (
 
 function setDataSource(component){
   competitions(component.state.type, component.state.country, component.state.token)
-  .then( data => component.setState({competitions : data}));
+  .then( data => component.setState({competitions : data}))
+  .catch((error) => component.props.navigation.navigate('Splash',{}));
+
 }
 
 export default Country;

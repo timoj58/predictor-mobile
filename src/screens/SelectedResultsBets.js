@@ -28,7 +28,9 @@ class SelectedResultsBets extends React.Component {
           type: props.navigation.state.params.type,
           start: props.navigation.state.params.start,
           event: 'homeWin',
-          label: 'Selected Home Wins'
+          label: 'Selected Home Wins',
+          adUnitID: props.navigation.state.params.adUnitID,
+          adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
        }
       },
       {
@@ -42,7 +44,9 @@ class SelectedResultsBets extends React.Component {
          type: props.navigation.state.params.type,
          start: props.navigation.state.params.start,
          event: 'awayWin',
-         label: 'Selected Away Wins'
+         label: 'Selected Away Wins',
+         adUnitID: props.navigation.state.params.adUnitID,
+         adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
      }
      },
      {
@@ -56,7 +60,9 @@ class SelectedResultsBets extends React.Component {
         type: props.navigation.state.params.type,
         start: props.navigation.state.params.start,
         event: 'draw',
-        label: 'Selected Draws'
+        label: 'Selected Draws',
+        adUnitID: props.navigation.state.params.adUnitID,
+        adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
     }
     }
     ]

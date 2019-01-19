@@ -3,35 +3,70 @@ import {
   StackNavigator,
 } from 'react-navigation';
 
+import * as Progress from 'react-native-progress';
+import { Dimensions } from 'react-native';
 import { StyleSheet, Text, View, Button } from 'react-native';
-import { ListItem } from 'react-native-elements'
+import { ListItem} from 'react-native-elements';
+import {isUsernameOnFile} from "../api/AuthService";
+import {authenticate} from "../api/AuthService";
+import {create} from "../api/AuthService";
 
-export default class Splash extends React.Component {
+
+class Splash extends React.Component {
+
+  constructor(props) {
+   super(props);
+
+ this.state = {
+  registered: false,
+  username: Expo.Constants.installationId
+ }
+
+ checkUsername(this,Expo.Constants.installationId);
+ //checkUsername(this, 'timmytime');
+}
+
   render() {
     return (
       <View style={styles.container}>
-        <ListItem
-        onPress={() =>this.props.navigation.navigate('RegisterUsername',
-        {
-          styles: styles
-        })}
-         title="Register"
-         titleStyle={styles.listItem}
-         accessibilityLabel="Not got an account? Register now"
-         />
-         <ListItem
-         onPress={() => this.props.navigation.navigate('LoginUsername',
-         {
-           styles: styles
-        })}
-          title="Login"
-          titleStyle={styles.listItem}
-          accessibilityLabel="Login to your account"
-          />
-      </View>
-    );
+            <ListItem
+             onPress={() => navigate(this)}
+              title={getTitle(this.state.registered)}
+              titleStyle={styles.listItem}
+              />
+    </View>
+      );
   }
 }
+
+function navigate(component){
+  if (component.state.registered){
+    return component.props.navigation.navigate('LoginPassword',
+    {
+      styles: styles,
+      username: component.state.username
+   });
+  }
+  return component.props.navigation.navigate('RegisterPassword',
+  {
+    styles: styles,
+    username: component.state.username
+ });
+}
+
+
+function getTitle(registered){
+  if(registered){
+    return "Welcome Back";
+  }
+  return "Get Started";
+}
+
+function checkUsername(component, username) {
+    isUsernameOnFile(username)
+    .then((value) =>  component.setState({registered: value}));
+}
+
 
 const styles = StyleSheet.create({
   container: {
@@ -77,6 +112,19 @@ const styles = StyleSheet.create({
    fontWeight: 'bold',
    fontSize: 30
  },
+ overlayItem: {
+  color: 'black',
+  fontWeight: 'bold',
+  fontSize: 50,
+  backgroundColor: 'grey'
+},
+overlayItemSuccess: {
+ color: 'black',
+ fontWeight: 'bold',
+ fontSize: 50,
+ backgroundColor: 'grey'
+},
+
   ratingText: {
    color: 'grey',
    fontWeight: 'bold'
@@ -100,3 +148,6 @@ ratingTextLMinus: {
       backgroundColor: 'white'
   }
 });
+
+
+export default Splash;

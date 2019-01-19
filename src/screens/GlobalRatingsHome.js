@@ -26,7 +26,9 @@ class GlobalRatingsHome extends React.Component {
          props: {
            token: props.navigation.state.params.token,
            styles: props.navigation.state.params.styles,
-           type: props.navigation.state.params.type
+           type: props.navigation.state.params.type,
+           adUnitID: props.navigation.state.params.adUnitID,
+           adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
          }
        },
        {
@@ -38,7 +40,9 @@ class GlobalRatingsHome extends React.Component {
            styles: props.navigation.state.params.styles,
            type: props.navigation.state.params.type,
            market: 'results',
-           label: 'Results Rankings'
+           label: 'Results Rankings',
+           adUnitID: props.navigation.state.params.adUnitID,
+           adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
          }
        },
        {
@@ -50,13 +54,14 @@ class GlobalRatingsHome extends React.Component {
            styles: props.navigation.state.params.styles,
            type: props.navigation.state.params.type,
            market: 'goals',
-           label: 'Goals (OVER / UNDER) Rankings'
+           label: 'Goals (OVER / UNDER) Rankings',
+           adUnitID: props.navigation.state.params.adUnitID,
+           adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
          }
        }
      ]
     };
 
-    refreshToken(this);
 
 }
 
@@ -76,14 +81,6 @@ _renderTile = ({item}) => (
     );
   }
 }
-
-async function refreshToken(component){
-  if(expires(component.state.start)){
-    refresh(component.state.token).then(token => component.setState({token: token}) )
-  }
-}
-
-
 
 
 export default GlobalRatingsHome;

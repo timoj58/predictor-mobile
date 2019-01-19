@@ -9,7 +9,9 @@ import { Dimensions } from 'react-native';
 import { ListItem, Avatar } from 'react-native-elements';
 import {getBetRatingColor} from "../util/RenderUtils";
 import {getAvatarColor} from "../util/RenderUtils";
-
+import {
+  PublisherBanner
+} from 'expo';
 
 
 
@@ -21,8 +23,10 @@ class GlobalRatings extends React.Component {
      token: props.navigation.state.params.token,
      styles: props.navigation.state.params.styles,
      market: props.navigation.state.params.market,
-     teams : props.navigation.state.params.teams
-    };
+     teams : props.navigation.state.params.teams,
+     adUnitID: props.navigation.state.params.adUnitID,
+     adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
+  };
 
 }
 
@@ -60,11 +64,19 @@ _renderItem = ({item}) => (
         </View>
      }
      {!this.state.loading &&
+       <View style={this.state.styles.container}>
+       <PublisherBanner
+         bannerSize="fullBanner"
+         adUnitID={this.state.adUnitID}
+         onDidFailToReceiveAdWithError={this.bannerError}
+         onAdMobDispatchAppEvent={this.adMobEvent} />
        <FlatList
         data={this.state.teams}
         renderItem={this._renderItem}
         keyExtractor={(item, index) => index.toString()}
-      />}
+      />
+     </View>
+    }
       </View>
     );
   }

@@ -13,9 +13,9 @@ import {create} from "../api/AuthService";
       token: '',
       username: props.navigation.state.params.username,
       styles: props.navigation.state.params.styles,
-      disabledButton: true,
       enterEnabled: false,
-      password: ''};
+      password: props.navigation.state.params.username};
+
   }
 
   render() {
@@ -23,29 +23,16 @@ import {create} from "../api/AuthService";
       <View style={this.state.styles.container}>
        <TextInput secureTextEntry={true}
          style={this.state.styles.inputField}
-         placeholder='Enter a password - minimum length 6'
-         onChangeText={(password) => {
-           this.setState({password});
-           if(password.length > 5){
-             this.setState({enterEnabled: true});
-           }
-           }
-       }/>
-       <TextInput secureTextEntry={true}
-         style={this.state.styles.inputField}
-         editable={this.state.enterEnabled}
+         editable={false}
          placeholder='Enter password again'
-         onChangeText={(password) => {
-             if(password === this.state.password){
-             this.setState({disabledButton: false});
-           }
-           }
-       }/>
+         value={this.state.password}
+         onChangeText={(password) => this.setState({disabledButton: false})}
+       />
         <Button
          onPress={() =>  createUser(this)}
          title="Register"
          color="green"
-         disabled={this.state.disabledButton}
+         disabled={false}
          accessibilityLabel="Next"
          />
 

@@ -3,22 +3,22 @@ import {
   StackNavigator,
 } from 'react-navigation';
 
+
 import { Dimensions, StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import { Tile } from 'react-native-elements'
 import {renderTile} from "../util/RenderUtils";
 
 const type = 'FOOTBALL';
+const adUnitID = 'ca-app-pub-3940256099942544/6300978111';
+const adUnitRewardsID = 'ca-app-pub-3940256099942544/5224354917';
 
 class Home extends React.Component {
   constructor(props) {
    super(props);
 
-   var start = new Date().getTime();
-
    this.state = {
      token: props.navigation.state.params.token,
      styles: props.navigation.state.params.styles,
-     start: start,
      tilesLeft: [
        {
          title: 'Today',
@@ -31,7 +31,8 @@ class Home extends React.Component {
            country: null,
            competition: null,
            type: type,
-           start: start,
+           adUnitID: adUnitID,
+           adUnitRewardsID: adUnitRewardsID,
            label: 'Todays Events'
          }
        },
@@ -43,7 +44,8 @@ class Home extends React.Component {
            token: props.navigation.state.params.token,
            styles: props.navigation.state.params.styles,
            type: type,
-           start: start
+           adUnitID: adUnitID,
+           adUnitRewardsID: adUnitRewardsID
          }
        }
      ],
@@ -54,9 +56,10 @@ class Home extends React.Component {
          icon: 'bar-chart-o',
          props: {
            token: props.navigation.state.params.token,
-           styles: props.navigation.state.params.styles,
            type: type,
-           start: start
+           adUnitID: adUnitID,
+           adUnitRewardsID: adUnitRewardsID,
+           styles: props.navigation.state.params.styles
          }
        },
        {
@@ -66,8 +69,9 @@ class Home extends React.Component {
          props: {
            token: props.navigation.state.params.token,
            styles: props.navigation.state.params.styles,
-           type: type,
-           start: start
+           adUnitID: adUnitID,
+           adUnitRewardsID: adUnitRewardsID,
+           type: type
          }
        }
      ]
@@ -76,32 +80,18 @@ class Home extends React.Component {
 }
 
 _renderTile = ({item}) => (
-    //renderTile(this, item, 75, Dimensions.get('window').width/2, Dimensions.get('window').height/3)
     renderTile(this, item)
 );
-
-/*
-<Text style={
-  {
-    height: Dimensions.get('window').height/4,
-    width: Dimensions.get('window').width
-}} h1>Placeholder - do something? </Text>
-{this._renderTile(this.state.tilesLeft[0])}
-{this._renderTile(this.state.tilesLeft[1])}
-{this._renderTile(this.state.tilesRight[0])}
-{this._renderTile(this.state.tilesRight[1])}
-
-*/
 
   render() {
     return (
       <View style={this.state.styles.container}>
-            <FlatList
+      <FlatList
               data={this.state.tilesLeft.concat(this.state.tilesRight)}
               renderItem={this._renderTile}
               keyExtractor={(item, index) => index.toString()}
             />
-      </View>
+          </View>
     );
   }
 }

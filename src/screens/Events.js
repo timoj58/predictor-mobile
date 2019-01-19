@@ -12,6 +12,10 @@ import {todaysEvents} from "../api/DataService";
 import {expires} from "../util/TokenUtils";
 import {refresh} from "../api/AuthService";
 
+import {
+  AdMobRewarded,
+  PublisherBanner
+} from 'expo';
 
 class Events extends React.Component {
   constructor(props) {
@@ -25,11 +29,17 @@ class Events extends React.Component {
      competition: props.navigation.state.params.competition,
      loading: true,
      today: props.navigation.state.params.today,
-     events:''
+     events:'',
+     adUnitID: props.navigation.state.params.adUnitID,
+     adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
     };
 
-  refreshToken(this);
-  setDataSource(this);
+    if(this.state.today){
+      AdMobRewarded.setAdUnitID(this.state.adUnitRewardsID); // Test ID, Replace with your-admob-unit-id
+      rewards();
+    }
+
+    setDataSource(this);
 }
 
 
@@ -61,34 +71,41 @@ _renderItem = ({item}) => (
         </View>
      }
      {!this.state.loading &&
+       <View style={this.state.styles.container}>
+         <PublisherBanner
+         bannerSize="fullBanner"
+         adUnitID={this.state.adUnitID}
+         onDidFailToReceiveAdWithError={this.bannerError}
+         onAdMobDispatchAppEvent={this.adMobEvent} />
        <FlatList
         data={this.state.events}
         renderItem={this._renderItem}
         keyExtractor={(item, index) => index.toString()}
-      />}
+      />
+      </View>
+     }
       </View>
     );
   }
 }
 
+async function rewards(){
+  var x = await AdMobRewarded.requestAdAsync();
+  var y = await AdMobRewarded.showAdAsync();
+}
+
 function setDataSource(component){
   if(component.state.today === true){
     todaysEvents(component.state.type,component.state.token)
-    .then( data => {
-      console.log(data);
-      component.setState({events : data, loading: false});
-    });
+    .then( data => component.setState({events : data, loading: false}))
+    .catch((error) => component.props.navigation.navigate('Splash',{}));
   }
   else{
    events(component.state.type, component.state.country, component.state.competition, component.state.token)
-   .then( data => component.setState({events : data, loading: false}));
- }
-}
+   .then( data => component.setState({events : data, loading: false}))
+   .catch((error) => component.props.navigation.navigate('Splash',{}));
 
-async function refreshToken(component){
-  if(expires(component.state.start)){
-    refresh(component.state.token).then(token => component.setState({token: token}) )
-  }
+ }
 }
 
 

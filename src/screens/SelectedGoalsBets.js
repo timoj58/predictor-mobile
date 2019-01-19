@@ -28,7 +28,9 @@ class SelectedGoalsBets extends React.Component {
           type: props.navigation.state.params.type,
           start: props.navigation.state.params.start,
           event: '2.5',
-          label: 'Selected OVER 2.5 Goals'
+          label: 'Selected OVER 2.5 Goals',
+          adUnitID: props.navigation.state.params.adUnitID,
+          adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
        }
       },
       {
@@ -42,7 +44,9 @@ class SelectedGoalsBets extends React.Component {
          type: props.navigation.state.params.type,
          start: props.navigation.state.params.start,
          event: '-2.5',
-         label: 'Selected UNDER 2.5 Goals'
+         label: 'Selected UNDER 2.5 Goals',
+         adUnitID: props.navigation.state.params.adUnitID,
+         adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
      }
     }
     ]

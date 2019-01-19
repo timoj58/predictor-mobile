@@ -10,6 +10,10 @@ import { Dimensions } from 'react-native'
 
 import {selectedBets} from "../api/DataService";
 import {getBetRatingColor} from "../util/RenderUtils";
+import {renderListItem} from "../util/RenderUtils";
+import {
+  PublisherBanner
+} from 'expo';
 
 
 class SelectedBets extends React.Component {
@@ -24,8 +28,11 @@ class SelectedBets extends React.Component {
      styles: props.navigation.state.params.styles,
      loading: true,
      start: props.navigation.state.params.start,
-     bets:''
+     bets:'',
+     adUnitID: props.navigation.state.params.adUnitID,
+     adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
     };
+
 
   setDataSource(this);
 }
@@ -53,11 +60,19 @@ _renderItem = ({item}) => (
         </View>
      }
     {!this.state.loading &&
-       <FlatList
+      <View style={this.state.styles.container}>
+      <PublisherBanner
+        bannerSize="fullBanner"
+        adUnitID={this.state.adUnitID}
+        onDidFailToReceiveAdWithError={this.bannerError}
+        onAdMobDispatchAppEvent={this.adMobEvent} />
+      <FlatList
         data={this.state.bets}
         renderItem={this._renderItem}
         keyExtractor={(item, index) => index.toString()}
-      />}
+      />
+      </View>
+    }
       </View>
     );
   }
@@ -65,7 +80,8 @@ _renderItem = ({item}) => (
 
 function setDataSource(component){
   selectedBets(component.state.type, component.state.market, component.state.event, component.state.token)
-  .then( data => component.setState({bets : data, loading: false}));
+  .then( data => component.setState({bets : data, loading: false}))
+  .catch((error) => component.props.navigation.navigate('Splash',{}));
 }
 
 
@@ -91,5 +107,6 @@ component.props.navigation.navigate('Event',
      }
   });
 }
+
 
 export default SelectedBets;

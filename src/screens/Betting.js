@@ -27,7 +27,9 @@ class Betting extends React.Component {
            token: props.navigation.state.params.token,
            type: props.navigation.state.params.type,
            styles: props.navigation.state.params.styles,
-           start: props.navigation.state.params.start
+           start: props.navigation.state.params.start,
+           adUnitID: props.navigation.state.params.adUnitID,
+           adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
          }
        },
        {
@@ -37,13 +39,13 @@ class Betting extends React.Component {
          props: {
            token: props.navigation.state.params.token,
            type: props.navigation.state.params.type,
-           styles: props.navigation.state.params.styles
-         }
+           styles: props.navigation.state.params.styles,
+           adUnitID: props.navigation.state.params.adUnitID,
+           adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
+     }
        }
      ]
     };
-
-    refreshToken(this);
 
 }
 
@@ -55,19 +57,13 @@ _renderTile = ({item}) => (
   render() {
     return (
       <View style={this.state.styles.container}>
-      <FlatList
+     <FlatList
         data={this.state.tiles}
         renderItem={this._renderTile}
         keyExtractor={(item, index) => index.toString()}
       />
       </View>
     );
-  }
-}
-
-async function refreshToken(component){
-  if(expires(component.state.start)){
-    refresh(component.state.token).then(token => component.setState({token: token}) )
   }
 }
 

@@ -67,7 +67,9 @@ _renderItem = ({item}) => (
 
 function setDataSource(component){
   players(component.state.team, component.state.token)
-  .then( data => component.setState({players : data, loading: false}));
+  .then( data => component.setState({players : data, loading: false}))
+  .catch((error) => component.props.navigation.navigate('Splash',{}));
+
 }
 
 export default Players;

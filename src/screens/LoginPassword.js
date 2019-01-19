@@ -15,7 +15,8 @@ import {authenticate} from "../api/AuthService";
       username: props.navigation.state.params.username,
       styles: props.navigation.state.params.styles,
       buttonColor: 'green',
-      password: ''};
+      password: props.navigation.state.params.username};
+
   }
 
   render() {
@@ -23,7 +24,9 @@ import {authenticate} from "../api/AuthService";
       <View style={this.state.styles.container}>
        <TextInput secureTextEntry={true}
         style={this.state.styles.inputField}
+        editable={false}
         placeholder='Your password'
+        value={this.state.password}
         onChangeText={(password) => this.setState({password: password, buttonColor: 'green'})}/>
         <Button
         onPress={() =>  login(this)}

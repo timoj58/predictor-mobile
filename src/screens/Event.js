@@ -190,8 +190,8 @@ function getType(prediction, home, market){
    }
  }
  if(market === 'goals'){
-   var predictions = prediction.filter(f => f.eventType === 'PREDICT_GOALS').shift();
 
+   var predictions = prediction.filter(f => f.eventType === 'PREDICT_GOALS').shift();
 
    if(predictedGoals(predictions.predictions.result) >= 2.5){
     return 'OVER_2_5';
@@ -237,7 +237,9 @@ function setDataSource(component){
       setDataSourceHomeResultsRatings(component, 'goals', component.state.event.home.id);
       setDataSourceAwayResultsRatings(component, 'goals', component.state.event.away.id);
     }
-   });
+   })
+    .catch((error) => component.props.navigation.navigate('Splash',{}));
+
 }
 
 function setDataSourceHomeResultsRatings(component, market, team){
@@ -253,7 +255,9 @@ function setDataSourceHomeResultsRatings(component, market, team){
                   + ' / '+ getTotal(data.accuracy, type),
                   homeResultsRating: getAccuracy(data.accuracy, type)});
                 }
-              );
+              )
+              .catch((error) => component.props.navigation.navigate('Splash',{}));
+
 }
 
 
@@ -271,7 +275,9 @@ function setDataSourceAwayResultsRatings(component, market, team){
                   awayResultRatingSubTitle: getSuccess(data.accuracy, type)
                   + ' / '+ getTotal(data.accuracy, type),
                   awayResultsRating: getAccuracy(data.accuracy, type)});
-                });
+                })
+                .catch((error) => component.props.navigation.navigate('Splash',{}));
+
 }
 
 
@@ -293,7 +299,8 @@ function setDataSourcePreviousMeetings(component){
     component.state.event.home.id,
     component.state.event.away.id,
     component.state.token)
-  .then( data => component.setState({previousMeetings: data, loadingPreviousMeetings: false}));
+  .then( data => component.setState({previousMeetings: data, loadingPreviousMeetings: false}))
+  .catch((error) => component.props.navigation.navigate('Splash',{}));
 }
 
 

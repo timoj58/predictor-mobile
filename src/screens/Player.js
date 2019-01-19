@@ -72,7 +72,9 @@ _renderItem = ({item}) => (
 
 function setDataSource(component){
   player(component.state.playerId, component.state.token)
-  .then( data =>   component.setState({player : data, loading: false}));
+  .then( data =>   component.setState({player : data, loading: false}))
+  .catch((error) => component.props.navigation.navigate('Splash',{}));
+
 }
 
 

@@ -59,8 +59,8 @@ _renderTile = ({item}) => (
 
 function setDataSource(component){
   team(component.state.id, component.state.token)
-  .then(data => update(component, data)
-  )
+  .then(data => update(component, data))
+  .catch((error) => component.props.navigation.navigate('Splash',{}));  
 }
 
  function update(component, team){

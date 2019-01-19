@@ -22,7 +22,7 @@ export function renderTile(
          featured
          width={width}
          height={height}
-         imageSrc={require('../screens/img/tile.png')}
+         imageSrc={require('../screens/img/charcoal.png')}
          />
      }
 

@@ -19,11 +19,11 @@ class Countries extends React.Component {
      token: props.navigation.state.params.token,
      type: props.navigation.state.params.type,
      styles: props.navigation.state.params.styles,
-     start: props.navigation.state.params.start,
+     adUnitID: props.navigation.state.params.adUnitID,
+     adUnitRewardsID: props.navigation.state.params.adUnitRewardsID,
      countries: ''
    };
 
-   refreshToken(this);
    setDataSource(this);
 
 }
@@ -36,7 +36,8 @@ _renderItem = ({item}) => (
       type: this.state.type,
       styles: this.state.styles,
       country: item.country,
-      start: this.state.start
+      adUnitID: this.state.adUnitID,
+      adUnitRewardsID: this.state.adUnitRewardsID
     })}
     title={item.country}
     titleStyle={this.state.styles.listItem}
@@ -60,14 +61,11 @@ _renderItem = ({item}) => (
 
 async function setDataSource(component){
   countries(component.state.type, component.state.token).then(
-    data => component.setState({countries : data}));
+    data => component.setState({countries : data}))
+    .catch((error) => component.props.navigation.navigate('Splash',{}));
+
 }
 
-async function refreshToken(component){
-  if(expires(component.state.start)){
-    refresh(component.state.token).then(token => component.setState({token: token}) )
-  }
-}
 
 
 export default Countries;

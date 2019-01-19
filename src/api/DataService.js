@@ -14,12 +14,15 @@ console.log(url);
          'application-token': token
        }
   })
-    .then((response) => response.json())
+    .then((response) => {
+      if(response.status === 401 || response.status === 403){
+        throw new Error('token');
+      }
+      return response.json();
+    }
+    )
     .then((responseJson) => {
       return responseJson;
-    })
-    .catch((error) => {
-      console.error(error);
     });
 }
 

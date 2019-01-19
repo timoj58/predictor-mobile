@@ -10,6 +10,11 @@ import { ListItem } from 'react-native-elements'
 import { Dimensions } from 'react-native';
 import {betHistory} from "../api/DataService";
 
+import {
+  AdMobRewarded
+} from 'expo';
+
+
 class SelectedBetHistory extends React.Component {
   constructor(props) {
    super(props);
@@ -19,10 +24,15 @@ class SelectedBetHistory extends React.Component {
      type: props.navigation.state.params.type,
      styles: props.navigation.state.params.styles,
      loading: true,
-     history: ''
+     history: '',
+     adUnitID: props.navigation.state.params.adUnitID,
+     adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
     };
 
-  setDataSource(this);
+    AdMobRewarded.setAdUnitID(this.state.adUnitRewardsID); // Test ID, Replace with your-admob-unit-id
+    rewards();
+
+    setDataSource(this);
 }
 
 
@@ -65,7 +75,13 @@ _renderItem = ({item}) => (
 
 function setDataSource(component){
   betHistory(component.state.type, component.state.token)
-  .then( data => component.setState({history : data, loading: false}));
+  .then( data => component.setState({history : data, loading: false}))
+  .catch((error) => component.props.navigation.navigate('Splash',{}));
+}
+
+async function rewards(){
+  var x = await AdMobRewarded.requestAdAsync();
+  var y = await AdMobRewarded.showAdAsync();
 }
 
 

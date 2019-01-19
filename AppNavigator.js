@@ -5,9 +5,7 @@ import {
 
     import Splash from "./src/screens/Splash";
     import Home from "./src/screens/Home";
-    import LoginUsername from "./src/screens/LoginUsername";
     import LoginPassword from "./src/screens/LoginPassword";
-    import RegisterUsername from "./src/screens/RegisterUsername";
     import RegisterPassword from "./src/screens/RegisterPassword";
     import Country from "./src/screens/Country";
     import Competition from "./src/screens/Competition";
@@ -44,13 +42,6 @@ import {
         headerStyle: { backgroundColor: 'silver' }
        })
       },
-      RegisterUsername: {
-       screen: RegisterUsername,
-       navigationOptions: ({ navigation }) => ({
-        title: 'Register',
-        headerStyle: { backgroundColor: 'silver' }
-      })
-     },
      RegisterPassword: {
        screen: RegisterPassword,
        navigationOptions: ({ navigation }) => ({
@@ -58,13 +49,6 @@ import {
         headerStyle: { backgroundColor: 'silver' }
       })
      },
-     LoginUsername: {
-      screen: LoginUsername,
-      navigationOptions: ({ navigation }) => ({
-       title: 'Login',
-       headerStyle: { backgroundColor: 'silver' }
-    })
-    },
     LoginPassword: {
       screen: LoginPassword,
       navigationOptions: ({ navigation }) => ({
@@ -96,7 +80,7 @@ import {
     Competition: {
       screen: Competition,
       navigationOptions: ({ navigation }) => ({
-       title: `${navigation.state.params.competition}`,
+       title: `${navigation.state.params.label}`,
        headerStyle: { backgroundColor: 'silver' }
      })
     },
@@ -124,7 +108,7 @@ import {
     Teams: {
       screen: Teams,
       navigationOptions: ({ navigation }) => ({
-       title: `${navigation.state.params.competition}`,
+       title: `${navigation.state.params.label}`,
        headerStyle: { backgroundColor: 'silver' }
      })
     },
@@ -257,7 +241,7 @@ import {
     Accuracy: {
       screen: Accuracy,
       navigationOptions: ({ navigation }) => ({
-       title: `${navigation.state.params.key}`,
+       title: `${navigation.state.params.label}`,
        headerStyle: { backgroundColor: 'silver' }
      })
     },

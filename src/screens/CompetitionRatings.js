@@ -39,11 +39,20 @@ _renderItem = ({item}) => (
     title={item.competition +' ('+item.type+')'}
     badge={{ value: item.accuracy.toFixed(2), textStyle: { color: getBetRatingColor(item.accuracy) }, containerStyle: { marginTop: -5 } }}
     titleStyle={this.state.styles.listItem}
-    avatar={<Avatar
+    onPress={() => this.props.navigation.navigate('PreviousFixtures',
+    {  token: this.state.token,
+       styles: this.state.styles,
+       market: convertMarket(item.type),
+       event: item.type,
+       competition: item.competition,
+       title: item.competition,
+       adUnitID: this.state.adUnitID,
+       adUnitRewardsID: this.state.adUnitRewardsID
+    })}
+   avatar={<Avatar
              rounded
              icon={{name: item.movement, color: getAvatarColor(item.movement), type: 'font-awesome'}}
             />}
-  hideChevron
     subtitle={
       <View style={this.state.styles.listItem}>
           <Text style={this.state.styles.ratingText}>{item.success} / {item.total}</Text>
@@ -85,13 +94,22 @@ _renderItem = ({item}) => (
   }
 }
 
+function convertMarket(market){
+  if(market === 'goals 2.5' || market === 'goals -2.5'){
+    return 'PREDICT_GOALS';
+  }
+  return 'PREDICT_RESULTS';
+}
+
 function getRating(market, marketRatings){
   return marketRatings.filter(f => f.market === market).shift().rating;
 }
 
 function setDataSource(component){
   competitionRatings(component.state.token)
-  .then( data => component.setState({competitions : data, loading: false}))
+  .then( data =>
+      component.setState({competitions : data, loading: false})
+    )
   .catch((error) => component.props.navigation.navigate('Splash',{}));
 }
 

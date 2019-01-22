@@ -33,6 +33,21 @@ class Competition extends React.Component {
           }
         },
         {
+          title: 'Previous',
+          screen: 'PreviousFixtures',
+          icon: 'calendar-check-o',
+          props: {
+            token: props.navigation.state.params.token,
+            type: props.navigation.state.params.type,
+            country: props.navigation.state.params.country,
+            styles: props.navigation.state.params.styles,
+            competition: props.navigation.state.params.competition,
+            title: props.navigation.state.params.competition,
+            adUnitID: props.navigation.state.params.adUnitID,
+            adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
+         }
+        },
+        {
           title: 'Events',
           screen: 'Events',
           icon: 'calendar',

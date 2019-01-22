@@ -72,6 +72,12 @@ export function todaysEvents(type, token){
   return get(DATA_API+'/events/upcoming-events?type='+type, token);
 }
 
+export function previousFixtures(competition, market, token){
+  if(market === undefined){
+   return get(CLIENT_SERVICES_API+'/prediction/previous-fixtures/'+competition, token);
+ }
+ return get(CLIENT_SERVICES_API+'/prediction/previous-fixtures/'+competition+'?market='+market, token);
+}
 
 export function predictions(type, country, competition, team, token){
   return get(CLIENT_SERVICES_API+'/prediction/prices-with-predictions?type='

@@ -6,8 +6,7 @@ import {
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import { ListItem } from 'react-native-elements'
 
-
-class SelectedBetHistory extends React.Component {
+class SelectedBetHistoryMonths extends React.Component {
   constructor(props) {
    super(props);
 
@@ -15,22 +14,22 @@ class SelectedBetHistory extends React.Component {
      token: props.navigation.state.params.token,
      type: props.navigation.state.params.type,
      styles: props.navigation.state.params.styles,
-     history: props.navigation.state.params.history
-   };
+     history: props.navigation.state.params.history,
+     title: props.navigation.state.params.title
+    };
 
-
-}
+  }
 
 
 _renderItem = ({item}) => (
   <ListItem
-    onPress={() => this.props.navigation.navigate('BetHistoryBatch',
+    onPress={() => this.props.navigation.navigate('SelectedBetHistory',
     {  token: this.state.token,
        styles: this.state.styles,
-       label: item.batchStartDate +' - '+item.batchEndDate,
-       batch: item
+       title: this.state.title +' - '+item.month,
+       history: item.betHistoryBatches
     })}
-    title={item.batchStartDate + ' to '+item.batchEndDate}
+    title={item.month}
     titleStyle={this.state.styles.listItem}
   />
 );
@@ -50,4 +49,4 @@ _renderItem = ({item}) => (
 }
 
 
-export default SelectedBetHistory;
+export default SelectedBetHistoryMonths;

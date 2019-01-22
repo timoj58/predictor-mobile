@@ -26,6 +26,9 @@ import {
     import Betting from "./src/screens/Betting";
     import SelectedBets from "./src/screens/SelectedBets";
     import SelectedBetHistory from "./src/screens/SelectedBetHistory";
+    import SelectedBetHistoryYears from "./src/screens/SelectedBetHistoryYears";
+    import SelectedBetHistoryMonths from "./src/screens/SelectedBetHistoryMonths";
+
     import SelectedBetsHome from "./src/screens/SelectedBetsHome";
     import SelectedResultsBets from "./src/screens/SelectedResultsBets";
     import SelectedGoalsBets from "./src/screens/SelectedGoalsBets";
@@ -33,6 +36,7 @@ import {
     import CompetitionRatings from "./src/screens/CompetitionRatings";
     import GlobalRatingsRanked from "./src/screens/GlobalRatingsRanked";
     import BetHistoryBatch from "./src/screens/BetHistoryBatch";
+    import PreviousFixtures from "./src/screens/PreviousFixtures";
 
     const AppNavigator = createStackNavigator({
       Splash: {
@@ -102,6 +106,13 @@ import {
       screen: Event,
       navigationOptions: ({ navigation }) => ({
        title: `${navigation.state.params.label}`,
+       headerStyle: { backgroundColor: 'silver' }
+     })
+    },
+    PreviousFixtures: {
+      screen: PreviousFixtures,
+      navigationOptions: ({ navigation }) => ({
+       title: `${navigation.state.params.title}`,
        headerStyle: { backgroundColor: 'silver' }
      })
     },
@@ -192,7 +203,21 @@ import {
     SelectedBetHistory: {
       screen: SelectedBetHistory,
       navigationOptions: ({ navigation }) => ({
+       title: `${navigation.state.params.title}`,
+       headerStyle: { backgroundColor: 'silver' }
+     })
+    },
+    SelectedBetHistoryYears: {
+      screen: SelectedBetHistoryYears,
+      navigationOptions: ({ navigation }) => ({
        title: 'Selected Bets History',
+       headerStyle: { backgroundColor: 'silver' }
+     })
+    },
+    SelectedBetHistoryMonths: {
+      screen: SelectedBetHistoryMonths,
+      navigationOptions: ({ navigation }) => ({
+       title: `${navigation.state.params.title}`,
        headerStyle: { backgroundColor: 'silver' }
      })
     },

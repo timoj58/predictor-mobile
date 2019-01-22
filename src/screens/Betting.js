@@ -34,7 +34,7 @@ class Betting extends React.Component {
        },
        {
          title: 'History',
-         screen: 'SelectedBetHistory',
+         screen: 'SelectedBetHistoryYears',
          icon: 'history',
          props: {
            token: props.navigation.state.params.token,

@@ -74,7 +74,7 @@ class Competition extends React.Component {
           styles: props.navigation.state.params.styles,
           key: props.navigation.state.params.competition,
           label: props.navigation.state.params.label,
-        label: props.navigation.state.params.label
+          label: props.navigation.state.params.label
         }
       }
      ]

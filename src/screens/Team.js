@@ -39,7 +39,7 @@ _renderTile = ({item}) => (
      {this.state.loading &&
        <View style={this.state.styles.progressContainer}>
        <Progress.Circle
-          size={Dimensions.get('window').width/2}
+          size={Dimensions.get('window').width/4}
           indeterminate={true}
           color='black'
           thickness={20} />
@@ -60,7 +60,7 @@ _renderTile = ({item}) => (
 function setDataSource(component){
   team(component.state.id, component.state.token)
   .then(data => update(component, data))
-  .catch((error) => component.props.navigation.navigate('Splash',{}));  
+  .catch((error) => component.props.navigation.navigate('Splash',{}));
 }
 
  function update(component, team){
@@ -97,8 +97,9 @@ function setDataSource(component){
       props: {
         token: component.state.token,
         styles: component.state.styles,
-        key: team.team.label
-     }
+        key: team.team.label,
+        label: team.team.label
+   }
    }
   ]
     });

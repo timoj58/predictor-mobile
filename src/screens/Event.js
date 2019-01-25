@@ -74,12 +74,25 @@ _renderItem = ({item}) => (
    hideChevron
    titleStyle={this.state.styles.titleListItem}
    />}
-   {item.eventType !== 'PREDICT_SCORES' && <ListItem
+   {item.eventType === 'PREDICT_RESULTS' && <ListItem
     title={item.eventType}
     hideChevron
     titleStyle={this.state.styles.titleListItem}
     badge={{ value:  getBetRating(item.eventType, this.state).toFixed(2), textStyle: { color: getBetRatingColor(getBetRating(item.eventType, this.state)), fontSize: 35 }, containerStyle: { marginTop: 5 } }}
     />}
+    {item.eventType === 'PREDICT_GOALS' && <ListItem
+     title={item.eventType}
+     hideChevron
+     titleStyle={this.state.styles.titleListItem}
+     badge={{ value:  getBetRating(item.eventType, this.state).toFixed(2), textStyle: { color: getBetRatingColor(getBetRating(item.eventType, this.state)), fontSize: 35 }, containerStyle: { marginTop: 5 } }}
+     subtitle={
+        <View style={this.state.styles.container}>
+         <Text style={this.state.styles.listItem}>
+          {predictedGoals(item.predictions.result).toFixed(2)+' expected goals'}
+         </Text>
+        </View>
+        }
+     />}
   <FlatList
    data={item.predictions.result}
    renderItem={this._renderPrediction}
@@ -147,7 +160,6 @@ _renderItem = ({item}) => (
     );
   }
 }
-
 
 
 function renderForMarket(market, eventType){

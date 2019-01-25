@@ -64,7 +64,23 @@ class SelectedResultsBets extends React.Component {
         adUnitID: props.navigation.state.params.adUnitID,
         adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
     }
+  },
+   {
+    title: 'Against Machine',
+    screen: 'SelectedBets',
+    icon: 'exclamation-triangle', 
+    props: {
+      token: props.navigation.state.params.token,
+      market: props.navigation.state.params.market,
+      styles: props.navigation.state.params.styles,
+      type: props.navigation.state.params.type,
+      start: props.navigation.state.params.start,
+      event: 'against',
+      label: 'Selected Against Machine',
+      adUnitID: props.navigation.state.params.adUnitID,
+      adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
     }
+   }
     ]
   };
 

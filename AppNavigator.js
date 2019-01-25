@@ -112,7 +112,7 @@ import {
     PreviousFixtures: {
       screen: PreviousFixtures,
       navigationOptions: ({ navigation }) => ({
-       title: `${navigation.state.params.title}`,
+       title: `${navigation.state.params.label}`,
        headerStyle: { backgroundColor: 'silver' }
      })
     },
@@ -266,8 +266,8 @@ import {
     Accuracy: {
       screen: Accuracy,
       navigationOptions: ({ navigation }) => ({
-       title: `${navigation.state.params.label}`,
-       headerStyle: { backgroundColor: 'silver' }
+        title: `${navigation.state.params.label}`,
+        headerStyle: { backgroundColor: 'silver' }
      })
     },
     Betting: {

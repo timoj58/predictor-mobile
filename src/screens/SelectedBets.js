@@ -9,6 +9,7 @@ import { ListItem } from 'react-native-elements'
 import { Dimensions } from 'react-native'
 
 import {selectedBets} from "../api/DataService";
+import {selectedBetsAgainst} from "../api/DataService";
 import {getBetRatingColor} from "../util/RenderUtils";
 import {renderListItem} from "../util/RenderUtils";
 import {
@@ -53,7 +54,7 @@ _renderItem = ({item}) => (
      {this.state.loading &&
        <View style={this.state.styles.progressContainer}>
        <Progress.Circle
-          size={Dimensions.get('window').width/2}
+          size={Dimensions.get('window').width/4}
           indeterminate={true}
           color='black'
           thickness={20} />
@@ -79,9 +80,15 @@ _renderItem = ({item}) => (
 }
 
 function setDataSource(component){
-  selectedBets(component.state.type, component.state.market, component.state.event, component.state.token)
+  if(component.state.event === 'against'){
+    selectedBetsAgainst(component.state.type, component.state.token)
+   .then( data => component.setState({bets : data, loading: false}))
+   .catch((error) => component.props.navigation.navigate('Splash',{}));
+  }else{
+   selectedBets(component.state.type, component.state.market, component.state.event, component.state.token)
   .then( data => component.setState({bets : data, loading: false}))
   .catch((error) => component.props.navigation.navigate('Splash',{}));
+ }
 }
 
 

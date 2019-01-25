@@ -48,7 +48,7 @@ _renderItem = ({item}) => (
      {this.state.loading &&
        <View style={this.state.styles.progressContainer}>
         <Progress.Circle
-          size={Dimensions.get('window').width/2}
+          size={Dimensions.get('window').width/4}
           indeterminate={true}
           color='black'
           thickness={20} />

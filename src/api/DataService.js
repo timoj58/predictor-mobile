@@ -114,6 +114,14 @@ export function selectedBets(type, market, event, token){
   return get(CLIENT_SERVICES_API+'/prediction/selected-bets?type='+type+'&market='+market+'&event='+event, token);
 }
 
+export function selectedBetsAgainst(type, token){
+  return get(CLIENT_SERVICES_API+'/prediction/selected-bets-against-machine?type='+type, token);
+}
+
 export function betHistory(type, token){
   return get(CLIENT_SERVICES_API+'/bet-history/'+type, token);
+}
+
+export function machineLoadingStatus(token){
+  return get(DATA_API+'/automation/status', token);
 }

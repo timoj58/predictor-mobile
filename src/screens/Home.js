@@ -7,6 +7,7 @@ import {
 import { Dimensions, StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import { Tile } from 'react-native-elements'
 import {renderTile} from "../util/RenderUtils";
+import {machineLoadingStatus} from "../api/DataService";
 
 const type = 'FOOTBALL';
 const adUnitID = 'ca-app-pub-3940256099942544/6300978111';
@@ -19,6 +20,7 @@ class Home extends React.Component {
    this.state = {
      token: props.navigation.state.params.token,
      styles: props.navigation.state.params.styles,
+     status: false,
      tilesLeft: [
        {
          title: 'Today',
@@ -77,6 +79,7 @@ class Home extends React.Component {
      ]
     };
 
+    statusCheck(this);
 }
 
 _renderTile = ({item}) => (
@@ -86,14 +89,30 @@ _renderTile = ({item}) => (
   render() {
     return (
       <View style={this.state.styles.container}>
+      {this.state.status &&
+        <Tile
+               title={'Machine Training...'}
+               titleStyle={{color: 'silver',fontWeight: 'bold'}}
+               icon={{ name: 'info', type: 'font-awesome', size: 100 }}
+               featured
+               width={Dimensions.get('window').width}
+               height={Dimensions.get('window').height}
+               imageSrc={require('../screens/img/charcoal.png')}
+               />}
+      {!this.state.status &&
       <FlatList
               data={this.state.tilesLeft.concat(this.state.tilesRight)}
               renderItem={this._renderTile}
               keyExtractor={(item, index) => index.toString()}
-            />
+            />}
           </View>
     );
   }
+}
+
+async function statusCheck(component){
+  machineLoadingStatus(component.state.token)
+   .then(data => component.setState({status: data.status}));
 }
 
 

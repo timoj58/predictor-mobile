@@ -84,7 +84,7 @@ _renderItem = ({item}) => (
   }
 }
 
-function setDataSource(component){
+async function setDataSource(component){
    previousFixtures(component.state.competition, component.state.market, component.state.token)
    .then( data => component.setState({fixtures : filteredFixtures(data, component.state.market, component.state.event)}))
    .catch((error) => component.props.navigation.navigate('Splash',{}));

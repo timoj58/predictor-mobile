@@ -46,6 +46,7 @@ _renderItem = ({item}) => (
        event: item.type,
        competition: item.competition,
        title: item.competition,
+       label: item.competition,
        adUnitID: this.state.adUnitID,
        adUnitRewardsID: this.state.adUnitRewardsID
     })}
@@ -68,7 +69,7 @@ _renderItem = ({item}) => (
      {this.state.loading &&
        <View style={this.state.styles.progressContainer}>
        <Progress.Circle
-          size={Dimensions.get('window').width/2}
+          size={Dimensions.get('window').width/4}
           indeterminate={true}
           color='black'
           thickness={50}

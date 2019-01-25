@@ -34,11 +34,11 @@ class Events extends React.Component {
      adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
     };
 
-    if(this.state.today){
+/*    if(this.state.today){
       AdMobRewarded.setAdUnitID(this.state.adUnitRewardsID); // Test ID, Replace with your-admob-unit-id
       rewards();
     }
-
+*/
     setDataSource(this);
 }
 
@@ -64,7 +64,7 @@ _renderItem = ({item}) => (
      {this.state.loading &&
        <View style={this.state.styles.progressContainer}>
        <Progress.Circle
-          size={Dimensions.get('window').width/2}
+          size={Dimensions.get('window').width/4}
           indeterminate={true}
           color='black'
           thickness={20} />
@@ -88,12 +88,12 @@ _renderItem = ({item}) => (
     );
   }
 }
-
+/*
 async function rewards(){
   var x = await AdMobRewarded.requestAdAsync();
   var y = await AdMobRewarded.showAdAsync();
 }
-
+*/
 function setDataSource(component){
   if(component.state.today === true){
     todaysEvents(component.state.type,component.state.token)

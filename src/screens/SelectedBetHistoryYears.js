@@ -29,9 +29,9 @@ class SelectedBetHistoryYears extends React.Component {
      adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
     };
 
-    AdMobRewarded.setAdUnitID(this.state.adUnitRewardsID); // Test ID, Replace with your-admob-unit-id
+  /*  AdMobRewarded.setAdUnitID(this.state.adUnitRewardsID); // Test ID, Replace with your-admob-unit-id
     rewards();
-
+*/
     setDataSource(this);
 }
 
@@ -56,7 +56,7 @@ _renderItem = ({item}) => (
      {this.state.loading &&
        <View style={this.state.styles.progressContainer}>
          <Progress.Circle
-          size={Dimensions.get('window').width/2}
+          size={Dimensions.get('window').width/4}
           indeterminate={true}
           color='black'
           thickness={20} />
@@ -79,10 +79,11 @@ function setDataSource(component){
   .catch((error) => component.props.navigation.navigate('Splash',{}));
 }
 
+/*
 async function rewards(){
   var x = await AdMobRewarded.requestAdAsync();
   var y = await AdMobRewarded.showAdAsync();
 }
-
+*/
 
 export default SelectedBetHistoryYears;

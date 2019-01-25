@@ -43,6 +43,7 @@ class Competition extends React.Component {
             styles: props.navigation.state.params.styles,
             competition: props.navigation.state.params.competition,
             title: props.navigation.state.params.competition,
+            label: props.navigation.state.params.label,
             adUnitID: props.navigation.state.params.adUnitID,
             adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
          }
@@ -72,7 +73,8 @@ class Competition extends React.Component {
           token: props.navigation.state.params.token,
           styles: props.navigation.state.params.styles,
           key: props.navigation.state.params.competition,
-          label: props.navigation.state.params.label
+          label: props.navigation.state.params.label,
+        label: props.navigation.state.params.label
         }
       }
      ]

@@ -13,6 +13,10 @@ import { ListItem } from 'react-native-elements';
 import {getBetRatingColor} from "../util/RenderUtils";
 import {predictedGoals} from "../util/GoalsUtils";
 
+import {
+  PublisherBanner
+} from 'expo';
+
 
 class Event extends React.Component {
   constructor(props) {
@@ -23,6 +27,7 @@ class Event extends React.Component {
       event: props.navigation.state.params.event,
       styles: props.navigation.state.params.styles,
       market: props.navigation.state.params.market,
+      betType: props.navigation.state.params.betType,
       loading: true,
       loadingPreviousMeetings: true,
       goalsRating: 0,
@@ -32,7 +37,9 @@ class Event extends React.Component {
       homeResultsRating: 0,
       homeResultRatingSubTitle: '',
       awayResultsRating: 0,
-      awayResultRatingSubTitle: ''
+      awayResultRatingSubTitle: '',
+      adUnitID: props.navigation.state.params.adUnitID,
+      adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
     };
 
 
@@ -46,6 +53,7 @@ _renderPrediction = ({item}) => (
     <ListItem
     title={item.key}
     hideChevron
+    containerStyle={{ borderBottomWidth: 0 }}
     titleStyle={this.state.styles.listItem}
     badge={{ value:  item.score.toFixed(2), textStyle: { color: 'orange' }, containerStyle: { marginTop: -5 } }}
   />
@@ -56,6 +64,7 @@ _renderPreviousMeeting = ({item}) => (
     <ListItem
     title={previousMeetingTitle(item)}
     hideChevron
+    containerStyle={{ borderBottomWidth: 0 }}
     titleStyle={this.state.styles.listItem}
     subtitle={
       <View style={this.state.styles.listItem}>
@@ -71,17 +80,20 @@ _renderItem = ({item}) => (
   <View style={this.state.styles.container}>
   {item.eventType === 'PREDICT_SCORES' && <ListItem
    title={item.eventType}
+   containerStyle={{ borderBottomWidth: 0 }}
    hideChevron
    titleStyle={this.state.styles.titleListItem}
    />}
    {item.eventType === 'PREDICT_RESULTS' && <ListItem
     title={item.eventType}
+    containerStyle={{ borderBottomWidth: 0 }}
     hideChevron
     titleStyle={this.state.styles.titleListItem}
     badge={{ value:  getBetRating(item.eventType, this.state).toFixed(2), textStyle: { color: getBetRatingColor(getBetRating(item.eventType, this.state)), fontSize: 35 }, containerStyle: { marginTop: 5 } }}
     />}
     {item.eventType === 'PREDICT_GOALS' && <ListItem
      title={item.eventType}
+     containerStyle={{ borderBottomWidth: 0 }}
      hideChevron
      titleStyle={this.state.styles.titleListItem}
      badge={{ value:  getBetRating(item.eventType, this.state).toFixed(2), textStyle: { color: getBetRatingColor(getBetRating(item.eventType, this.state)), fontSize: 35 }, containerStyle: { marginTop: 5 } }}
@@ -107,14 +119,21 @@ _renderItem = ({item}) => (
      {this.state.loading && <Progress.Circle size={50} indeterminate={true} />}
      {!this.state.loading &&
        <View>
+       <PublisherBanner
+       bannerSize="fullBanner"
+       adUnitID={this.state.adUnitID}
+       onDidFailToReceiveAdWithError={this.bannerError}
+       onAdMobDispatchAppEvent={this.adMobEvent} />
        <ListItem
         title={'Machine Ratings'}
         hideChevron
+        containerStyle={{ borderBottomWidth: 0 }}
         titleStyle={this.state.styles.titleListItem}
         />
        <ListItem
         title={this.state.event.home.label +' '+ getType(this.state.predictions, true, this.state.market)}
         hideChevron
+        containerStyle={{ borderBottomWidth: 0 }}
         titleStyle={getStyle(this.state.styles, this.state.homeResultsRating, this.state.awayResultsRating, true)}
         badge={{ value:  this.state.homeResultsRating.toFixed(2), textStyle: { color: 'orange' }, containerStyle: { marginTop: -5 } }}
         subtitle={
@@ -126,6 +145,7 @@ _renderItem = ({item}) => (
         />
          <ListItem
           title={this.state.event.away.label +' '+ getType(this.state.predictions, false, this.state.market)}
+          containerStyle={{ borderBottomWidth: 0 }}
           hideChevron
           titleStyle={getStyle(this.state.styles, this.state.homeResultsRating, this.state.awayResultsRating, false)}
           badge={{ value:  this.state.awayResultsRating.toFixed(2), textStyle: { color: 'orange' }, containerStyle: { marginTop: -5 } }}
@@ -147,6 +167,7 @@ _renderItem = ({item}) => (
         <View>
         <ListItem
          title={'Previous Meetings'}
+         containerStyle={{ borderBottomWidth: 0 }}
          hideChevron
          titleStyle={this.state.styles.titleListItem}
          />

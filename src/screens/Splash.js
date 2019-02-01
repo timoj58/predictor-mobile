@@ -10,6 +10,7 @@ import { ListItem} from 'react-native-elements';
 import {isUsernameOnFile} from "../api/AuthService";
 import {authenticate} from "../api/AuthService";
 import {create} from "../api/AuthService";
+import {SplashScreen } from 'expo';
 
 
 class Splash extends React.Component {
@@ -23,6 +24,8 @@ class Splash extends React.Component {
  }
 
  checkUsername(this,Expo.Constants.installationId);
+
+ SplashScreen.hide();
  //checkUsername(this, 'timmytime');
 }
 
@@ -38,6 +41,7 @@ class Splash extends React.Component {
       );
   }
 }
+
 
 function navigate(component){
   if (component.state.registered){
@@ -108,7 +112,7 @@ const styles = StyleSheet.create({
   backgroundColor: 'red'
 },
   titleListItem: {
-   color: 'black',
+   color: 'grey',
    fontWeight: 'bold',
    fontSize: 30
  },

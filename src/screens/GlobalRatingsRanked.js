@@ -10,10 +10,6 @@ import {globalRatings} from "../api/DataService";
 import {allTeams} from "../api/DataService";
 import { ListItem, SearchBar } from 'react-native-elements';
 import {getBetRatingColor} from "../util/RenderUtils";
-import {
-  AdMobRewarded
-} from 'expo';
-
 
 
 class GlobalRatingRanked extends React.Component {

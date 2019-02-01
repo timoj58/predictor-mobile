@@ -8,6 +8,10 @@ import { ListItem } from 'react-native-elements';
 import {getBetRatingColor} from "../util/RenderUtils";
 import {predictedGoals} from "../util/GoalsUtils";
 
+import {
+  PublisherBanner
+} from 'expo';
+
 
 
 class TeamRating extends React.Component {
@@ -18,7 +22,9 @@ class TeamRating extends React.Component {
      token: props.navigation.state.params.token,
      styles: props.navigation.state.params.styles,
      teamRating: props.navigation.state.params.teamRating,
-     market: props.navigation.state.params.market
+     market: props.navigation.state.params.market,
+     adUnitID: props.navigation.state.params.adUnitID,
+     adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
 };
 
 }
@@ -28,6 +34,7 @@ _renderItem = ({item}) => (
     title={item.type}
     badge={{ value:  item.accuracy.toFixed(2), textStyle: { color: getBetRatingColor(item.accuracy) }, containerStyle: { marginTop: -5 } }}
     hideChevron
+    containerStyle={{ borderBottomWidth: 0 }}
     titleStyle={this.state.styles.listItem}
     subtitle={
       <View style={this.state.styles.listItem}>
@@ -41,6 +48,7 @@ _renderPredictionItem = ({item}) => (
   item.score > 0 &&  <ListItem
      title={item.key}
      badge={{ value:  item.score.toFixed(2), textStyle: { color: 'orange' }, containerStyle: { marginTop: -5 } }}
+     containerStyle={{ borderBottomWidth: 0 }}
      hideChevron
      titleStyle={this.state.styles.listItem}
      />
@@ -53,6 +61,7 @@ _renderEventItem = ({item}) => (
   <ListItem
     title={getTitle(item)}
     hideChevron
+    containerStyle={{ borderBottomWidth: 0 }}
     titleStyle={getStyle(item, this.state.styles, this.state.market,
       getGoalsPrediction(item.predictions.result, this.state.market))}
     subtitle={
@@ -79,9 +88,15 @@ _renderEventItem = ({item}) => (
     return (
      <ScrollView style={this.state.styles.scrollViewContainer}>
      <View>
+     <PublisherBanner
+     bannerSize="fullBanner"
+     adUnitID={this.state.adUnitID}
+     onDidFailToReceiveAdWithError={this.bannerError}
+     onAdMobDispatchAppEvent={this.adMobEvent} />
      <ListItem
       title={'Machine Statistics'}
       hideChevron
+      containerStyle={{ borderBottomWidth: 0 }}
       titleStyle={this.state.styles.titleListItem}
       />
       <FlatList
@@ -94,6 +109,7 @@ _renderEventItem = ({item}) => (
       <ListItem
        title={'Past Predictions'}
        hideChevron
+       containerStyle={{ borderBottomWidth: 0 }}
        titleStyle={this.state.styles.titleListItem}
        />
       <FlatList

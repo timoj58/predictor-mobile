@@ -13,7 +13,6 @@ import {expires} from "../util/TokenUtils";
 import {refresh} from "../api/AuthService";
 
 import {
-  AdMobRewarded,
   PublisherBanner
 } from 'expo';
 
@@ -50,7 +49,9 @@ _renderItem = ({item}) => (
        styles: this.state.styles,
        market: 'all',
        label: item.home.label + ' vs '+item.away.label,
-       event: item
+       event: item,
+       adUnitID: this.state.adUnitID,
+       adUnitRewardsID: this.state.adUnitRewardsID
     })}
     title={item.home.label + ' vs '+item.away.label}
     titleStyle={this.state.styles.listItem}

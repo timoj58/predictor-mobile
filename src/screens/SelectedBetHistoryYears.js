@@ -10,10 +10,6 @@ import { ListItem } from 'react-native-elements'
 import { Dimensions } from 'react-native';
 import {betHistory} from "../api/DataService";
 
-import {
-  AdMobRewarded
-} from 'expo';
-
 
 class SelectedBetHistoryYears extends React.Component {
   constructor(props) {

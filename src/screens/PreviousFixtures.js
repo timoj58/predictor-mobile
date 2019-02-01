@@ -42,6 +42,7 @@ _renderOutcomeItem = ({item}) => (
   <ListItem
     title={getPrediction(item)}
     titleStyle={getStyle(item, this.state.styles)}
+    containerStyle={{ borderBottomWidth: 0 }}
     hideChevron
     />
   );
@@ -51,6 +52,7 @@ _renderItem = ({item}) => (
   <ListItem
     title={item.home.label +' '+item.homeScore+' - '+item.awayScore+' '+item.away.label}
     titleStyle={this.state.styles.listItem}
+    containerStyle={{ borderBottomWidth: 0 }}
     hideChevron
     subtitle={
          <View style={this.state.styles.listItem}>

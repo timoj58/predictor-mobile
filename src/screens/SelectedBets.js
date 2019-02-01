@@ -98,6 +98,9 @@ component.props.navigation.navigate('Event',
      styles: component.state.styles,
      market: component.state.market,
      start: component.state.start,
+     adUnitID: component.state.adUnitID,
+     betType: component.state.event,
+     adUnitRewardsID: component.state.adUnitRewardsID,
      label: item.home + ' vs '+item.away,
      event: {
        home: {

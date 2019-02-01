@@ -18,7 +18,7 @@ export function renderTile(
       onPress={() => component.props.navigation.navigate(item.screen,item.props)}
          title={item.title}
          titleStyle={{color: 'silver',fontWeight: 'bold'}}
-         icon={{ name: item.icon, type: 'font-awesome', size: iconSize }}
+         icon={{ name: item.icon, type: 'font-awesome', size: iconSize, color: 'silver' }}
          featured
          width={width}
          height={height}

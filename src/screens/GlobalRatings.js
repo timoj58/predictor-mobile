@@ -37,7 +37,9 @@ _renderItem = ({item}) => (
     {  token: this.state.token,
        styles: this.state.styles,
        market: this.state.market,
-       teamRating: item
+       teamRating: item,
+       adUnitID: this.state.adUnitID,
+       adUnitRewardsID: this.state.adUnitRewardsID
     })}
     title={item.team}
     avatar={<Avatar

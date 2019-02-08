@@ -4,36 +4,28 @@ import {
 } from 'react-navigation';
 
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
+import * as Progress from 'react-native-progress';
+import { Dimensions } from 'react-native';
+import { ListItem, Avatar } from 'react-native-elements';
 import { Tile } from 'react-native-elements'
 import {renderTile} from "../util/RenderUtils";
-import {expires} from "../util/TokenUtils";
-import {refresh} from "../api/AuthService";
 
 
-
-class GlobalRatingsHome extends React.Component {
+class CompetitionRatingsHome extends React.Component {
   constructor(props) {
    super(props);
 
    this.state = {
      token: props.navigation.state.params.token,
      styles: props.navigation.state.params.styles,
+     loading: true,
+     competitions :'',
+     adUnitID: props.navigation.state.params.adUnitID,
+     adUnitRewardsID: props.navigation.state.params.adUnitRewardsID,
      tiles: [
        {
-         title: 'Leagues',
-         screen: 'CompetitionRatingsHome',
-         icon: 'globe',
-         props: {
-           token: props.navigation.state.params.token,
-           styles: props.navigation.state.params.styles,
-           type: props.navigation.state.params.type,
-           adUnitID: props.navigation.state.params.adUnitID,
-           adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
-         }
-       },
-       {
          title: 'Results',
-         screen: 'GlobalRatingsRanked',
+         screen: 'CompetitionRatings',
          icon: 'trophy',
          props: {
            token: props.navigation.state.params.token,
@@ -47,7 +39,7 @@ class GlobalRatingsHome extends React.Component {
        },
        {
          title: 'Goals',
-         screen: 'GlobalRatingsRanked',
+         screen: 'CompetitionRatings',
          icon: 'soccer-ball-o',
          props: {
            token: props.navigation.state.params.token,
@@ -61,7 +53,6 @@ class GlobalRatingsHome extends React.Component {
        }
      ]
     };
-
 
 }
 
@@ -82,5 +73,4 @@ _renderTile = ({item}) => (
   }
 }
 
-
-export default GlobalRatingsHome;
+export default CompetitionRatingsHome;

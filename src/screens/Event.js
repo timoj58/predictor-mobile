@@ -80,20 +80,17 @@ _renderItem = ({item}) => (
   <View style={this.state.styles.container}>
   {item.eventType === 'PREDICT_SCORES' && <ListItem
    title={item.eventType}
-   containerStyle={{ borderBottomWidth: 0 }}
    hideChevron
    titleStyle={this.state.styles.titleListItem}
    />}
    {item.eventType === 'PREDICT_RESULTS' && <ListItem
     title={item.eventType}
-    containerStyle={{ borderBottomWidth: 0 }}
     hideChevron
     titleStyle={this.state.styles.titleListItem}
     badge={{ value:  getBetRating(item.eventType, this.state).toFixed(2), textStyle: { color: getBetRatingColor(getBetRating(item.eventType, this.state)), fontSize: 35 }, containerStyle: { marginTop: 5 } }}
     />}
     {item.eventType === 'PREDICT_GOALS' && <ListItem
      title={item.eventType}
-     containerStyle={{ borderBottomWidth: 0 }}
      hideChevron
      titleStyle={this.state.styles.titleListItem}
      badge={{ value:  getBetRating(item.eventType, this.state).toFixed(2), textStyle: { color: getBetRatingColor(getBetRating(item.eventType, this.state)), fontSize: 35 }, containerStyle: { marginTop: 5 } }}
@@ -127,7 +124,6 @@ _renderItem = ({item}) => (
        <ListItem
         title={'Machine Ratings'}
         hideChevron
-        containerStyle={{ borderBottomWidth: 0 }}
         titleStyle={this.state.styles.titleListItem}
         />
        <ListItem
@@ -167,7 +163,6 @@ _renderItem = ({item}) => (
         <View>
         <ListItem
          title={'Previous Meetings'}
-         containerStyle={{ borderBottomWidth: 0 }}
          hideChevron
          titleStyle={this.state.styles.titleListItem}
          />

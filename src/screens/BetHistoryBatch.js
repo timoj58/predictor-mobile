@@ -23,6 +23,7 @@ _renderBet = ({item}) => (
   <ListItem
     title={item.home+' vs '+item.away}
     titleStyle={getStyle(this.state.styles, item.win)}
+    containerStyle={{ borderBottomWidth: 0 }}
     hideChevron
     badge={{ value:  item.rating.toFixed(2), textStyle: { color: getBetRatingColor(item.rating) }, containerStyle: { marginTop: -5 } }}
   />
@@ -34,6 +35,7 @@ _renderItem = ({item}) => (
     title={item.header.market +' '+ item.header.event}
     titleStyle={this.state.styles.titleListItem}
     hideChevron
+    containerStyle={{ borderBottomWidth: 0 }}
     subtitle={
          <View style={this.state.styles.listItem}>
          <ListItem

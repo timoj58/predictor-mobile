@@ -25,6 +25,7 @@ class CompetitionRatings extends React.Component {
      styles: props.navigation.state.params.styles,
      loading: true,
      competitions :'',
+     market: props.navigation.state.params.market,
      adUnitID: props.navigation.state.params.adUnitID,
      adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
     };
@@ -107,7 +108,7 @@ function getRating(market, marketRatings){
 }
 
 function setDataSource(component){
-  competitionRatings(component.state.token)
+  competitionRatings(component.state.market, component.state.token)
   .then( data =>
       component.setState({competitions : data, loading: false})
     )

@@ -10,7 +10,7 @@ import {
 export function renderTile(
   component,
   item,
-  iconSize=100,
+  iconSize=75,
   width=Dimensions.get('window').width,
   height=Dimensions.get('window').height/2) {
 

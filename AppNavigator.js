@@ -37,6 +37,7 @@ import {
     import GlobalRatingsRanked from "./src/screens/GlobalRatingsRanked";
     import BetHistoryBatch from "./src/screens/BetHistoryBatch";
     import PreviousFixtures from "./src/screens/PreviousFixtures";
+    import CompetitionRatingsHome from "./src/screens/CompetitionRatingsHome";
 
     const AppNavigator = createStackNavigator({
       Splash: {
@@ -176,6 +177,13 @@ import {
       screen: GlobalRatings,
       navigationOptions: ({ navigation }) => ({
        title: `${navigation.state.params.label}`,
+       headerStyle: { backgroundColor: 'silver' }
+     })
+    },
+    CompetitionRatingsHome: {
+      screen: CompetitionRatingsHome,
+      navigationOptions: ({ navigation }) => ({
+       title: 'Leagues',
        headerStyle: { backgroundColor: 'silver' }
      })
     },

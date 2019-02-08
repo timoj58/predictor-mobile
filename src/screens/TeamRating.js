@@ -96,7 +96,6 @@ _renderEventItem = ({item}) => (
      <ListItem
       title={'Machine Statistics'}
       hideChevron
-      containerStyle={{ borderBottomWidth: 0 }}
       titleStyle={this.state.styles.titleListItem}
       />
       <FlatList
@@ -109,7 +108,6 @@ _renderEventItem = ({item}) => (
       <ListItem
        title={'Past Predictions'}
        hideChevron
-       containerStyle={{ borderBottomWidth: 0 }}
        titleStyle={this.state.styles.titleListItem}
        />
       <FlatList
@@ -148,12 +146,18 @@ function getStyle(item, styles, market, goals){
 
  if(market === 'goals'){
 
+   if(item.score != null){
+
    const actual = item.score.replace(/\s+/g, '').split("-");
    const total = actual.map(m => parseInt(m)).reduce(reducer);
 
    if ((goals >= 2.5 && total > 2.5) || (goals < 2.5 && total < 2.5)){
      return styles.listItemSuccess;
-  }
+   }
+ }
+ else{
+   return styles.listItem;
+ }
 
  return styles.listItemFail;
  }

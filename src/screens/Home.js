@@ -10,7 +10,8 @@ import {renderTile} from "../util/RenderUtils";
 import {machineLoadingStatus} from "../api/DataService";
 
 const type = 'FOOTBALL';
-const adUnitID = 'ca-app-pub-3940256099942544/6300978111';
+//const adUnitID = 'ca-app-pub-3940256099942544/6300978111';
+const adUnitID = 'ca-app-pub-8745028067803834/5416520976';
 const adUnitRewardsID = 'ca-app-pub-3940256099942544/5224354917';
 
 class Home extends React.Component {
@@ -92,8 +93,8 @@ _renderTile = ({item}) => (
       {this.state.status &&
         <Tile
                title={'Machine Training...'}
-               titleStyle={{color: 'silver',fontWeight: 'bold'}}
-               icon={{ name: 'info', type: 'font-awesome', size: 100 }}
+               titleStyle={{color: 'yellow',fontWeight: 'bold'}}
+               icon={{ name: 'info', type: 'font-awesome', color: 'yellow', size: 100 }}
                featured
                width={Dimensions.get('window').width}
                height={Dimensions.get('window').height}

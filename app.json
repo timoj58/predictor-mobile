@@ -9,11 +9,13 @@
       "android"
     ],
    "android": {
-     "package": "com.timmytyime.tabiikiai"
+     "package": "com.timmytyime.tabiikiai",
+     "permissions": [],
+     "versionCode": 2
    },
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./assets/splash.png",
+    "icon": "./assets/logo.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "cover",
@@ -26,7 +28,6 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
       "bundleIdentifier": "com.timmytime.tabiikiai"
     },
     "description": ""

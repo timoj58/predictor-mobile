@@ -19,7 +19,7 @@ class GlobalRatingRanked extends React.Component {
    this.state = {
      token: props.navigation.state.params.token,
      styles: props.navigation.state.params.styles,
-     market: props.navigation.state.params.market,
+     market: props.market,
      type: props.navigation.state.params.type,
      loading: true,
      teams :'',

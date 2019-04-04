@@ -4,11 +4,13 @@ import {
 } from 'react-navigation';
 
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
-import { Tile } from 'react-native-elements'
+import { Icon, Tile } from 'react-native-elements'
 import {renderTile} from "../util/RenderUtils";
 import {expires} from "../util/TokenUtils";
 import {refresh} from "../api/AuthService";
-
+import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
+import GlobalRatingsRanked from './GlobalRatingsRanked';
+import CompetitionRatings from './CompetitionRatings';
 
 
 class GlobalRatingsHome extends React.Component {
@@ -83,4 +85,44 @@ _renderTile = ({item}) => (
 }
 
 
-export default GlobalRatingsHome;
+const TabNavigator = createBottomTabNavigator({
+  Leagues: CompetitionRatings,
+  Results:  { screen: props => <GlobalRatingsRanked {...props}  market="results" />},
+  Goals:  { screen: props => <GlobalRatingsRanked {...props}  market="goals" />}
+ },
+ {
+   defaultNavigationOptions: ({ navigation }) => ({
+     tabBarIcon: ({ focused, horizontal, tintColor }) => {
+       const { routeName } = navigation.state;
+       if (routeName === 'Events') {
+         iconName = `calendar-check-o`;
+         // Sometimes we want to add badges to some icons.
+         // You can check the implementation below.
+       } else if (routeName === 'Leagues') {
+         iconName = `globe`;
+       }else if (routeName === 'Results') {
+         iconName = `trophy`;
+       }else if (routeName === 'Goals') {
+         iconName = `soccer-ball-o`;
+       }
+       // You can return any component that you like here!
+      // return {{ name: iconName, type: 'font-awesome', size: iconSize, color: 'silver' }};
+
+       return <Icon name={iconName} type={'font-awesome'} size={25} color={tintColor} />;
+     },
+   }),
+   tabBarOptions: {
+     activeTintColor: 'tomato',
+     inactiveTintColor: '#36454f',
+     style: {
+   backgroundColor: 'silver',
+   height: 50
+     },
+   },
+ });
+
+
+export default createAppContainer(TabNavigator);
+
+
+//export default GlobalRatingsHome;

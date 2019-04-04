@@ -5,14 +5,14 @@ import {
 
 
 import { Dimensions, StyleSheet, Text, View, Button, FlatList } from 'react-native';
-import { Tile } from 'react-native-elements'
+import { Icon, Tile } from 'react-native-elements'
 import {renderTile} from "../util/RenderUtils";
 import {machineLoadingStatus} from "../api/DataService";
-
-const type = 'FOOTBALL';
-//const adUnitID = 'ca-app-pub-3940256099942544/6300978111';
-const adUnitID = 'ca-app-pub-8745028067803834/5416520976';
-const adUnitRewardsID = 'ca-app-pub-3940256099942544/5224354917';
+import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
+import Events from './Events';
+import Betting from './Betting';
+import GlobalRatingsHome from './GlobalRatingsHome';
+import Countries from './Countries';
 
 class Home extends React.Component {
   constructor(props) {
@@ -33,9 +33,9 @@ class Home extends React.Component {
            today: true,
            country: null,
            competition: null,
-           type: type,
-           adUnitID: adUnitID,
-           adUnitRewardsID: adUnitRewardsID,
+           type: props.navigation.state.params.type,
+           adUnitID: props.navigation.state.params.adUnitID,
+           adUnitRewardsID: props.navigation.state.params.adUnitRewardsID,
            label: 'Todays Events'
          }
        },
@@ -46,10 +46,10 @@ class Home extends React.Component {
          props: {
            token: props.navigation.state.params.token,
            styles: props.navigation.state.params.styles,
-           type: type,
-           adUnitID: adUnitID,
-           adUnitRewardsID: adUnitRewardsID
-         }
+           type: props.navigation.state.params.type,
+           adUnitID: props.navigation.state.params.adUnitID,
+           adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
+            }
        }
      ],
      tilesRight: [
@@ -59,10 +59,10 @@ class Home extends React.Component {
          icon: 'bar-chart-o',
          props: {
            token: props.navigation.state.params.token,
-           type: type,
-           adUnitID: adUnitID,
-           adUnitRewardsID: adUnitRewardsID,
-           styles: props.navigation.state.params.styles
+           type: props.navigation.state.params.type,
+           adUnitID: props.navigation.state.params.adUnitID,
+           adUnitRewardsID: props.navigation.state.params.adUnitRewardsID,
+          styles: props.navigation.state.params.styles
          }
        },
        {
@@ -72,10 +72,10 @@ class Home extends React.Component {
          props: {
            token: props.navigation.state.params.token,
            styles: props.navigation.state.params.styles,
-           adUnitID: adUnitID,
-           adUnitRewardsID: adUnitRewardsID,
-           type: type
-         }
+           type: props.navigation.state.params.type,
+           adUnitID: props.navigation.state.params.adUnitID,
+           adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
+          }
        }
      ]
     };
@@ -117,4 +117,46 @@ async function statusCheck(component){
 }
 
 
-export default Home;
+
+const TabNavigator = createBottomTabNavigator({
+  Today:  Events,
+  Betting: Betting,
+  Ratings: GlobalRatingsHome,
+  Countries: Countries
+},
+{
+   defaultNavigationOptions: ({ navigation }) => ({
+     tabBarIcon: ({ focused, horizontal, tintColor }) => {
+       const { routeName } = navigation.state;
+       if (routeName === 'Today') {
+         iconName = `calendar-check-o`;
+         // Sometimes we want to add badges to some icons.
+         // You can check the implementation below.
+       } else if (routeName === 'Betting') {
+         iconName = `dollar`;
+       }else if (routeName === 'Ratings') {
+         iconName = `bar-chart-o`;
+       }else if (routeName === 'Countries') {
+         iconName = `globe`;
+       }
+
+       // You can return any component that you like here!
+      // return {{ name: iconName, type: 'font-awesome', size: iconSize, color: 'silver' }};
+
+       return <Icon name={iconName} type={'font-awesome'} size={25} color={tintColor} />;
+     },
+   }),
+   tabBarOptions: {
+     activeTintColor: 'tomato',
+     inactiveTintColor: '#36454f',
+     style: {
+   backgroundColor: 'silver',
+   height: 50
+     },
+   },
+ });
+
+
+export default createAppContainer(TabNavigator);
+
+//export default Home;

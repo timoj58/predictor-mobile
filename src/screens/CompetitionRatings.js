@@ -108,7 +108,7 @@ function getRating(market, marketRatings){
 }
 
 function setDataSource(component){
-  competitionRatings(component.state.market, component.state.token)
+  competitionRatings(component.state.token)
   .then( data =>
       component.setState({competitions : data, loading: false})
     )

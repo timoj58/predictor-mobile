@@ -105,8 +105,8 @@ export function globalRating(team, market, token){
   return get(CLIENT_SERVICES_API+'/performance/'+team+'?market='+market, token);
 }
 
-export function competitionRatings(market, token){
-  return get(CLIENT_SERVICES_API+'/performance/competitions?market='+market, token);
+export function competitionRatings(token){
+  return get(CLIENT_SERVICES_API+'/performance/competitions', token);
 
 }
 

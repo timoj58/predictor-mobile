@@ -68,7 +68,7 @@ class SelectedResultsBets extends React.Component {
    {
     title: 'Against Machine',
     screen: 'SelectedBets',
-    icon: 'exclamation-triangle', 
+    icon: 'exclamation-triangle',
     props: {
       token: props.navigation.state.params.token,
       market: props.navigation.state.params.market,
@@ -104,6 +104,5 @@ _renderTile = ({item}) => (
     );
   }
 }
-
 
 export default SelectedResultsBets;

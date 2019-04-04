@@ -10,7 +10,6 @@ import { ListItem, Avatar } from 'react-native-elements';
 import { Tile } from 'react-native-elements'
 import {renderTile} from "../util/RenderUtils";
 
-
 class CompetitionRatingsHome extends React.Component {
   constructor(props) {
    super(props);
@@ -72,5 +71,6 @@ _renderTile = ({item}) => (
     );
   }
 }
+
 
 export default CompetitionRatingsHome;

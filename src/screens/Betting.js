@@ -4,68 +4,61 @@ import {
 } from 'react-navigation';
 
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
-import { Tile } from 'react-native-elements'
-import {renderTile} from "../util/RenderUtils";
-import {expires} from "../util/TokenUtils";
-import {refresh} from "../api/AuthService";
+import { Icon, Tile } from 'react-native-elements'
+import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
+import SelectedBets from './SelectedBets';
+import SelectedBetHistoryYears from './SelectedBetHistoryYears';
 
 
-class Betting extends React.Component {
-  constructor(props) {
-   super(props);
-
-   this.state = {
-     token: props.navigation.state.params.token,
-     type: props.navigation.state.params.type,
-     styles: props.navigation.state.params.styles,
-     tiles: [
-       {
-         title: 'Selected Bets',
-         screen: 'SelectedBetsHome',
-         icon: 'sticky-note',
-         props: {
-           token: props.navigation.state.params.token,
-           type: props.navigation.state.params.type,
-           styles: props.navigation.state.params.styles,
-           start: props.navigation.state.params.start,
-           adUnitID: props.navigation.state.params.adUnitID,
-           adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
-         }
-       },
-       {
-         title: 'History',
-         screen: 'SelectedBetHistoryYears',
-         icon: 'history',
-         props: {
-           token: props.navigation.state.params.token,
-           type: props.navigation.state.params.type,
-           styles: props.navigation.state.params.styles,
-           adUnitID: props.navigation.state.params.adUnitID,
-           adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
-     }
+const TabNavigator = createBottomTabNavigator({
+  Home:  { screen: props => <SelectedBets {...props} event="homeWin" market="results" />},
+  Away:  { screen: props => <SelectedBets {...props} event="awayWin" market="results" />},
+  Draw:  { screen: props => <SelectedBets {...props} event="draw" market="results" />},
+  Over:  { screen: props => <SelectedBets {...props} event="2.5" market="goals" />},
+  Under:  { screen: props => <SelectedBets {...props} event="-2.5" market="goals" />},
+  History: {screen: SelectedBetHistoryYears}
+ },
+ {
+   defaultNavigationOptions: ({ navigation }) => ({
+     tabBarIcon: ({ focused, horizontal, tintColor }) => {
+       const { routeName } = navigation.state;
+       if (routeName === 'Events') {
+         iconName = `calendar-check-o`;
+         // Sometimes we want to add badges to some icons.
+         // You can check the implementation below.
+       } else if (routeName === 'Home') {
+         iconName = `home`;
+       }else if (routeName === 'Away') {
+         iconName = `home`;
+       }else if (routeName === 'Draw') {
+         iconName = `handshake-o`;
+       }else if (routeName === 'Over') {
+         iconName = `soccer-ball-o`;
+       }else if (routeName === 'Under') {
+         iconName = `soccer-ball-o`;
+       }else if (routeName === 'History') {
+         iconName = `history`;
        }
-     ]
-    };
 
-}
+       // You can return any component that you like here!
+      // return {{ name: iconName, type: 'font-awesome', size: iconSize, color: 'silver' }};
 
-_renderTile = ({item}) => (
-    renderTile(this, item)
- );
-
-
-  render() {
-    return (
-      <View style={this.state.styles.container}>
-     <FlatList
-        data={this.state.tiles}
-        renderItem={this._renderTile}
-        keyExtractor={(item, index) => index.toString()}
-      />
-      </View>
-    );
-  }
-}
+       return <Icon name={iconName} type={'font-awesome'} size={25} color={tintColor} />;
+     },
+   }),
+   tabBarOptions: {
+     activeTintColor: 'tomato',
+     inactiveTintColor: '#36454f',
+     style: {
+   backgroundColor: 'silver',
+   height: 50
+     },
+   },
+ });
 
 
-export default Betting;
+export default createAppContainer(TabNavigator);
+
+
+
+//export default Betting;

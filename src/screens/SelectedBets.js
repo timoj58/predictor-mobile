@@ -5,7 +5,7 @@ import {
 
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import * as Progress from 'react-native-progress';
-import { ListItem } from 'react-native-elements'
+import { ListItem, Tile } from 'react-native-elements'
 import { Dimensions } from 'react-native'
 
 import {selectedBets} from "../api/DataService";
@@ -21,11 +21,13 @@ class SelectedBets extends React.Component {
   constructor(props) {
    super(props);
 
+  console.log(props);
+
    this.state = {
      token: props.navigation.state.params.token,
      type: props.navigation.state.params.type,
-     market: props.navigation.state.params.market,
-     event: props.navigation.state.params.event,
+     market: props.market,
+     event: props.event,
      styles: props.navigation.state.params.styles,
      loading: true,
      start: props.navigation.state.params.start,
@@ -67,11 +69,21 @@ _renderItem = ({item}) => (
         adUnitID={this.state.adUnitID}
         onDidFailToReceiveAdWithError={this.bannerError}
         onAdMobDispatchAppEvent={this.adMobEvent} />
-      <FlatList
+       {this.state.bets.length > 0 &&<FlatList
         data={this.state.bets}
         renderItem={this._renderItem}
         keyExtractor={(item, index) => index.toString()}
-      />
+      />}
+      {this.state.bets.length == 0 &&
+        <Tile
+                 title={'No Bets'}
+                 titleStyle={{color: 'silver',fontWeight: 'bold'}}
+                 icon={{ name: 'warning', type: 'font-awesome', color: 'silver', size: 100 }}
+                 featured
+                 width={Dimensions.get('window').width}
+                 height={Dimensions.get('window').height}
+                 imageSrc={require('../screens/img/charcoal.png')}
+      />}
       </View>
     }
       </View>
@@ -100,6 +112,13 @@ component.props.navigation.navigate('Event',
      start: component.state.start,
      adUnitID: component.state.adUnitID,
      betType: component.state.event,
+     home: item.homeId,
+     homeLabel: item.home,
+     away: item.awayId,
+     type: component.state.type,
+     awayLabel: item.away,
+     country: item.country,
+     competition: item.competition,
      adUnitRewardsID: component.state.adUnitRewardsID,
      label: item.home + ' vs '+item.away,
      event: {

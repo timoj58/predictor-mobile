@@ -70,4 +70,5 @@ _renderTile = ({item}) => (
   }
 }
 
+
 export default SelectedBetsHome;

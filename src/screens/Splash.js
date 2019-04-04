@@ -13,6 +13,12 @@ import {create} from "../api/AuthService";
 import {SplashScreen } from 'expo';
 
 
+const type = 'FOOTBALL';
+//const adUnitID = 'ca-app-pub-3940256099942544/6300978111';
+const adUnitID = 'ca-app-pub-8745028067803834/5416520976';
+const adUnitRewardsID = 'ca-app-pub-3940256099942544/5224354917';
+
+
 class Splash extends React.Component {
 
   constructor(props) {
@@ -48,12 +54,18 @@ function navigate(component){
     return component.props.navigation.navigate('LoginPassword',
     {
       styles: styles,
+      type: type,
+      adUnitID: adUnitID,
+      adUnitRewardsID: adUnitRewardsID,
       username: component.state.username
    });
   }
   return component.props.navigation.navigate('RegisterPassword',
   {
     styles: styles,
+    type: type,
+    adUnitID: adUnitID,
+    adUnitRewardsID: adUnitRewardsID,
     username: component.state.username
  });
 }
@@ -110,6 +122,16 @@ const styles = StyleSheet.create({
   color: 'silver',
   fontWeight: 'bold',
   backgroundColor: 'red'
+},
+listItemAboveAverage: {
+ color: 'silver',
+ fontWeight: 'bold',
+ backgroundColor: 'darkorange'
+},
+listItemBelowAverage: {
+ color: 'silver',
+ fontWeight: 'bold',
+ backgroundColor: 'lightyellow'
 },
   titleListItem: {
    color: 'grey',

@@ -5,6 +5,7 @@ import {
 
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import { ListItem } from 'react-native-elements'
+import {getBetRatingColor} from "../util/RenderUtils";
 
 class SelectedBetHistoryMonths extends React.Component {
   constructor(props) {
@@ -30,7 +31,27 @@ _renderItem = ({item}) => (
        history: item.betHistoryBatches
     })}
     title={item.month}
+    titleStyle={this.state.styles.titleListItem}
+    subtitle={
+      <View style={this.state.styles.listItem}>
+      <FlatList
+        data={item.betHistoryAccuracies}
+        renderItem={this._renderAccuracyItem}
+        keyExtractor={(item, index) => index.toString()}
+      />
+      </View>
+    }
+  />
+);
+
+
+_renderAccuracyItem = ({item}) => (
+  <ListItem
+    title={item.market+' '+item.event }
     titleStyle={this.state.styles.listItem}
+    containerStyle={{ borderBottomWidth: 0 }}
+    badge={{ value: getAverage(item).toFixed(2), textStyle: { color: getBetRatingColor(getAverage(item)) }, containerStyle: { marginTop: -5 } }}
+    hideChevron
   />
 );
 
@@ -46,6 +67,11 @@ _renderItem = ({item}) => (
       </View>
     );
   }
+}
+
+
+function getAverage(item){
+  return (item.success / item.total) * 100;
 }
 
 

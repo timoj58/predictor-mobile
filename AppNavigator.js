@@ -64,7 +64,7 @@ import {
     Home: {
       screen: Home,
       navigationOptions: ({ navigation }) => ({
-       title: 'Predictor - Football',
+       title: 'Tabiiki AI',
        headerStyle: { backgroundColor: 'silver' }
      })
    },

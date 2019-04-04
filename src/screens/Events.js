@@ -5,7 +5,7 @@ import {
 
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import * as Progress from 'react-native-progress';
-import { ListItem } from 'react-native-elements'
+import { ListItem, Tile } from 'react-native-elements'
 import { Dimensions } from 'react-native';
 import {events} from "../api/DataService";
 import {todaysEvents} from "../api/DataService";
@@ -24,10 +24,14 @@ class Events extends React.Component {
      token: props.navigation.state.params.token,
      type: props.navigation.state.params.type,
      styles: props.navigation.state.params.styles,
-     country: props.navigation.state.params.country,
-     competition: props.navigation.state.params.competition,
+     country: props.navigation.state.params.country === undefined ?
+                  null : props.navigation.state.params.country,
+     competition: props.navigation.state.params.competition === undefined ?
+                  null : props.navigation.state.params.competition,
      loading: true,
-     today: props.navigation.state.params.today,
+     today: props.navigation.state.params.today === undefined ?
+            props.today === undefined ? true : props.today :
+            props.navigation.state.params.today,
      events:'',
      adUnitID: props.navigation.state.params.adUnitID,
      adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
@@ -49,7 +53,14 @@ _renderItem = ({item}) => (
        styles: this.state.styles,
        market: 'all',
        label: item.home.label + ' vs '+item.away.label,
+       type: this.state.type,
        event: item,
+       home: item.home.id,
+       away: item.away.id,
+       homeLabel: item.home.label,
+       awayLabel: item.away.label,
+       country: item.home.country,
+       competition: item.home.competition,
        adUnitID: this.state.adUnitID,
        adUnitRewardsID: this.state.adUnitRewardsID
     })}
@@ -78,11 +89,21 @@ _renderItem = ({item}) => (
          adUnitID={this.state.adUnitID}
          onDidFailToReceiveAdWithError={this.bannerError}
          onAdMobDispatchAppEvent={this.adMobEvent} />
-       <FlatList
+       {this.state.events.length > 0 && <FlatList
         data={this.state.events}
         renderItem={this._renderItem}
         keyExtractor={(item, index) => index.toString()}
-      />
+      />}
+      {this.state.events.length == 0 &&
+        <Tile
+                 title={'No Events Today'}
+                 titleStyle={{color: 'silver',fontWeight: 'bold'}}
+                 icon={{ name: 'calendar-minus-o', type: 'font-awesome', color: 'silver', size: 100 }}
+                 featured
+                 width={Dimensions.get('window').width}
+                 height={Dimensions.get('window').height}
+                 imageSrc={require('../screens/img/charcoal.png')}
+      />}
       </View>
      }
       </View>
@@ -96,6 +117,8 @@ async function rewards(){
 }
 */
 function setDataSource(component){
+  console.log('rendering todays events');
+  console.log(component.state.today);
   if(component.state.today === true){
     todaysEvents(component.state.type,component.state.token)
     .then( data => component.setState({events : data, loading: false}))

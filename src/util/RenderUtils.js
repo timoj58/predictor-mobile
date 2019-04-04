@@ -32,7 +32,7 @@ export function getBetRatingColor(value){
        }
 
        if(value < 40 && value >= 15){
-         return 'yellow';
+         return 'orange';
        }
 
        return 'red';

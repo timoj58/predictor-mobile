@@ -15,7 +15,7 @@ class Accuracy extends React.Component {
 
    this.state = {
      token: props.navigation.state.params.token,
-     key: props.navigation.state.params.key,
+     competition: props.navigation.state.params.competition,
      styles: props.navigation.state.params.styles,
      accuracy: ''
    };
@@ -26,15 +26,15 @@ class Accuracy extends React.Component {
 
 
 _renderItem = ({item}) => (
-  item.validations[this.state.key].hasOwnProperty('accuracy')
+  item.validations[this.state.competition].hasOwnProperty('accuracy')
   && <ListItem
     title={item.type}
-    badge={{ value:  item.validations[this.state.key]['accuracy'].toFixed(2), textStyle: { color: getBetRatingColor(item.validations[this.state.key]['accuracy']) }, containerStyle: { marginTop: -5 } }}
+    badge={{ value:  item.validations[this.state.competition]['accuracy'].toFixed(2), textStyle: { color: getBetRatingColor(item.validations[this.state.competition]['accuracy']) }, containerStyle: { marginTop: -5 } }}
     hideChevron
     titleStyle={this.state.styles.listItem}
     subtitle={
       <View style={this.state.styles.listItem}>
-          <Text style={this.state.styles.ratingText}>{item.validations[this.state.key]['correct']} / {item.validations[this.state.key]['total']}</Text>
+          <Text style={this.state.styles.ratingText}>{item.validations[this.state.competition]['correct']} / {item.validations[this.state.competition]['total']}</Text>
       </View>
       }
       />
@@ -55,7 +55,7 @@ _renderItem = ({item}) => (
 }
 
 function setDataSource(component){
-  accuracy(component.state.key, component.state.token)
+  accuracy(component.state.competition, component.state.token)
   .then( data => component.setState({accuracy : data}))
   .catch((error) => component.props.navigation.navigate('Splash',{}));
 

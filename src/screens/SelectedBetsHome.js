@@ -25,9 +25,7 @@ class SelectedBetsHome extends React.Component {
            styles: props.navigation.state.params.styles,
            type: props.navigation.state.params.type,
            start: props.navigation.state.params.start,
-           market: 'results',
-           adUnitID: props.navigation.state.params.adUnitID,
-           adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
+           market: 'results'
          }
        },
        {
@@ -39,9 +37,7 @@ class SelectedBetsHome extends React.Component {
            styles: props.navigation.state.params.styles,
            type: props.navigation.state.params.type,
            start: props.navigation.state.params.start,
-           market: 'goals',
-           adUnitID: props.navigation.state.params.adUnitID,
-           adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
+           market: 'goals'
          }
        }
 

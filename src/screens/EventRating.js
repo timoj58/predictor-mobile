@@ -13,10 +13,6 @@ import {getBetRatingColor} from "../util/RenderUtils";
 import {predictedGoals} from "../util/GoalsUtils";
 
 
-import {
-  PublisherBanner
-} from 'expo';
-
 class EventRating extends React.Component {
   constructor(props) {
    super(props);
@@ -40,16 +36,10 @@ class EventRating extends React.Component {
      homeResultsRating: 0,
      homeResultRatingSubTitle: '',
      awayResultsRating: 0,
-     awayResultRatingSubTitle: '',
-     adUnitID: props.navigation.state.params.adUnitID,
-     adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
-    };
+     awayResultRatingSubTitle: ''
+   };
 
-/*    if(this.state.today){
-      AdMobRewarded.setAdUnitID(this.state.adUnitRewardsID); // Test ID, Replace with your-admob-unit-id
-      rewards();
-    }
-*/
+
     setDataSource(this);
 }
 
@@ -107,11 +97,6 @@ _renderItem = ({item}) => (
   render() {
     return (
       <View style={this.state.styles.container}>
-      <PublisherBanner
-      bannerSize="fullBanner"
-      adUnitID={this.state.adUnitID}
-      onDidFailToReceiveAdWithError={this.bannerError}
-      onAdMobDispatchAppEvent={this.adMobEvent} />
      <ScrollView style={this.state.styles.scrollViewContainer}>
      {this.state.loading && <Progress.Circle size={50} indeterminate={true} />}
      {!this.state.loading &&

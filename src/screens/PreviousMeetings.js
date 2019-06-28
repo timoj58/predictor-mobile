@@ -11,11 +11,6 @@ import {previousMeetings} from "../api/DataService";
 import {predictions} from "../api/DataService";
 import {predictedGoals} from "../util/GoalsUtils";
 
-
-import {
-  PublisherBanner
-} from 'expo';
-
 class PreviousMeetings extends React.Component {
   constructor(props) {
    super(props);
@@ -33,16 +28,8 @@ class PreviousMeetings extends React.Component {
      loadingPreviousMeetings: true,
      previousMeetings: [],
      event: '',
-     goalsEvent: '',
-     adUnitID: props.navigation.state.params.adUnitID,
-     adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
-    };
-
-/*    if(this.state.today){
-      AdMobRewarded.setAdUnitID(this.state.adUnitRewardsID); // Test ID, Replace with your-admob-unit-id
-      rewards();
-    }
-*/
+     goalsEvent: ''
+     };
     setDataSource(this);
 }
 
@@ -81,11 +68,6 @@ _renderPreviousMeeting = ({item}) => (
     {this.state.loadingPreviousMeetings && <Progress.Circle size={50} indeterminate={true} />}
      {!this.state.loadingPreviousMeetings &&
        <View style={this.state.styles.container}>
-        <PublisherBanner
-        bannerSize="fullBanner"
-        adUnitID={this.state.adUnitID}
-        onDidFailToReceiveAdWithError={this.bannerError}
-        onAdMobDispatchAppEvent={this.adMobEvent} />
          <FlatList
         data={this.state.previousMeetings}
         renderItem={this._renderPreviousMeeting}

@@ -19,8 +19,6 @@ class Countries extends React.Component {
      token: props.navigation.state.params.token,
      type: props.navigation.state.params.type,
      styles: props.navigation.state.params.styles,
-     adUnitID: props.navigation.state.params.adUnitID,
-     adUnitRewardsID: props.navigation.state.params.adUnitRewardsID,
      countries: ''
    };
 
@@ -35,9 +33,7 @@ _renderItem = ({item}) => (
       token: this.state.token,
       type: this.state.type,
       styles: this.state.styles,
-      country: item.country,
-      adUnitID: this.state.adUnitID,
-      adUnitRewardsID: this.state.adUnitRewardsID
+      country: item.country
     })}
     title={item.country}
     titleStyle={this.state.styles.listItem}

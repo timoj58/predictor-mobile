@@ -9,10 +9,6 @@ import { Dimensions } from 'react-native';
 import { ListItem, Avatar } from 'react-native-elements';
 import {getBetRatingColor} from "../util/RenderUtils";
 import {getAvatarColor} from "../util/RenderUtils";
-import {
-  PublisherBanner
-} from 'expo';
-
 
 
 class GlobalRatings extends React.Component {
@@ -23,10 +19,8 @@ class GlobalRatings extends React.Component {
      token: props.navigation.state.params.token,
      styles: props.navigation.state.params.styles,
      market: props.navigation.state.params.market,
-     teams : props.navigation.state.params.teams,
-     adUnitID: props.navigation.state.params.adUnitID,
-     adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
-  };
+     teams : props.navigation.state.params.teams
+    };
 
 }
 
@@ -37,10 +31,8 @@ _renderItem = ({item}) => (
     {  token: this.state.token,
        styles: this.state.styles,
        market: this.state.market,
-       teamRating: item,
-       adUnitID: this.state.adUnitID,
-       adUnitRewardsID: this.state.adUnitRewardsID
-    })}
+       teamRating: item
+         })}
     title={item.team}
     avatar={<Avatar
              rounded
@@ -67,11 +59,6 @@ _renderItem = ({item}) => (
      }
      {!this.state.loading &&
        <View style={this.state.styles.container}>
-       <PublisherBanner
-         bannerSize="fullBanner"
-         adUnitID={this.state.adUnitID}
-         onDidFailToReceiveAdWithError={this.bannerError}
-         onAdMobDispatchAppEvent={this.adMobEvent} />
        <FlatList
         data={this.state.teams}
         renderItem={this._renderItem}

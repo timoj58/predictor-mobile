@@ -8,10 +8,6 @@ import { ListItem } from 'react-native-elements';
 import {getBetRatingColor} from "../util/RenderUtils";
 import {predictedGoals} from "../util/GoalsUtils";
 
-import {
-  PublisherBanner
-} from 'expo';
-
 
 
 class TeamRating extends React.Component {
@@ -22,10 +18,8 @@ class TeamRating extends React.Component {
      token: props.navigation.state.params.token,
      styles: props.navigation.state.params.styles,
      teamRating: props.navigation.state.params.teamRating,
-     market: props.navigation.state.params.market,
-     adUnitID: props.navigation.state.params.adUnitID,
-     adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
-};
+     market: props.navigation.state.params.market
+   };
 
 }
 
@@ -88,11 +82,6 @@ _renderEventItem = ({item}) => (
     return (
      <ScrollView style={this.state.styles.scrollViewContainer}>
      <View>
-     <PublisherBanner
-     bannerSize="fullBanner"
-     adUnitID={this.state.adUnitID}
-     onDidFailToReceiveAdWithError={this.bannerError}
-     onAdMobDispatchAppEvent={this.adMobEvent} />
      <ListItem
       title={'Machine Statistics'}
       hideChevron

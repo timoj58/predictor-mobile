@@ -15,8 +15,6 @@ import {create} from "../api/AuthService";
       styles: props.navigation.state.params.styles,
       enterEnabled: false,
       type: props.navigation.state.params.type,
-      adUnitID: props.navigation.state.params.adUnitID,
-      adUnitRewardsID: props.navigation.state.params.adUnitRewardsID,
       password: props.navigation.state.params.username};
 
   }
@@ -53,8 +51,6 @@ function createUser(component){
         component.props.navigation.navigate('Home', {
           token: token,
           type: component.state.type,
-          adUnitID: component.state.adUnitID,
-          adUnitRewardsID: component.state.adUnitRewardsID,
           styles: component.state.styles});
     }
  });

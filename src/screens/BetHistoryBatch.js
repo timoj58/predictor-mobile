@@ -26,13 +26,20 @@ _renderBet = ({item}) => (
     containerStyle={{ borderBottomWidth: 0 }}
     hideChevron
     badge={{ value:  item.rating.toFixed(2), textStyle: { color: getBetRatingColor(item.rating) }, containerStyle: { marginTop: -5 } }}
+    subtitle={
+       <View style={this.state.styles.container}>
+        <Text style={this.state.styles.listItem}>
+         {getPriceReturn(item.bestPrice)}
+        </Text>
+       </View>
+       }
   />
 );
 
 
 _renderItem = ({item}) => (
   <ListItem
-    title={item.header.market +' '+ item.header.event}
+    title={item.header.market +' '+ item.header.event+' ('+getPotentialReturn(item)+')'}
     titleStyle={this.state.styles.titleListItem}
     hideChevron
     containerStyle={{ borderBottomWidth: 0 }}
@@ -66,6 +73,37 @@ _renderItem = ({item}) => (
       </View>
     );
   }
+}
+
+function getPotentialReturn(item){
+
+  var winningBets = item.selectedBetResponses.filter(f => f.win == true).length;
+
+  var withPrices = item.selectedBetResponses
+                         .filter(f => f.win == true)
+                         .filter(f => f.bestPrice != null)
+                         .map(m => getPrice(m.bestPrice));
+
+  if(withPrices.length == 0){
+    return '?';
+  }
+
+  var potentialReturn = withPrices.reduce((total, scalar) => total + scalar);
+  var unitPrice = 1 * (potentialReturn/100);
+
+  return (unitPrice + winningBets - item.selectedBetResponses.length).toFixed(2);
+}
+
+function getPrice(bestPrice){
+  return (bestPrice-1)*100;
+}
+
+function getPriceReturn(bestPrice){
+  if (bestPrice === null) {
+    return 'No price available';
+  }
+
+  return getPrice(bestPrice).toFixed(2) +'% Returned';
 }
 
 function getHistory(betHistoryResponses){

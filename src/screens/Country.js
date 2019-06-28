@@ -17,10 +17,8 @@ class Country extends React.Component {
      type: props.navigation.state.params.type,
      country: props.navigation.state.params.country,
      styles: props.navigation.state.params.styles,
-     competitions: '',
-     adUnitID: props.navigation.state.params.adUnitID,
-     adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
-   };
+     competitions: ''
+      };
 
    setDataSource(this);
 }
@@ -35,10 +33,8 @@ _renderItem = ({item}) => (
       country: this.state.country,
       styles: this.state.styles,
       competition: item.competition,
-      label: item.label,
-      adUnitID: this.state.adUnitID,
-      adUnitRewardsID: this.state.adUnitRewardsID
-     })}
+      label: item.label
+         })}
     title={item.label}
     titleStyle={this.state.styles.listItem}
 

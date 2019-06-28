@@ -28,9 +28,7 @@ class GlobalRatingsHome extends React.Component {
          props: {
            token: props.navigation.state.params.token,
            styles: props.navigation.state.params.styles,
-           type: props.navigation.state.params.type,
-           adUnitID: props.navigation.state.params.adUnitID,
-           adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
+           type: props.navigation.state.params.type
          }
        },
        {
@@ -42,9 +40,7 @@ class GlobalRatingsHome extends React.Component {
            styles: props.navigation.state.params.styles,
            type: props.navigation.state.params.type,
            market: 'results',
-           label: 'Results Rankings',
-           adUnitID: props.navigation.state.params.adUnitID,
-           adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
+           label: 'Results Rankings'
          }
        },
        {
@@ -56,9 +52,7 @@ class GlobalRatingsHome extends React.Component {
            styles: props.navigation.state.params.styles,
            type: props.navigation.state.params.type,
            market: 'goals',
-           label: 'Goals (OVER / UNDER) Rankings',
-           adUnitID: props.navigation.state.params.adUnitID,
-           adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
+           label: 'Goals (OVER / UNDER) Rankings'
          }
        }
      ]

@@ -11,9 +11,6 @@ import { ListItem, Avatar } from 'react-native-elements';
 import {renderProgress} from "../util/RenderUtils";
 import {getBetRatingColor} from "../util/RenderUtils";
 import {getAvatarColor} from "../util/RenderUtils";
-import {
-  PublisherBanner
-} from 'expo';
 
 
 class CompetitionRatings extends React.Component {
@@ -25,10 +22,8 @@ class CompetitionRatings extends React.Component {
      styles: props.navigation.state.params.styles,
      loading: true,
      competitions :'',
-     market: props.navigation.state.params.market,
-     adUnitID: props.navigation.state.params.adUnitID,
-     adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
-    };
+     market: props.navigation.state.params.market
+   };
 
 
     setDataSource(this);
@@ -47,10 +42,8 @@ _renderItem = ({item}) => (
        event: item.type,
        competition: item.competition,
        title: item.competition,
-       label: item.competition,
-       adUnitID: this.state.adUnitID,
-       adUnitRewardsID: this.state.adUnitRewardsID
-    })}
+       label: item.competition
+     })}
    avatar={<Avatar
              rounded
              icon={{name: item.movement, color: getAvatarColor(item.movement), type: 'font-awesome'}}
@@ -79,11 +72,6 @@ _renderItem = ({item}) => (
      }
      {!this.state.loading &&
        <View style={this.state.styles.container}>
-       <PublisherBanner
-         bannerSize="fullBanner"
-         adUnitID={this.state.adUnitID}
-         onDidFailToReceiveAdWithError={this.bannerError}
-         onAdMobDispatchAppEvent={this.adMobEvent} />
      <FlatList
         data={this.state.competitions}
         renderItem={this._renderItem}

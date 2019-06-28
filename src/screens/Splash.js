@@ -14,9 +14,6 @@ import {SplashScreen } from 'expo';
 
 
 const type = 'FOOTBALL';
-//const adUnitID = 'ca-app-pub-3940256099942544/6300978111';
-const adUnitID = 'ca-app-pub-8745028067803834/5416520976';
-const adUnitRewardsID = 'ca-app-pub-3940256099942544/5224354917';
 
 
 class Splash extends React.Component {
@@ -55,8 +52,6 @@ function navigate(component){
     {
       styles: styles,
       type: type,
-      adUnitID: adUnitID,
-      adUnitRewardsID: adUnitRewardsID,
       username: component.state.username
    });
   }
@@ -64,8 +59,6 @@ function navigate(component){
   {
     styles: styles,
     type: type,
-    adUnitID: adUnitID,
-    adUnitRewardsID: adUnitRewardsID,
     username: component.state.username
  });
 }

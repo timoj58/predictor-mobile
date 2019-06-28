@@ -12,10 +12,6 @@ import {expires} from "../util/TokenUtils";
 import {refresh} from "../api/AuthService";
 import {predictedGoals} from "../util/GoalsUtils";
 
-import {
-  PublisherBanner
-} from 'expo';
-
 
 class PreviousFixtures extends React.Component {
   constructor(props) {
@@ -29,10 +25,8 @@ class PreviousFixtures extends React.Component {
      competition: props.navigation.state.params.competition,
      fixtures: '',
      market: props.navigation.state.params.market,
-     event: props.navigation.state.params.event,
-     adUnitID: props.navigation.state.params.adUnitID,
-     adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
-     };
+     event: props.navigation.state.params.event
+    };
 
 
     setDataSource(this);
@@ -71,11 +65,6 @@ _renderItem = ({item}) => (
   render() {
     return (
        <View style={this.state.styles.container}>
-         <PublisherBanner
-         bannerSize="fullBanner"
-         adUnitID={this.state.adUnitID}
-         onDidFailToReceiveAdWithError={this.bannerError}
-         onAdMobDispatchAppEvent={this.adMobEvent} />
        <FlatList
         data={this.state.fixtures}
         renderItem={this._renderItem}

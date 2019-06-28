@@ -26,14 +26,9 @@ class GlobalRatingRanked extends React.Component {
      searchTeam: '',
      searchTeams: [],
      filteredSearchTeams: [],
-     boundaries: [],
-     adUnitID: props.navigation.state.params.adUnitID,
-     adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
+     boundaries: []
     };
 
-  /*AdMobRewarded.setAdUnitID(this.state.adUnitRewardsID); // Test ID, Replace with your-admob-unit-id
-  rewards();
-*/
   setDataSource(this);
   setTeams(this);
 }
@@ -46,8 +41,6 @@ _renderItem = ({item}) => (
        styles: this.state.styles,
        market: this.state.market,
        label: item.title,
-       adUnitID: this.state.adUnitID,
-       adUnitRewardsID: this.state.adUnitRewardsID,
        teams: this.state.teams.slice(item.start, item.end)
     })}
     title={item.title}
@@ -62,8 +55,6 @@ _renderTeam = ({item}) => (
     {  token: this.state.token,
        styles: this.state.styles,
        market: this.state.market,
-       adUnitID: this.state.adUnitID,
-       adUnitRewardsID: this.state.adUnitRewardsID,
        label: item.label+' ranked '+(this.state.teams.findIndex(t => t.team === item.label)+1),
        teams: [getTeam(this, item.label)]
     })}

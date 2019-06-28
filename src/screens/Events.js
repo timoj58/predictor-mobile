@@ -12,10 +12,6 @@ import {todaysEvents} from "../api/DataService";
 import {expires} from "../util/TokenUtils";
 import {refresh} from "../api/AuthService";
 
-import {
-  PublisherBanner
-} from 'expo';
-
 class Events extends React.Component {
   constructor(props) {
    super(props);
@@ -32,16 +28,9 @@ class Events extends React.Component {
      today: props.navigation.state.params.today === undefined ?
             props.today === undefined ? true : props.today :
             props.navigation.state.params.today,
-     events:'',
-     adUnitID: props.navigation.state.params.adUnitID,
-     adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
-    };
+     events:''
+   };
 
-/*    if(this.state.today){
-      AdMobRewarded.setAdUnitID(this.state.adUnitRewardsID); // Test ID, Replace with your-admob-unit-id
-      rewards();
-    }
-*/
     setDataSource(this);
 }
 
@@ -60,10 +49,8 @@ _renderItem = ({item}) => (
        homeLabel: item.home.label,
        awayLabel: item.away.label,
        country: item.home.country,
-       competition: item.home.competition,
-       adUnitID: this.state.adUnitID,
-       adUnitRewardsID: this.state.adUnitRewardsID
-    })}
+       competition: item.home.competition
+     })}
     title={item.home.label + ' vs '+item.away.label}
     titleStyle={this.state.styles.listItem}
   />
@@ -84,11 +71,6 @@ _renderItem = ({item}) => (
      }
      {!this.state.loading &&
        <View style={this.state.styles.container}>
-         <PublisherBanner
-         bannerSize="fullBanner"
-         adUnitID={this.state.adUnitID}
-         onDidFailToReceiveAdWithError={this.bannerError}
-         onAdMobDispatchAppEvent={this.adMobEvent} />
        {this.state.events.length > 0 && <FlatList
         data={this.state.events}
         renderItem={this._renderItem}

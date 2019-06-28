@@ -16,10 +16,6 @@ import {predictedGoals} from "../util/GoalsUtils";
 import PreviousMeetings from './PreviousMeetings';
 import EventRating from './EventRating';
 
-import {
-  PublisherBanner
-} from 'expo';
-
 
 class Event extends React.Component {
   constructor(props) {
@@ -40,9 +36,7 @@ class Event extends React.Component {
       homeResultsRating: 0,
       homeResultRatingSubTitle: '',
       awayResultsRating: 0,
-      awayResultRatingSubTitle: '',
-      adUnitID: props.navigation.state.params.adUnitID,
-      adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
+      awayResultRatingSubTitle: ''
     };
 
 

@@ -34,8 +34,6 @@ class Home extends React.Component {
            country: null,
            competition: null,
            type: props.navigation.state.params.type,
-           adUnitID: props.navigation.state.params.adUnitID,
-           adUnitRewardsID: props.navigation.state.params.adUnitRewardsID,
            label: 'Todays Events'
          }
        },
@@ -46,9 +44,7 @@ class Home extends React.Component {
          props: {
            token: props.navigation.state.params.token,
            styles: props.navigation.state.params.styles,
-           type: props.navigation.state.params.type,
-           adUnitID: props.navigation.state.params.adUnitID,
-           adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
+           type: props.navigation.state.params.type
             }
        }
      ],
@@ -60,8 +56,6 @@ class Home extends React.Component {
          props: {
            token: props.navigation.state.params.token,
            type: props.navigation.state.params.type,
-           adUnitID: props.navigation.state.params.adUnitID,
-           adUnitRewardsID: props.navigation.state.params.adUnitRewardsID,
           styles: props.navigation.state.params.styles
          }
        },
@@ -72,9 +66,7 @@ class Home extends React.Component {
          props: {
            token: props.navigation.state.params.token,
            styles: props.navigation.state.params.styles,
-           type: props.navigation.state.params.type,
-           adUnitID: props.navigation.state.params.adUnitID,
-           adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
+           type: props.navigation.state.params.type
           }
        }
      ]

@@ -12,10 +12,6 @@ import {selectedBets} from "../api/DataService";
 import {selectedBetsAgainst} from "../api/DataService";
 import {getBetRatingColor} from "../util/RenderUtils";
 import {renderListItem} from "../util/RenderUtils";
-import {
-  PublisherBanner
-} from 'expo';
-
 
 class SelectedBets extends React.Component {
   constructor(props) {
@@ -31,10 +27,8 @@ class SelectedBets extends React.Component {
      styles: props.navigation.state.params.styles,
      loading: true,
      start: props.navigation.state.params.start,
-     bets:'',
-     adUnitID: props.navigation.state.params.adUnitID,
-     adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
-    };
+     bets:''
+       };
 
 
   setDataSource(this);
@@ -64,11 +58,6 @@ _renderItem = ({item}) => (
      }
     {!this.state.loading &&
       <View style={this.state.styles.container}>
-      <PublisherBanner
-        bannerSize="fullBanner"
-        adUnitID={this.state.adUnitID}
-        onDidFailToReceiveAdWithError={this.bannerError}
-        onAdMobDispatchAppEvent={this.adMobEvent} />
        {this.state.bets.length > 0 &&<FlatList
         data={this.state.bets}
         renderItem={this._renderItem}
@@ -110,8 +99,6 @@ component.props.navigation.navigate('Event',
      styles: component.state.styles,
      market: component.state.market,
      start: component.state.start,
-     adUnitID: component.state.adUnitID,
-     betType: component.state.event,
      home: item.homeId,
      homeLabel: item.home,
      away: item.awayId,

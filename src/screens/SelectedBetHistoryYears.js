@@ -21,14 +21,10 @@ class SelectedBetHistoryYears extends React.Component {
      type: props.navigation.state.params.type,
      styles: props.navigation.state.params.styles,
      loading: true,
-     history: '',
-     adUnitID: props.navigation.state.params.adUnitID,
-     adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
-    };
+     history: ''
+   };
 
-  /*  AdMobRewarded.setAdUnitID(this.state.adUnitRewardsID); // Test ID, Replace with your-admob-unit-id
-    rewards();
-*/
+  
     setDataSource(this);
 }
 

@@ -3,7 +3,7 @@ import {
   StackNavigator,
 } from 'react-navigation';
 
-import { StyleSheet,View,TextInput, Button } from 'react-native';
+import { StyleSheet,View,TextInput, Button, Text, Linking } from 'react-native';
 import {authenticate} from "../api/AuthService";
 
  class LoginPassword extends React.Component {
@@ -16,8 +16,6 @@ import {authenticate} from "../api/AuthService";
       styles: props.navigation.state.params.styles,
       buttonColor: 'green',
       type: props.navigation.state.params.type,
-      adUnitID: props.navigation.state.params.adUnitID,
-      adUnitRewardsID: props.navigation.state.params.adUnitRewardsID,
       password: props.navigation.state.params.username};
 
   }
@@ -37,6 +35,9 @@ import {authenticate} from "../api/AuthService";
          color={this.state.buttonColor}
          accessibilityLabel="Next"
          />
+         <Text style={this.state.styles.listItem} onPress={ ()=> Linking.openURL('https://s3.amazonaws.com/tabiiki-privacy-policy/privacy_policy.html') } >
+         Privacy Policy
+         </Text>
     </View>
     );
   }
@@ -49,8 +50,6 @@ function login(component) {
         component.props.navigation.navigate('Home', {
           token: token,
           type: component.state.type,
-          adUnitID: component.state.adUnitID,
-          adUnitRewardsID: component.state.adUnitRewardsID,
           styles: component.state.styles});
     }else{
       component.setState({buttonColor: 'red'});

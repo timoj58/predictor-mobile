@@ -19,8 +19,6 @@ class CompetitionRatingsHome extends React.Component {
      styles: props.navigation.state.params.styles,
      loading: true,
      competitions :'',
-     adUnitID: props.navigation.state.params.adUnitID,
-     adUnitRewardsID: props.navigation.state.params.adUnitRewardsID,
      tiles: [
        {
          title: 'Results',
@@ -31,10 +29,8 @@ class CompetitionRatingsHome extends React.Component {
            styles: props.navigation.state.params.styles,
            type: props.navigation.state.params.type,
            market: 'results',
-           label: 'Results Rankings',
-           adUnitID: props.navigation.state.params.adUnitID,
-           adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
-         }
+           label: 'Results Rankings'
+              }
        },
        {
          title: 'Goals',
@@ -45,10 +41,8 @@ class CompetitionRatingsHome extends React.Component {
            styles: props.navigation.state.params.styles,
            type: props.navigation.state.params.type,
            market: 'goals',
-           label: 'Goals (OVER / UNDER) Rankings',
-           adUnitID: props.navigation.state.params.adUnitID,
-           adUnitRewardsID: props.navigation.state.params.adUnitRewardsID
-         }
+           label: 'Goals (OVER / UNDER) Rankings'
+              }
        }
      ]
     };

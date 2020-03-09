@@ -6,7 +6,7 @@ import {
 import * as Progress from 'react-native-progress';
 import { Dimensions } from 'react-native';
 import { StyleSheet, Text, View, Button } from 'react-native';
-import { ListItem} from 'react-native-elements';
+import { ListItem, Tile} from 'react-native-elements';
 import {isUsernameOnFile} from "../api/AuthService";
 import {authenticate} from "../api/AuthService";
 import {create} from "../api/AuthService";
@@ -34,47 +34,72 @@ class Splash extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-            <ListItem
-             onPress={() => navigate(this)}
-              title={getTitle(this.state.registered)}
-              titleStyle={styles.listItem}
-              />
-    </View>
-      );
-  }
+    <View style={styles}>
+      <Tile
+             featured
+             width={Dimensions.get('window').width}
+             height={Dimensions.get('window').height}
+             imageSrc={require('../screens/img/splash.png')}
+             icon={{ name: 'refresh', type: 'font-awesome', size: 50, color: 'black' }}
+             onPress={() => checkUsername(this, this.state.username)}
+
+             />
+        </View>
+  );
+ }
 }
 
 
 function navigate(component){
-  if (component.state.registered){
-    return component.props.navigation.navigate('LoginPassword',
-    {
-      styles: styles,
-      type: type,
-      username: component.state.username
-   });
-  }
-  return component.props.navigation.navigate('RegisterPassword',
-  {
-    styles: styles,
-    type: type,
-    username: component.state.username
- });
-}
 
-
-function getTitle(registered){
-  if(registered){
-    return "Welcome Back";
+  if(component.state.registered){
+    console.log("logging in")
+    login(component);
+  }else{
+    console.log("creating user")
+    createUser(component);
   }
-  return "Get Started";
-}
+
+};
+
 
 function checkUsername(component, username) {
     isUsernameOnFile(username)
-    .then((value) =>  component.setState({registered: value}));
+    .then((value) =>  {
+      if(value){
+         login(component);
+      }else{
+        createUser(component);
+      }
+    });
 }
+
+
+function login(component) {
+  authenticate(component.state.username, component.state.username)
+  .then(token => {
+    if(typeof token !== 'undefined'){
+      console.log(token);
+        component.props.navigation.navigate('Home', {
+          token: token,
+          type: type,
+          styles: styles});
+    }
+
+  })
+};
+
+function createUser(component){
+  create(component.state.username, component.state.username)
+  .then(token =>  {
+    if(token !== ""){
+        component.props.navigation.navigate('Home', {
+          token: token,
+          type: type,
+          styles: styles});
+    }
+ })
+};
 
 
 const styles = StyleSheet.create({
@@ -84,6 +109,13 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     justifyContent: 'center',
    },
+   containerRow: {
+     flex: 1,
+     flexDirection: 'row',
+     backgroundColor: '#36454f',
+     alignItems: 'flex-start',
+     justifyContent: 'flex-start',
+    },
    tileContainer: {
      flex: 1,
      flexDirection: 'row',
@@ -106,7 +138,19 @@ const styles = StyleSheet.create({
     color: 'silver',
     fontWeight: 'bold'
   },
-  listItemSuccess: {
+  listItemSmall: {
+   color: 'silver',
+   fontSize: 15
+ },
+ listItemSmallRed: {
+  color: 'orangered',
+  fontSize: 15
+},
+listItemSmallGreen: {
+ color: 'green',
+ fontSize: 15
+},
+listItemSuccess: {
    color: 'silver',
    fontWeight: 'bold',
    backgroundColor: 'green'
@@ -131,6 +175,11 @@ listItemBelowAverage: {
    fontWeight: 'bold',
    fontSize: 30
  },
+ titleListItemMedium: {
+  color: 'grey',
+  fontWeight: 'bold',
+  fontSize: 25
+},
  overlayItem: {
   color: 'black',
   fontWeight: 'bold',

@@ -6,7 +6,6 @@ import {
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import {accuracy} from "../api/DataService";
 import { ListItem } from 'react-native-elements';
-import {getBetRatingColor} from "../util/RenderUtils";
 
 
 class Accuracy extends React.Component {
@@ -29,8 +28,9 @@ _renderItem = ({item}) => (
   item.validations[this.state.competition].hasOwnProperty('accuracy')
   && <ListItem
     title={item.type}
-    badge={{ value:  item.validations[this.state.competition]['accuracy'].toFixed(2), textStyle: { color: getBetRatingColor(item.validations[this.state.competition]['accuracy']) }, containerStyle: { marginTop: -5 } }}
+    badge={{ value:  item.validations[this.state.competition]['accuracy'].toFixed(2)+'%', textStyle: { color: 'green', fontSize: 20 }}}
     hideChevron
+    containerStyle={{ borderBottomWidth: 0 }}
     titleStyle={this.state.styles.listItem}
     subtitle={
       <View style={this.state.styles.listItem}>
@@ -56,9 +56,26 @@ _renderItem = ({item}) => (
 
 function setDataSource(component){
   accuracy(component.state.competition, component.state.token)
-  .then( data => component.setState({accuracy : data}))
+  .then( data => component.setState({accuracy : data.sort(sort(component.state.competition))}))
   .catch((error) => component.props.navigation.navigate('Splash',{}));
 
+}
+
+function sort(index) {
+  return function innerSort(a, b) {
+
+    const varA = a.validations[index]['accuracy'];
+    const varB = b.validations[index]['accuracy'];
+
+    let comparison = 0;
+    if (varA > varB) {
+      comparison = 1;
+    } else if (varA < varB) {
+      comparison = -1;
+    }
+    return comparison * -1;
+
+  };
 }
 
 

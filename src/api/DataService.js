@@ -26,25 +26,26 @@ console.log(url);
     });
 }
 
-export function types(token) {
-  return fetch(DATA_API+'/cache/types', token);
-}
 
 export function countries(type, token) {
-  return get(DATA_API+'/cache/countries?type='+type, token);
+  return get(DATA_API+'/cache/countries', token);
+}
+
+export function countriesAndCompetitions(type, token) {
+  return get(DATA_API+'/cache/countries-and-competitions', token);
 }
 
 export function competitions(type, country, token) {
-  return get(DATA_API+'/cache/competitions?type='+type+'&country='+country, token);
+  return get(DATA_API+'/cache/competitions?country='+country, token);
 }
 
 export function allTeams(type, token) {
-  return get(DATA_API+'/teams?type='+type, token);
+  return get(DATA_API+'/teams', token);
 }
 
 
 export function teams(type, country, competition, token) {
-  return get(DATA_API+'/teams?type='+type+'&country='+country+'&competition='+competition, token);
+  return get(DATA_API+'/teams?country='+country+'&competition='+competition, token);
 }
 
 export function team(id, token) {
@@ -65,11 +66,11 @@ export function event(home, away, token){
 
 
 export function events(type, country, competition, token){
-  return get(DATA_API+'/events/upcoming-events?type='+type+'&country='+country+'&competition='+competition, token);
+  return get(DATA_API+'/events/upcoming-events?country='+country+'&competition='+competition, token);
 }
 
 export function todaysEvents(type, token){
-  return get(DATA_API+'/events/upcoming-events?type='+type, token);
+  return get(DATA_API+'/events/upcoming-events', token);
 }
 
 export function previousFixtures(competition, market, token){
@@ -80,9 +81,7 @@ export function previousFixtures(competition, market, token){
 }
 
 export function predictions(type, country, competition, team, token){
-  return get(CLIENT_SERVICES_API+'/prediction/prices-with-predictions?type='
-                         +type
-                         +'&country='
+  return get(CLIENT_SERVICES_API+'/prediction/prices-with-predictions?country='
                          +country
                          +'&competition='
                          +competition
@@ -110,16 +109,16 @@ export function competitionRatings(token){
 
 }
 
-export function selectedBets(type, market, event, token){
-  return get(CLIENT_SERVICES_API+'/prediction/selected-bets?type='+type+'&market='+market+'&event='+event, token);
+export function selectedBets(type, token){
+  return get(CLIENT_SERVICES_API+'/prediction/selected-bets', token);
 }
 
 export function selectedBetsAgainst(type, token){
-  return get(CLIENT_SERVICES_API+'/prediction/selected-bets-against-machine?type='+type, token);
+  return get(CLIENT_SERVICES_API+'/prediction/selected-bets-against-machine', token);
 }
 
 export function betHistory(type, token){
-  return get(CLIENT_SERVICES_API+'/bet-history/'+type, token);
+  return get(CLIENT_SERVICES_API+'/bet-history', token);
 }
 
 export function machineLoadingStatus(token){

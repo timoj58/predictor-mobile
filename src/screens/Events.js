@@ -35,24 +35,52 @@ class Events extends React.Component {
 }
 
 
+_renderMatch = ({item}) => (
+  <ListItem
+   onPress={() => this.props.navigation.navigate('EventRating',
+   {  token: this.state.token,
+      styles: this.state.styles,
+      market: 'all',
+      label: item.home.label + ' vs '+item.away.label,
+      type: this.state.type,
+      event: item,
+      home: item.home.id,
+      away: item.away.id,
+      selectedBet: false,
+      homeLabel: item.home.label,
+      awayLabel: item.away.label,
+      country: item.home.country,
+      competition: item.home.competition
+    })}
+    title={
+      <View>
+        <Text style={this.state.styles.listItem}>{item.home.label}</Text>
+        <Text style={this.state.styles.listItem}>{item.away.label}</Text>
+      </View>
+   }
+   titleStyle={this.state.styles.listItem}
+   containerStyle={{ borderBottomWidth: 0 }}
+ />
+);
+
 _renderItem = ({item}) => (
   <ListItem
-    onPress={() => this.props.navigation.navigate('Event',
-    {  token: this.state.token,
-       styles: this.state.styles,
-       market: 'all',
-       label: item.home.label + ' vs '+item.away.label,
-       type: this.state.type,
-       event: item,
-       home: item.home.id,
-       away: item.away.id,
-       homeLabel: item.home.label,
-       awayLabel: item.away.label,
-       country: item.home.country,
-       competition: item.home.competition
-     })}
-    title={item.home.label + ' vs '+item.away.label}
-    titleStyle={this.state.styles.listItem}
+     title={
+       <View>
+         <Text style={this.state.styles.titleListItem}>{item.competition}</Text>
+       </View>
+     }
+     titleStyle={this.state.styles.listItem}
+     containerStyle={{ borderBottomWidth: 0 }}
+
+     subtitle={
+       <FlatList
+        data={item.upcomingEventResponses}
+        renderItem={this._renderMatch}
+        keyExtractor={(item, index) => index.toString()}
+      />
+     }
+     hideChevron
   />
 );
 

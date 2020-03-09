@@ -1,18 +1,21 @@
 import React from 'react';
+
 import {
   StackNavigator,
 } from 'react-navigation';
-
 
 import { Dimensions, StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import { Icon, Tile } from 'react-native-elements'
 import {renderTile} from "../util/RenderUtils";
 import {machineLoadingStatus} from "../api/DataService";
-import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
+import { createAppContainer } from 'react-navigation';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
+
 import Events from './Events';
-import Betting from './Betting';
-import GlobalRatingsHome from './GlobalRatingsHome';
+import SelectedBets from './SelectedBets';
 import Countries from './Countries';
+
+//const Tab = createBottomTabNavigator();
 
 class Home extends React.Component {
   constructor(props) {
@@ -22,55 +25,8 @@ class Home extends React.Component {
      token: props.navigation.state.params.token,
      styles: props.navigation.state.params.styles,
      status: false,
-     tilesLeft: [
-       {
-         title: 'Today',
-         screen: 'Events',
-         icon: 'calendar-check-o',
-         props: {
-           token: props.navigation.state.params.token,
-           styles: props.navigation.state.params.styles,
-           today: true,
-           country: null,
-           competition: null,
-           type: props.navigation.state.params.type,
-           label: 'Todays Events'
-         }
-       },
-       {
-         title: 'Betting',
-         screen: 'Betting',
-         icon: 'dollar',
-         props: {
-           token: props.navigation.state.params.token,
-           styles: props.navigation.state.params.styles,
-           type: props.navigation.state.params.type
-            }
-       }
-     ],
-     tilesRight: [
-       {
-         title: 'Ratings',
-         screen: 'GlobalRatingsHome',
-         icon: 'bar-chart-o',
-         props: {
-           token: props.navigation.state.params.token,
-           type: props.navigation.state.params.type,
-          styles: props.navigation.state.params.styles
-         }
-       },
-       {
-         title: 'Leagues',
-         screen: 'Countries',
-         icon: 'globe',
-         props: {
-           token: props.navigation.state.params.token,
-           styles: props.navigation.state.params.styles,
-           type: props.navigation.state.params.type
-          }
-       }
-     ]
     };
+
 
     statusCheck(this);
 }
@@ -109,11 +65,9 @@ async function statusCheck(component){
 }
 
 
-
 const TabNavigator = createBottomTabNavigator({
   Today:  Events,
-  Betting: Betting,
-  Ratings: GlobalRatingsHome,
+  Selected: SelectedBets,
   Countries: Countries
 },
 {
@@ -124,16 +78,16 @@ const TabNavigator = createBottomTabNavigator({
          iconName = `calendar-check-o`;
          // Sometimes we want to add badges to some icons.
          // You can check the implementation below.
-       } else if (routeName === 'Betting') {
+       } else if (routeName === 'Selected') {
          iconName = `dollar`;
-       }else if (routeName === 'Ratings') {
-         iconName = `bar-chart-o`;
        }else if (routeName === 'Countries') {
          iconName = `globe`;
        }
 
        // You can return any component that you like here!
-      // return {{ name: iconName, type: 'font-awesome', size: iconSize, color: 'silver' }};
+      // return {{ name: iconconfiguration for a stack navigator, we'll learn how to configure those later.
+
+  //  The casing of the route name doesn't matter -- you can use lowercase home or capitalized Home, it's up to you. Name, type: 'font-awesome', size: iconSize, color: 'silver' }};
 
        return <Icon name={iconName} type={'font-awesome'} size={25} color={tintColor} />;
      },
@@ -148,7 +102,18 @@ const TabNavigator = createBottomTabNavigator({
    },
  });
 
-
+ /*export default function HomeNavigator() {
+   return (
+     <NavigationContainer>
+       <Tab.Navigator>
+         <Tab.Screen name="Today" component={Today} />
+         <Tab.Screen name="SelectedBets" component={SelectedBets} />
+         <Tab.Screen name="Countries" component={Countries} />
+       </Tab.Navigator>
+     </NavigationContainer>
+   );
+ }
+*/
 export default createAppContainer(TabNavigator);
 
 //export default Home;

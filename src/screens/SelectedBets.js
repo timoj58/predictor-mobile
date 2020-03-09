@@ -5,7 +5,7 @@ import {
 
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import * as Progress from 'react-native-progress';
-import { ListItem, Tile } from 'react-native-elements'
+import { ListItem, Tile, Rating } from 'react-native-elements'
 import { Dimensions } from 'react-native'
 
 import {selectedBets} from "../api/DataService";
@@ -34,12 +34,30 @@ class SelectedBets extends React.Component {
   setDataSource(this);
 }
 
+
 _renderItem = ({item}) => (
   <ListItem
     onPress={() => loadEvent(this, item)}
-    title={item.home + ' vs '+item.away}
+    title={
+      <View>
+        <Text style={this.state.styles.listItem}>{item.home}</Text>
+        <Text style={this.state.styles.listItem}>{item.away}</Text>
+      </View>
+    }
     titleStyle={this.state.styles.listItem}
-    badge={{ value: item.rating.toFixed(2), textStyle: { color: getBetRatingColor(item.rating) }, containerStyle: { marginTop: -5 } }}
+    containerStyle={{ borderBottomWidth: 0 }}
+    badge={{ value: item.eventType, textStyle: { color: 'green', fontSize: 20 } }}
+    subtitle={
+      <View>
+      <Rating
+         type='custom'
+         imageSize={20}
+         readonly
+         ratingColor='green'
+         ratingBackgroundColor='#36454f'
+         startingValue={getRating(item)}/>
+      </View>
+    }
   />
 );
 
@@ -81,20 +99,37 @@ _renderItem = ({item}) => (
 }
 
 function setDataSource(component){
-  if(component.state.event === 'against'){
-    selectedBetsAgainst(component.state.type, component.state.token)
-   .then( data => component.setState({bets : data, loading: false}))
-   .catch((error) => component.props.navigation.navigate('Splash',{}));
-  }else{
-   selectedBets(component.state.type, component.state.market, component.state.event, component.state.token)
+   selectedBets(component.state.type, component.state.token)
   .then( data => component.setState({bets : data, loading: false}))
   .catch((error) => component.props.navigation.navigate('Splash',{}));
- }
+}
+
+const reducer = (accumulator, currentValue) => accumulator + currentValue;
+
+function getRating(item){
+
+  var score;
+
+  if(item.market === 'goals'){
+    //not this is wrong...need to check over + under
+    if(item.event === '-2.5'){
+     score = item.predictions.result.filter(f => f.key < 3).map(m => m.score).reduce(reducer).toFixed(2);
+    }else{
+      score = item.predictions.result.filter(f => f.key >= 3).map(m => m.score).reduce(reducer).toFixed(2);
+    }
+  }else if(item.market === 'results'){
+    score = item.predictions.result.filter(f => f.key === item.event).shift().score.toFixed(2);
+  }
+
+  return score / 100 * 5;
 }
 
 
 async function loadEvent(component, item){
-component.props.navigation.navigate('Event',
+
+console.log(item);
+
+component.props.navigation.navigate('EventRating',
   {  token: component.state.token,
      styles: component.state.styles,
      market: component.state.market,
@@ -107,6 +142,8 @@ component.props.navigation.navigate('Event',
      country: item.country,
      competition: item.competition,
      adUnitRewardsID: component.state.adUnitRewardsID,
+     selectedBet: true,
+     selectedBetResult: item.event,
      label: item.home + ' vs '+item.away,
      event: {
        home: {

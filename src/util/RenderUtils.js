@@ -3,7 +3,7 @@ import { Dimensions } from 'react-native';
 import { Tile } from 'react-native-elements'
 import {
   StackNavigator,
-} from 'react-navigation';
+} from '@react-navigation/native';
 
 
 

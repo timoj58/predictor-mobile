@@ -5,7 +5,7 @@ import {
 
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import * as Progress from 'react-native-progress';
-import { ListItem } from 'react-native-elements'
+import { ListItem, Badge} from 'react-native-elements'
 import { Dimensions } from 'react-native';
 import {previousFixtures} from "../api/DataService";
 import {expires} from "../util/TokenUtils";
@@ -44,11 +44,27 @@ _renderOutcomeItem = ({item}) => (
 
 _renderItem = ({item}) => (
   <ListItem
-    title={item.home.label +' '+item.homeScore+' - '+item.awayScore+' '+item.away.label}
-    titleStyle={this.state.styles.listItem}
+    title={
+      <View>
+       <View style={this.state.styles.containerRow}>
+              <Text style= {this.state.styles.listItemSmall}>{item.home.label}</Text>
+              {getResultsBadge(item.previousFixtureOutcomes.filter(f => f.eventType === 'PREDICT_RESULTS')[0], true)}
+              {getGoalsBadge(item.previousFixtureOutcomes.filter(f => f.eventType === 'PREDICT_GOALS')[0])}
+      </View>
+      <View style={this.state.styles.containerRow}>
+             <Text style= {this.state.styles.listItemSmall}>{item.away.label}</Text>
+             {getResultsBadge(item.previousFixtureOutcomes.filter(f => f.eventType === 'PREDICT_RESULTS')[0], false)}
+             {getGoalsBadge(item.previousFixtureOutcomes.filter(f => f.eventType === 'PREDICT_GOALS')[0])}
+     </View>
+     </View>
+   }
+
+//      item.home.label +' '+item.homeScore+' - '+item.awayScore+' '+item.away.label}
+//    titleStyle={this.state.styles.listItem}
     containerStyle={{ borderBottomWidth: 0 }}
     hideChevron
-    subtitle={
+    badge={{ value: item.homeScore+' - '+item.awayScore, textStyle: { color: 'silver', fontSize: 20 } }}
+   /*subtitle={
          <View style={this.state.styles.listItem}>
          <FlatList
               data={item.previousFixtureOutcomes}
@@ -56,7 +72,7 @@ _renderItem = ({item}) => (
               keyExtractor={(item, index) => index.toString()}
             />
          </View>
-        }
+       } */
 
   />
 );
@@ -118,13 +134,13 @@ function filteredFixtures(data, market, event){
 }
 
 
-function getStyle(item, styles){
+function getStyle(item){
  if(item.eventType === 'PREDICT_RESULTS' || item.eventType === 'PREDICT_SCORES'){
    if (item.success === true){
-     return styles.listItemSuccess;
+     return 'success';
    }
 
-   return styles.listItemFail;
+   return 'error';
  }
 
  if(item.eventType === 'PREDICT_GOALS'){
@@ -132,13 +148,61 @@ function getStyle(item, styles){
    var goals = predictedGoals(item.predictions.result);
 
    if ((goals >= 2.5 && item.totalGoals > 2.5) || (goals < 2.5 && item.totalGoals < 2.5)){
-     return styles.listItemSuccess;
+     return 'success';
   }
 
- return styles.listItemFail;
+ return 'error';
  }
 
- return styles.listItem;
+ return 'primary';
+}
+
+
+function getGoalsBadge(item){
+
+  var prediction = getPrediction(item);
+  var style = getStyle(item);
+
+  var color;
+
+  if(style === 'error'){
+     color = 'red';
+  } else{
+    color = 'green';
+  }
+
+  return <Badge status='success' value={prediction} textStyle={{color: color,fontSize: 10}} />;
+}
+
+
+function getResultsBadge(item, isHome){
+
+  var prediction = getPrediction(item);
+  var style = getStyle(item);
+
+  if(isHome){
+    if(prediction === 'awayWin'){
+       return;
+    }
+
+    if((prediction === 'homeWin' || prediction === 'draw') && style === 'success'){
+      return <Badge status="success" value={prediction} textStyle={{color: 'green',fontSize: 10}} />;
+    }
+
+    return <Badge status="error" value={prediction} textStyle={{color: 'red',fontSize: 10}} />;
+
+  }else{
+    if(prediction === 'homeWin'){
+       return;
+    }
+
+    if((prediction === 'awayWin' || prediction === 'draw') && style === 'success'){
+      return <Badge status="success" value={prediction} textStyle={{color: 'green',fontSize: 10}} />;
+    }
+
+    return <Badge status="error" value={prediction} textStyle={{color: 'red',fontSize: 10}} />;
+  }
+
 }
 
 function getPrediction(item){
@@ -150,9 +214,9 @@ function getPrediction(item){
   var goals = predictedGoals(item.predictions.result).toFixed(2);
 
   if(goals >= 2.5){
-    return 'OVER 2.5 GOALS ('+goals+')';
+    return '+2.5';
   }
-  return 'UNDER 2.5 GOALS ('+goals+')';
+  return '-2.5';
 
 }
 

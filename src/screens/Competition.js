@@ -1,20 +1,21 @@
 import React from 'react';
+
 import {
   StackNavigator,
 } from 'react-navigation';
 
+
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import { Icon } from 'react-native-elements'
-import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
+import { createAppContainer } from 'react-navigation';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
 import Events from './Events';
 import PreviousFixtures from './PreviousFixtures';
-import Teams from './Teams';
 import Accuracy from './Accuracy';
 
 const TabNavigator = createBottomTabNavigator({
   Upcoming:  { screen: props => <Events {...props}today='false' />},
   Previous: PreviousFixtures,
-  Teams: Teams,
   Accuracy: Accuracy
 },
 {
@@ -29,8 +30,6 @@ const TabNavigator = createBottomTabNavigator({
          iconName = `calendar`;
        }else if (routeName === 'Accuracy') {
          iconName = `crosshairs`;
-       }else if (routeName === 'Teams') {
-         iconName = `group`;
        }
 
        // You can return any component that you like here!

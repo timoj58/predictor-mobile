@@ -31,7 +31,7 @@
     "watchman": "^1.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.8.4",
+    "@babel/core": "^7.8.7",
     "babel-preset-expo": "^8.0.0",
     "expo": "^36.0.0"
   },

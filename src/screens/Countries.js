@@ -37,6 +37,7 @@ _renderCompetition = ({item}) => (
         type: this.state.type,
         styles: this.state.styles,
         competition: item.competition,
+        country: item.country,
         label: item.label
       })}
    />

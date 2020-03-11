@@ -46,7 +46,7 @@ _renderItem = ({item}) => (
     }
     titleStyle={this.state.styles.listItem}
     containerStyle={{ borderBottomWidth: 0 }}
-    badge={{ value: item.eventType, textStyle: { color: 'green', fontSize: 20 } }}
+    badge={{ value: item.eventType, textStyle: { color: 'green', fontSize: 20 }, containerStyle: {backgroundColor: 'silver'} }}
     subtitle={
       <View>
       <Rating
@@ -67,11 +67,13 @@ _renderItem = ({item}) => (
      <View style={this.state.styles.container}>
      {this.state.loading &&
        <View style={this.state.styles.progressContainer}>
-       <Progress.Circle
+       <Progress.Bar
           size={Dimensions.get('window').width/4}
           indeterminate={true}
           color='black'
-          thickness={20} />
+          height={10}
+        //  thickness={20}
+          />
         </View>
      }
     {!this.state.loading &&

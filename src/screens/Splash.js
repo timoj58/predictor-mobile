@@ -5,7 +5,7 @@ import {
 
 import * as Progress from 'react-native-progress';
 import { Dimensions } from 'react-native';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, Linking } from 'react-native';
 import { ListItem, Tile} from 'react-native-elements';
 import {isUsernameOnFile} from "../api/AuthService";
 import {authenticate} from "../api/AuthService";
@@ -37,13 +37,18 @@ class Splash extends React.Component {
     <View style={styles}>
       <Tile
              featured
+          //   title={'Press to refresh'}
+          //   titleStyle={styles.splashTitle}
              width={Dimensions.get('window').width}
-             height={Dimensions.get('window').height}
+             height={Dimensions.get('window').height-20}
              imageSrc={require('../screens/img/splash.png')}
-             icon={{ name: 'refresh', type: 'font-awesome', size: 50, color: 'black' }}
+            // icon={{ name: 'refresh', type: 'font-awesome', size: 150, color: 'blue' }}
              onPress={() => checkUsername(this, this.state.username)}
 
              />
+        <Text style={styles.listItem} onPress={ ()=> Linking.openURL('https://s3.amazonaws.com/tabiiki-privacy-policy/privacy_policy.html') } >
+         Privacy Policy
+         </Text>
         </View>
   );
  }
@@ -185,6 +190,11 @@ listItemBelowAverage: {
   fontWeight: 'bold',
   fontSize: 50,
   backgroundColor: 'grey'
+},
+splashTitle: {
+ color: 'black',
+ fontWeight: 'bold',
+ fontSize: 25
 },
 overlayItemSuccess: {
  color: 'black',

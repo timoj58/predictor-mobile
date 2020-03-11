@@ -53,7 +53,7 @@ class EventRating extends React.Component {
 _renderPredictionItem = ({item}) => (
   item.score > 0 &&  <ListItem
      title={item.key}
-     badge={{ value:  item.score.toFixed(2), textStyle: { color: 'orange' }, containerStyle: { marginTop: -5 } }}
+     badge={{ value:  item.score.toFixed(2), textStyle: { color: 'orange' }, containerStyle: { marginTop: -5 }, containerStyle: {backgroundColor: 'silver'} }}
      containerStyle={{ borderBottomWidth: 0 }}
      hideChevron
      titleStyle={this.state.styles.listItem}
@@ -70,7 +70,7 @@ _renderEventItem = ({item}) => (
      {getResultStyleView(this, item, false)}
     </View>
     hideChevron
-    badge={{ value: item.score, textStyle: { color: 'silver', fontSize: 20 } }}
+    badge={{ value: item.score, textStyle: { color: 'silver', fontSize: 20 }, containerStyle: {backgroundColor: '#36454f'}}}
     containerStyle={{ borderBottomWidth: 0 }}
   />
   </View>
@@ -83,11 +83,13 @@ _renderEventItem = ({item}) => (
     <View style={this.state.styles.container}>
      {loading(this.state) &&
        <View style={this.state.styles.progressContainer}>
-       <Progress.Circle
+       <Progress.Bar
           size={Dimensions.get('window').width/4}
           indeterminate={true}
           color='black'
-          thickness={20} />
+          height={10}
+        //  thickness={20}
+          />
         </View>
      }
      {loaded(this.state) &&
@@ -102,7 +104,7 @@ _renderEventItem = ({item}) => (
           <View>
          <ListItem
            title={'Result'}
-           badge={{ value: predictedResult(this, getMarket(this.state.predictions, "PREDICT_RESULTS")), textStyle: { color: 'green', fontSize: 20 } }}
+           badge={{ value: predictedResult(this, getMarket(this.state.predictions, "PREDICT_RESULTS")), textStyle: { color: 'green', fontSize: 20 }, containerStyle: {backgroundColor: 'silver'} }}
            titleStyle={this.state.styles.listItem}
            hideChevron
            containerStyle={{ borderBottomWidth: 0 }}
@@ -121,7 +123,7 @@ _renderEventItem = ({item}) => (
           <ListItem
             title={'Expected Goals'}
             titleStyle={this.state.styles.listItem}
-            badge={{ value: predictedGoals(getMarket(this.state.predictions, "PREDICT_GOALS").predictions.result).toFixed(2), textStyle: { color: 'green', fontSize: 20 } }}
+            badge={{ value: predictedGoals(getMarket(this.state.predictions, "PREDICT_GOALS").predictions.result).toFixed(2), textStyle: { color: 'green', fontSize: 20 }, containerStyle: {backgroundColor: 'silver'} }}
             hideChevron
             containerStyle={{ borderBottomWidth: 0 }}
             subtitle={
@@ -151,14 +153,14 @@ _renderEventItem = ({item}) => (
              hideChevron
              containerStyle={{ borderBottomWidth: 0 }}
              titleStyle={this.state.styles.listItem}
-             badge={{ value: getOverallRating(this, 'results', true), textStyle: { color: 'green', fontSize: 20 } }}
+             badge={{ value: getOverallRating(this, 'results', true), textStyle: { color: 'green', fontSize: 20 }, containerStyle: {backgroundColor: 'silver'} }}
               />
              <ListItem
              title={getTitle(this,'goals', true)}
              hideChevron
              containerStyle={{ borderBottomWidth: 0 }}
              titleStyle={this.state.styles.listItem}
-             badge={{ value: getOverallRating(this, 'goals', true), textStyle: { color: 'green', fontSize: 20 } }}
+             badge={{ value: getOverallRating(this, 'goals', true), textStyle: { color: 'green', fontSize: 20 }, containerStyle: {backgroundColor: 'silver'} }}
               />
               <ListItem
               hideChevron
@@ -188,14 +190,14 @@ _renderEventItem = ({item}) => (
                hideChevron
                containerStyle={{ borderBottomWidth: 0 }}
                titleStyle={this.state.styles.listItem}
-               badge={{ value: getOverallRating(this, 'results', false), textStyle: { color: 'green', fontSize: 20 } }}
+               badge={{ value: getOverallRating(this, 'results', false), textStyle: { color: 'green', fontSize: 20 }, containerStyle: {backgroundColor: 'silver'} }}
                 />
                <ListItem
                title={getTitle(this,'goals', false)}
                hideChevron
                containerStyle={{ borderBottomWidth: 0 }}
                titleStyle={this.state.styles.listItem}
-               badge={{ value: getOverallRating(this, 'goals', false), textStyle: { color: 'green', fontSize: 20 } }}
+               badge={{ value: getOverallRating(this, 'goals', false), textStyle: { color: 'green', fontSize: 20 }, containerStyle: {backgroundColor: 'silver'}}}
                 />
                 <ListItem
                hideChevron
@@ -277,8 +279,8 @@ function getResultStyleView(component, item, isHome){
 
 
    if(style === 'primary'){
-     return  <View style={component.state.styles.containerRow}><Text style= {component.state.styles.listItemSmall}>{label}</Text>
-     <Badge status='success' value={goals} textStyle={{color: goalStyle,fontSize: 10}} /></View>;
+     return  <View style={component.state.styles.containerRow}><Text style= {component.state.styles.listItemSmall}>{label+' '}</Text>
+     <Badge status='success' value={goals} containerStyle={{backgroundColor: goalStyle}}  textStyle={{color: 'silver',fontSize: 10}} /></View>;
    }
 
    var prediction = predictedResult(null, item);
@@ -291,9 +293,9 @@ function getResultStyleView(component, item, isHome){
      color = 'red';
    }
  }
-   return  <View style={component.state.styles.containerRow}><Text style= {component.state.styles.listItemSmall}>{label}</Text>
-           <Badge status='success' value={prediction} textStyle={{color: color,fontSize: 10}} />
-           <Badge status='success' value={goals} textStyle={{color: goalStyle,fontSize: 10}} /></View>;
+   return  <View style={component.state.styles.containerRow}><Text style= {component.state.styles.listItemSmall}>{label+' '}</Text>
+           <Badge status='success' value={prediction} containerStyle={{backgroundColor: color}} textStyle={{color: 'silver',fontSize: 10}} />
+           <Badge status='success' value={goals} containerStyle={{backgroundColor: goalStyle}} textStyle={{color: 'silver',fontSize: 10}} /></View>;
 
 }
 

@@ -47,12 +47,12 @@ _renderItem = ({item}) => (
     title={
       <View>
        <View style={this.state.styles.containerRow}>
-              <Text style= {this.state.styles.listItemSmall}>{item.home.label}</Text>
+              <Text style= {this.state.styles.listItemSmall}>{item.home.label+' '}</Text>
               {getResultsBadge(item.previousFixtureOutcomes.filter(f => f.eventType === 'PREDICT_RESULTS')[0], true)}
               {getGoalsBadge(item.previousFixtureOutcomes.filter(f => f.eventType === 'PREDICT_GOALS')[0])}
       </View>
       <View style={this.state.styles.containerRow}>
-             <Text style= {this.state.styles.listItemSmall}>{item.away.label}</Text>
+             <Text style= {this.state.styles.listItemSmall}>{item.away.label+' '}</Text>
              {getResultsBadge(item.previousFixtureOutcomes.filter(f => f.eventType === 'PREDICT_RESULTS')[0], false)}
              {getGoalsBadge(item.previousFixtureOutcomes.filter(f => f.eventType === 'PREDICT_GOALS')[0])}
      </View>
@@ -63,7 +63,7 @@ _renderItem = ({item}) => (
 //    titleStyle={this.state.styles.listItem}
     containerStyle={{ borderBottomWidth: 0 }}
     hideChevron
-    badge={{ value: item.homeScore+' - '+item.awayScore, textStyle: { color: 'silver', fontSize: 20 } }}
+    badge={{ value: item.homeScore+' - '+item.awayScore, textStyle: { color: 'silver', fontSize: 20 }, containerStyle: {backgroundColor: '#36454f'} }}
    /*subtitle={
          <View style={this.state.styles.listItem}>
          <FlatList
@@ -171,7 +171,7 @@ function getGoalsBadge(item){
     color = 'green';
   }
 
-  return <Badge status='success' value={prediction} textStyle={{color: color,fontSize: 10}} />;
+  return <Badge status='success' containerStyle={{backgroundColor: color}} value={prediction} textStyle={{color: 'silver',fontSize: 10}} />;
 }
 
 
@@ -186,10 +186,10 @@ function getResultsBadge(item, isHome){
     }
 
     if((prediction === 'homeWin' || prediction === 'draw') && style === 'success'){
-      return <Badge status="success" value={prediction} textStyle={{color: 'green',fontSize: 10}} />;
+      return <Badge status="success" containerStyle={{backgroundColor: 'green'}} value={prediction} textStyle={{color: 'silver',fontSize: 10}} />;
     }
 
-    return <Badge status="error" value={prediction} textStyle={{color: 'red',fontSize: 10}} />;
+    return <Badge status="error" containerStyle={{backgroundColor: 'red'}} value={prediction} textStyle={{color: 'silver',fontSize: 10}} />;
 
   }else{
     if(prediction === 'homeWin'){
@@ -197,10 +197,10 @@ function getResultsBadge(item, isHome){
     }
 
     if((prediction === 'awayWin' || prediction === 'draw') && style === 'success'){
-      return <Badge status="success" value={prediction} textStyle={{color: 'green',fontSize: 10}} />;
+      return <Badge status="success" containerStyle={{backgroundColor: 'green'}} value={prediction} textStyle={{color: 'silver',fontSize: 10}} />;
     }
 
-    return <Badge status="error" value={prediction} textStyle={{color: 'red',fontSize: 10}} />;
+    return <Badge status="error" containerStyle={{backgroundColor: 'red'}} value={prediction} textStyle={{color: 'silver',fontSize: 10}} />;
   }
 
 }

@@ -28,7 +28,7 @@ _renderItem = ({item}) => (
   item.validations[this.state.competition].hasOwnProperty('accuracy')
   && <ListItem
     title={item.type}
-    badge={{ value:  item.validations[this.state.competition]['accuracy'].toFixed(2)+'%', textStyle: { color: 'green', fontSize: 20 }}}
+    badge={{ value:  item.validations[this.state.competition]['accuracy'].toFixed(2)+'%', textStyle: { color: 'green', fontSize: 20 }, containerStyle: {backgroundColor: 'silver'}}}
     hideChevron
     containerStyle={{ borderBottomWidth: 0 }}
     titleStyle={this.state.styles.listItem}

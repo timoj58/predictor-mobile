@@ -90,11 +90,13 @@ _renderItem = ({item}) => (
      <View style={this.state.styles.container}>
      {this.state.loading &&
        <View style={this.state.styles.progressContainer}>
-       <Progress.Circle
+       <Progress.Bar
           size={Dimensions.get('window').width/4}
           indeterminate={true}
           color='black'
-          thickness={20} />
+          height={10}
+          //thickness={20}
+           />
         </View>
      }
      {!this.state.loading &&

@@ -13,6 +13,9 @@ import Events from './Events';
 import PreviousFixtures from './PreviousFixtures';
 import Accuracy from './Accuracy';
 
+import {styles} from './Styles';
+
+
 const TabNavigator = createBottomTabNavigator({
   Upcoming:  { screen: props => <Events {...props}today='false' />},
   Previous: PreviousFixtures,

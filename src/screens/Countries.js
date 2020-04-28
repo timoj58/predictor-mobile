@@ -5,9 +5,11 @@ import {
 
 import { StyleSheet, Text, View, FlatList, Button } from 'react-native';
 import {countriesAndCompetitions} from "../api/DataService";
-import {expires} from "../util/TokenUtils";
-import {refresh} from "../api/AuthService";
 import { ListItem } from 'react-native-elements'
+import * as Progress from 'react-native-progress';
+import { Dimensions } from 'react-native'
+
+import {styles} from './Styles';
 
 
 
@@ -16,10 +18,8 @@ class Countries extends React.Component {
    super(props);
 
    this.state = {
-     token: props.navigation.state.params.token,
-     type: props.navigation.state.params.type,
-     styles: props.navigation.state.params.styles,
-     countriesAndCompetitions: ''
+     countriesAndCompetitions: '',
+     loading: true
    };
 
    setDataSource(this);
@@ -29,13 +29,10 @@ class Countries extends React.Component {
 _renderCompetition = ({item}) => (
   <ListItem
     title={item.label}
-    titleStyle={this.state.styles.listItem}
+    titleStyle={styles.listItem}
     containerStyle={{ borderBottomWidth: 0 }}
     onPress={() => this.props.navigation.navigate('Competition',
       {
-        token: this.state.token,
-        type: this.state.type,
-        styles: this.state.styles,
         competition: item.competition,
         country: item.country,
         label: item.label
@@ -47,7 +44,7 @@ _renderCompetition = ({item}) => (
 _renderItem = ({item}) => (
   <ListItem
     title={item.countryResponse.country}
-    titleStyle={this.state.styles.titleListItem}
+    titleStyle={styles.titleListItem}
     hideChevron
     containerStyle={{ borderBottomWidth: 0 }}
     subtitle={
@@ -66,20 +63,33 @@ _renderItem = ({item}) => (
 
   render() {
     return (
-     <View style={this.state.styles.container}>
+     <View style={styles.container}>
+     {this.state.loading &&
+       <View style={styles.progressContainer}>
+       <Progress.Bar
+          size={Dimensions.get('window').width/4}
+          indeterminate={true}
+          color='black'
+          height={10}
+        //  thickness={20}
+          />
+        </View>
+     }
+
+     {!this.state.loading &&
      <FlatList
        data={this.state.countriesAndCompetitions}
        renderItem={this._renderItem}
        keyExtractor={(item, index) => index.toString()}
-     />
+     />}
    </View>
     );
   }
 }
 
 async function setDataSource(component){
-  countriesAndCompetitions(component.state.type, component.state.token).then(
-    data => component.setState({countriesAndCompetitions : data}))
+  countriesAndCompetitions().then(
+    data => component.setState({countriesAndCompetitions : data, loading: false}))
     .catch((error) => component.props.navigation.navigate('Splash',{}));
 
 }

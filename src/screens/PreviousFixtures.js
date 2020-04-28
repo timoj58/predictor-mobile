@@ -8,9 +8,9 @@ import * as Progress from 'react-native-progress';
 import { ListItem, Badge} from 'react-native-elements'
 import { Dimensions } from 'react-native';
 import {previousFixtures} from "../api/DataService";
-import {expires} from "../util/TokenUtils";
-import {refresh} from "../api/AuthService";
 import {predictedGoals} from "../util/GoalsUtils";
+
+import {styles} from './Styles';
 
 
 class PreviousFixtures extends React.Component {
@@ -18,14 +18,12 @@ class PreviousFixtures extends React.Component {
    super(props);
 
    this.state = {
-     token: props.navigation.state.params.token,
-     type: props.navigation.state.params.type,
-     styles: props.navigation.state.params.styles,
      country: props.navigation.state.params.country,
      competition: props.navigation.state.params.competition,
      fixtures: '',
      market: props.navigation.state.params.market,
-     event: props.navigation.state.params.event
+     event: props.navigation.state.params.event,
+     loading: true
     };
 
 
@@ -35,7 +33,7 @@ class PreviousFixtures extends React.Component {
 _renderOutcomeItem = ({item}) => (
   <ListItem
     title={getPrediction(item)}
-    titleStyle={getStyle(item, this.state.styles)}
+    titleStyle={getStyle(item, styles)}
     containerStyle={{ borderBottomWidth: 0 }}
     hideChevron
     />
@@ -46,13 +44,13 @@ _renderItem = ({item}) => (
   <ListItem
     title={
       <View>
-       <View style={this.state.styles.containerRow}>
-              <Text style= {this.state.styles.listItemSmall}>{item.home.label+' '}</Text>
+       <View style={styles.containerRow}>
+              <Text style= {styles.listItemSmall}>{item.home.label+' '}</Text>
               {getResultsBadge(item.previousFixtureOutcomes.filter(f => f.eventType === 'PREDICT_RESULTS')[0], true)}
               {getGoalsBadge(item.previousFixtureOutcomes.filter(f => f.eventType === 'PREDICT_GOALS')[0])}
       </View>
-      <View style={this.state.styles.containerRow}>
-             <Text style= {this.state.styles.listItemSmall}>{item.away.label+' '}</Text>
+      <View style={styles.containerRow}>
+             <Text style= {styles.listItemSmall}>{item.away.label+' '}</Text>
              {getResultsBadge(item.previousFixtureOutcomes.filter(f => f.eventType === 'PREDICT_RESULTS')[0], false)}
              {getGoalsBadge(item.previousFixtureOutcomes.filter(f => f.eventType === 'PREDICT_GOALS')[0])}
      </View>
@@ -60,12 +58,12 @@ _renderItem = ({item}) => (
    }
 
 //      item.home.label +' '+item.homeScore+' - '+item.awayScore+' '+item.away.label}
-//    titleStyle={this.state.styles.listItem}
+//    titleStyle={styles.listItem}
     containerStyle={{ borderBottomWidth: 0 }}
     hideChevron
     badge={{ value: item.homeScore+' - '+item.awayScore, textStyle: { color: 'silver', fontSize: 20 }, containerStyle: {backgroundColor: '#36454f'} }}
    /*subtitle={
-         <View style={this.state.styles.listItem}>
+         <View style={styles.listItem}>
          <FlatList
               data={item.previousFixtureOutcomes}
               renderItem={this._renderOutcomeItem}
@@ -80,20 +78,34 @@ _renderItem = ({item}) => (
 
   render() {
     return (
-       <View style={this.state.styles.container}>
-       <FlatList
+       <View style={styles.container}>
+       {this.state.loading &&
+         <View style={styles.progressContainer}>
+         <Progress.Bar
+            size={Dimensions.get('window').width/4}
+            indeterminate={true}
+            color='black'
+            height={10}
+          //  thickness={20}
+            />
+          </View>
+       }
+      {!this.state.loading && <FlatList
         data={this.state.fixtures}
         renderItem={this._renderItem}
         keyExtractor={(item, index) => index.toString()}
-      />
+      />}
       </View>
     );
   }
 }
 
 async function setDataSource(component){
-   previousFixtures(component.state.competition, component.state.market, component.state.token)
-   .then( data => component.setState({fixtures : filteredFixtures(data, component.state.market, component.state.event)}))
+   previousFixtures(component.state.competition, component.state.market)
+   .then( data => {
+     console.log(data);
+     component.setState({loading: false, fixtures : filteredFixtures(data, component.state.market, component.state.event)});
+   })
    .catch((error) => component.props.navigation.navigate('Splash',{}));
 }
 
@@ -122,7 +134,7 @@ function filteredFixtures(data, market, event){
     }
     if(market === 'PREDICT_GOALS'){
 
-      res = predictedGoals(data[x].previousFixtureOutcomes[0].predictions.result).toFixed(2);
+      res = predictedGoals(JSON.parse(data[x].previousFixtureOutcomes[0].predictions).result).toFixed(2);
 
       if((event === 'goals 2.5' && res >= 2.5) || (event === 'goals -2.5' && res < 2.5)){
         filtered.push(data[x]);
@@ -145,7 +157,7 @@ function getStyle(item){
 
  if(item.eventType === 'PREDICT_GOALS'){
 
-   var goals = predictedGoals(item.predictions.result);
+   var goals = predictedGoals(JSON.parse(item.predictions).result);
 
    if ((goals >= 2.5 && item.totalGoals > 2.5) || (goals < 2.5 && item.totalGoals < 2.5)){
      return 'success';
@@ -208,10 +220,10 @@ function getResultsBadge(item, isHome){
 function getPrediction(item){
 
   if(item.eventType === 'PREDICT_RESULTS' || item.eventType === 'PREDICT_SCORES'){
-    return item.predictions.result.map(m => m.key).shift();
+    return JSON.parse(item.predictions).result.map(m => m.key).shift();
   }
 
-  var goals = predictedGoals(item.predictions.result).toFixed(2);
+  var goals = predictedGoals(JSON.parse(item.predictions).result).toFixed(2);
 
   if(goals >= 2.5){
     return '+2.5';

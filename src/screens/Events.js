@@ -9,17 +9,15 @@ import { ListItem, Tile } from 'react-native-elements'
 import { Dimensions } from 'react-native';
 import {events} from "../api/DataService";
 import {todaysEvents} from "../api/DataService";
-import {expires} from "../util/TokenUtils";
-import {refresh} from "../api/AuthService";
+
+import {styles} from './Styles';
+
 
 class Events extends React.Component {
   constructor(props) {
    super(props);
 
    this.state = {
-     token: props.navigation.state.params.token,
-     type: props.navigation.state.params.type,
-     styles: props.navigation.state.params.styles,
      country: props.navigation.state.params.country === undefined ?
                   null : props.navigation.state.params.country,
      competition: props.navigation.state.params.competition === undefined ?
@@ -38,11 +36,8 @@ class Events extends React.Component {
 _renderMatch = ({item}) => (
   <ListItem
    onPress={() => this.props.navigation.navigate('EventRating',
-   {  token: this.state.token,
-      styles: this.state.styles,
-      market: 'all',
+   {  market: 'all',
       label: item.home.label + ' vs '+item.away.label,
-      type: this.state.type,
       event: item,
       home: item.home.id,
       away: item.away.id,
@@ -54,11 +49,11 @@ _renderMatch = ({item}) => (
     })}
     title={
       <View>
-        <Text style={this.state.styles.listItem}>{item.home.label}</Text>
-        <Text style={this.state.styles.listItem}>{item.away.label}</Text>
+        <Text style={styles.listItem}>{item.home.label}</Text>
+        <Text style={styles.listItem}>{item.away.label}</Text>
       </View>
    }
-   titleStyle={this.state.styles.listItem}
+   titleStyle={styles.listItem}
    containerStyle={{ borderBottomWidth: 0 }}
  />
 );
@@ -67,10 +62,10 @@ _renderItem = ({item}) => (
   <ListItem
      title={
        <View>
-         <Text style={this.state.styles.titleListItem}>{item.competition}</Text>
+         <Text style={styles.titleListItem}>{item.competition}</Text>
        </View>
      }
-     titleStyle={this.state.styles.listItem}
+     titleStyle={styles.listItem}
      containerStyle={{ borderBottomWidth: 0 }}
 
      subtitle={
@@ -87,9 +82,9 @@ _renderItem = ({item}) => (
 
   render() {
     return (
-     <View style={this.state.styles.container}>
+     <View style={styles.container}>
      {this.state.loading &&
-       <View style={this.state.styles.progressContainer}>
+       <View style={styles.progressContainer}>
        <Progress.Bar
           size={Dimensions.get('window').width/4}
           indeterminate={true}
@@ -100,7 +95,7 @@ _renderItem = ({item}) => (
         </View>
      }
      {!this.state.loading &&
-       <View style={this.state.styles.container}>
+       <View style={styles.container}>
        {this.state.events.length > 0 && <FlatList
         data={this.state.events}
         renderItem={this._renderItem}
@@ -132,12 +127,17 @@ function setDataSource(component){
   console.log('rendering todays events');
   console.log(component.state.today);
   if(component.state.today === true){
-    todaysEvents(component.state.type,component.state.token)
+    todaysEvents()
     .then( data => component.setState({events : data, loading: false}))
-    .catch((error) => component.props.navigation.navigate('Splash',{}));
+    .catch((error) => {
+        console.log(error);
+      component.props.navigation.navigate('Splash',{});
+
+    }
+    );
   }
   else{
-   events(component.state.type, component.state.country, component.state.competition, component.state.token)
+   events(component.state.country, component.state.competition)
    .then( data => component.setState({events : data, loading: false}))
    .catch((error) => component.props.navigation.navigate('Splash',{}));
 

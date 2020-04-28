@@ -7,7 +7,6 @@ import {
 import { Dimensions, StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import { Icon, Tile } from 'react-native-elements'
 import {renderTile} from "../util/RenderUtils";
-import {machineLoadingStatus} from "../api/DataService";
 import { createAppContainer } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 
@@ -15,20 +14,14 @@ import Events from './Events';
 import SelectedBets from './SelectedBets';
 import Countries from './Countries';
 
+import {styles} from './Styles';
+
 //const Tab = createBottomTabNavigator();
 
 class Home extends React.Component {
   constructor(props) {
    super(props);
 
-   this.state = {
-     token: props.navigation.state.params.token,
-     styles: props.navigation.state.params.styles,
-     status: false,
-    };
-
-
-    statusCheck(this);
 }
 
 _renderTile = ({item}) => (
@@ -37,31 +30,15 @@ _renderTile = ({item}) => (
 
   render() {
     return (
-      <View style={this.state.styles.container}>
-      {this.state.status &&
-        <Tile
-               title={'Machine Training...'}
-               titleStyle={{color: 'yellow',fontWeight: 'bold'}}
-               icon={{ name: 'info', type: 'font-awesome', color: 'yellow', size: 100 }}
-               featured
-               width={Dimensions.get('window').width}
-               height={Dimensions.get('window').height}
-               imageSrc={require('../screens/img/charcoal.png')}
-               />}
-      {!this.state.status &&
+      <View style={styles.container}>
       <FlatList
               data={this.state.tilesLeft.concat(this.state.tilesRight)}
               renderItem={this._renderTile}
               keyExtractor={(item, index) => index.toString()}
-            />}
+            />
           </View>
     );
   }
-}
-
-async function statusCheck(component){
-  machineLoadingStatus(component.state.token)
-   .then(data => component.setState({status: data.status}));
 }
 
 

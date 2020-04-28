@@ -12,15 +12,15 @@ import {globalRating} from "../api/DataService";
 import {getBetRatingColor} from "../util/RenderUtils";
 import {predictedGoals} from "../util/GoalsUtils";
 
+import {styles} from './Styles';
+
+
 
 class EventRating extends React.Component {
   constructor(props) {
    super(props);
 
    this.state = {
-     token: props.navigation.state.params.token,
-     type: props.navigation.state.params.type,
-     styles: props.navigation.state.params.styles,
      home: props.navigation.state.params.home,
      away: props.navigation.state.params.away,
      homeLabel: props.navigation.state.params.homeLabel,
@@ -56,16 +56,16 @@ _renderPredictionItem = ({item}) => (
      badge={{ value:  item.score.toFixed(2), textStyle: { color: 'orange' }, containerStyle: { marginTop: -5 }, containerStyle: {backgroundColor: 'silver'} }}
      containerStyle={{ borderBottomWidth: 0 }}
      hideChevron
-     titleStyle={this.state.styles.listItem}
+     titleStyle={styles.listItem}
      />
    );
 
 
 _renderEventItem = ({item}) => (
-  <View style={this.state.styles.container}>
+  <View style={styles.container}>
   <ListItem
   title=
-  <View style={this.state.styles.container}>
+  <View style={styles.container}>
      {getResultStyleView(this, item, true)}
      {getResultStyleView(this, item, false)}
     </View>
@@ -80,9 +80,9 @@ _renderEventItem = ({item}) => (
 
   render() {
     return (
-    <View style={this.state.styles.container}>
+    <View style={styles.container}>
      {loading(this.state) &&
-       <View style={this.state.styles.progressContainer}>
+       <View style={styles.progressContainer}>
        <Progress.Bar
           size={Dimensions.get('window').width/4}
           indeterminate={true}
@@ -93,19 +93,19 @@ _renderEventItem = ({item}) => (
         </View>
      }
      {loaded(this.state) &&
-       <ScrollView style={this.state.styles.scrollViewContainer}>
+       <ScrollView style={styles.scrollViewContainer}>
        <View>
        <ListItem
         title={'Predictions'}
         hideChevron
-        titleStyle={this.state.styles.titleListItem}
+        titleStyle={styles.titleListItem}
         containerStyle={{ borderBottomWidth: 0 }}
         subtitle={
           <View>
          <ListItem
            title={'Result'}
            badge={{ value: predictedResult(this, getMarket(this.state.predictions, "PREDICT_RESULTS")), textStyle: { color: 'green', fontSize: 20 }, containerStyle: {backgroundColor: 'silver'} }}
-           titleStyle={this.state.styles.listItem}
+           titleStyle={styles.listItem}
            hideChevron
            containerStyle={{ borderBottomWidth: 0 }}
            subtitle={
@@ -116,13 +116,13 @@ _renderEventItem = ({item}) => (
                 readonly
                 ratingColor='green'
                 ratingBackgroundColor='#36454f'
-                startingValue={getRating(getMarket(this.state.predictions, "PREDICT_RESULTS"))}/>
+                startingValue={getRating(getMarket(this.state.predictions, "PREDICT_RESULTS"), this)}/>
              </View>
            }
           />
           <ListItem
             title={'Expected Goals'}
-            titleStyle={this.state.styles.listItem}
+            titleStyle={styles.listItem}
             badge={{ value: predictedGoals(getMarket(this.state.predictions, "PREDICT_GOALS").predictions.result).toFixed(2), textStyle: { color: 'green', fontSize: 20 }, containerStyle: {backgroundColor: 'silver'} }}
             hideChevron
             containerStyle={{ borderBottomWidth: 0 }}
@@ -134,7 +134,7 @@ _renderEventItem = ({item}) => (
                  readonly
                  ratingColor='green'
                  ratingBackgroundColor='#36454f'
-                 startingValue={getRating(getMarket(this.state.predictions, "PREDICT_GOALS"))}/>
+                 startingValue={getRating(getMarket(this.state.predictions, "PREDICT_GOALS"), this)}/>
               </View>
             }
            />
@@ -145,21 +145,21 @@ _renderEventItem = ({item}) => (
            title={this.state.homeLabel}
            hideChevron
            containerStyle={{ borderBottomWidth: 0 }}
-           titleStyle={this.state.styles.titleListItem}
+           titleStyle={styles.titleListItem}
            subtitle={
              <View>
              <ListItem
              title={getTitle(this,'results', true)}
              hideChevron
              containerStyle={{ borderBottomWidth: 0 }}
-             titleStyle={this.state.styles.listItem}
+             titleStyle={styles.listItem}
              badge={{ value: getOverallRating(this, 'results', true), textStyle: { color: 'green', fontSize: 20 }, containerStyle: {backgroundColor: 'silver'} }}
               />
              <ListItem
              title={getTitle(this,'goals', true)}
              hideChevron
              containerStyle={{ borderBottomWidth: 0 }}
-             titleStyle={this.state.styles.listItem}
+             titleStyle={styles.listItem}
              badge={{ value: getOverallRating(this, 'goals', true), textStyle: { color: 'green', fontSize: 20 }, containerStyle: {backgroundColor: 'silver'} }}
               />
               <ListItem
@@ -182,21 +182,21 @@ _renderEventItem = ({item}) => (
              title={this.state.awayLabel}
              hideChevron
              containerStyle={{ borderBottomWidth: 0 }}
-             titleStyle={this.state.styles.titleListItem}
+             titleStyle={styles.titleListItem}
              subtitle={
                <View>
                <ListItem
                title={getTitle(this,'results', false)}
                hideChevron
                containerStyle={{ borderBottomWidth: 0 }}
-               titleStyle={this.state.styles.listItem}
+               titleStyle={styles.listItem}
                badge={{ value: getOverallRating(this, 'results', false), textStyle: { color: 'green', fontSize: 20 }, containerStyle: {backgroundColor: 'silver'} }}
                 />
                <ListItem
                title={getTitle(this,'goals', false)}
                hideChevron
                containerStyle={{ borderBottomWidth: 0 }}
-               titleStyle={this.state.styles.listItem}
+               titleStyle={styles.listItem}
                badge={{ value: getOverallRating(this, 'goals', false), textStyle: { color: 'green', fontSize: 20 }, containerStyle: {backgroundColor: 'silver'}}}
                 />
                 <ListItem
@@ -463,7 +463,7 @@ function getMarket(predictions, market){
   return filtered[filtered.length - 1];
 }
 
-function getRating(item){
+function getRating(item, component){
 
   var score;
 
@@ -477,7 +477,14 @@ function getRating(item){
     score = item.predictions.result.filter(f => f.key >= 3).map(m => m.score).reduce(reducer).toFixed(2);
   }
   }else if(item.eventType === 'PREDICT_RESULTS'){
-    score = item.predictions.result[0].score.toFixed(2);
+    console.log(component.state.selectedBetResult);
+    console.log(item.predictions.result);
+
+    if(component.state.selectedBet && ["homeWin", "awayWin", "draw"].includes(component.state.selectedBetResult) ){
+     score = item.predictions.result.filter(f => f.key === component.state.selectedBetResult)[0].score.toFixed(2);
+   }else{
+     score = item.predictions.result[0].score.toFixed(2);
+   }
   }
 
   return score / 100 * 5;
@@ -511,12 +518,7 @@ function getGoalsPrediction(result, market){
 
 
 async function setDataSource(component){
-  predictions(
-    component.state.type,
-    component.state.country,
-    component.state.competition,
-    component.state.home,
-    component.state.token)
+  predictions(component.state.home)
   .then( data => {
 
     component.setState({predictions: data, loading: false});
@@ -537,8 +539,7 @@ async function setDataSource(component){
 
 function setDataSourceHomeResultsRatings(component, market, team){
   globalRating(team,
-              market,
-              component.state.token)
+              market)
               .then(data => {
 
 
@@ -559,10 +560,8 @@ function setDataSourceHomeResultsRatings(component, market, team){
 
 function setDataSourceAwayResultsRatings(component, market, team){
   globalRating(team,
-              market,
-              component.state.token)
+              market)
               .then(data => {
-
 
                 component.setState({
                     awayOutcomes: data.predictionOutcomes.filter(f => f.outcome !== null).slice(0,5),
@@ -581,8 +580,7 @@ function setDataSourceAwayResultsRatings(component, market, team){
 
 function setDataSourceHomeGoalsRatings(component, market, team){
   globalRating(team,
-              market,
-              component.state.token)
+              market)
               .then(data => {
 
                  component.setState({
@@ -602,8 +600,7 @@ function setDataSourceHomeGoalsRatings(component, market, team){
 
 function setDataSourceAwayGoalsRatings(component, market, team){
   globalRating(team,
-              market,
-              component.state.token)
+              market)
               .then(data => {
 
                 component.setState({

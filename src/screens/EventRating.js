@@ -123,7 +123,7 @@ _renderEventItem = ({item}) => (
           <ListItem
             title={'Expected Goals'}
             titleStyle={styles.listItem}
-            badge={{ value: predictedGoals(getMarket(this.state.predictions, "PREDICT_GOALS").predictions.result).toFixed(2), textStyle: { color: 'green', fontSize: 20 }, containerStyle: {backgroundColor: 'silver'} }}
+            badge={{ value: predictedGoals(JSON.parse(getMarket(this.state.predictions, "PREDICT_GOALS").predictions).result).toFixed(2), textStyle: { color: 'green', fontSize: 20 }, containerStyle: {backgroundColor: 'silver'} }}
             hideChevron
             containerStyle={{ borderBottomWidth: 0 }}
             subtitle={
@@ -279,7 +279,7 @@ function getResultStyleView(component, item, isHome){
 
 
    if(style === 'primary'){
-     return  <View style={component.state.styles.containerRow}><Text style= {component.state.styles.listItemSmall}>{label+' '}</Text>
+     return  <View style={styles.containerRow}><Text style= {styles.listItemSmall}>{label+' '}</Text>
      <Badge status='success' value={goals} containerStyle={{backgroundColor: goalStyle}}  textStyle={{color: 'silver',fontSize: 10}} /></View>;
    }
 
@@ -293,7 +293,7 @@ function getResultStyleView(component, item, isHome){
      color = 'red';
    }
  }
-   return  <View style={component.state.styles.containerRow}><Text style= {component.state.styles.listItemSmall}>{label+' '}</Text>
+   return  <View style={styles.containerRow}><Text style= {styles.listItemSmall}>{label+' '}</Text>
            <Badge status='success' value={prediction} containerStyle={{backgroundColor: color}} textStyle={{color: 'silver',fontSize: 10}} />
            <Badge status='success' value={goals} containerStyle={{backgroundColor: goalStyle}} textStyle={{color: 'silver',fontSize: 10}} /></View>;
 
@@ -312,7 +312,7 @@ function getGoalsStyle(component, item){
     return 'primary';
    }
 
-   var goals = predictedGoals(data[0].predictions.result).toFixed(2);
+   var goals = predictedGoals(JSON.parse(data[0].predictions).result).toFixed(2);
 
    if(goals >= 2.5){
      return '+2.5';
@@ -419,7 +419,7 @@ function getOverallRating(component, market, isHome){
 function getTitle(component, market,isHome){
 
   var result = predictedResult(component,getMarket(component.state.predictions, "PREDICT_RESULTS"))
-  var goals = predictedGoals(getMarket(component.state.predictions, "PREDICT_GOALS").predictions.result);
+  var goals = predictedGoals(JSON.parse(getMarket(component.state.predictions, "PREDICT_GOALS").predictions).result);
 
 
   if(isHome && market === 'results'){
@@ -445,21 +445,23 @@ function getTitle(component, market,isHome){
 }
 
 function predictedResult(component, result){
+
   var prediction;
   if(component === null || !component.state.selectedBet){
-    prediction = result.predictions.result[0].key;
+    prediction = JSON.parse(result.predictions).result[0].key;
   }else{
-    var res = result.predictions.result.filter(f => f.key === component.state.selectedBetResult);
+    var res = JSON.parse(result.predictions).result.filter(f => f.key === component.state.selectedBetResult);
     if(res.length > 0){
      return res[0].key;
    }
-   return result.predictions.result[0].key;
+   return JSON.parse(result.predictions).result[0].key;
   }
   return prediction;
 }
 
 function getMarket(predictions, market){
   var filtered =  predictions.filter(f => f.eventType === market);
+
   return filtered[filtered.length - 1];
 }
 
@@ -468,22 +470,22 @@ function getRating(item, component){
   var score;
 
   if(item.eventType === 'PREDICT_GOALS'){
-    var goals = predictedGoals(item.predictions.result).toFixed(2);
+    var goals = predictedGoals(JSON.parse(item.predictions).result).toFixed(2);
     //need to find the total goals really..
   if(goals < 2.5){
-     score = item.predictions.result.filter(f => f.key < 3).map(m => m.score).reduce(reducer).toFixed(2);
+     score = JSON.parse(item.predictions).result.filter(f => f.key < 3).map(m => m.score).reduce(reducer).toFixed(2);
   }
   else{
-    score = item.predictions.result.filter(f => f.key >= 3).map(m => m.score).reduce(reducer).toFixed(2);
+    score = JSON.parse(item.predictions).result.filter(f => f.key >= 3).map(m => m.score).reduce(reducer).toFixed(2);
   }
   }else if(item.eventType === 'PREDICT_RESULTS'){
     console.log(component.state.selectedBetResult);
-    console.log(item.predictions.result);
+    console.log(JSON.parse(item.predictions).result);
 
     if(component.state.selectedBet && ["homeWin", "awayWin", "draw"].includes(component.state.selectedBetResult) ){
-     score = item.predictions.result.filter(f => f.key === component.state.selectedBetResult)[0].score.toFixed(2);
+     score = JSON.parse(item.predictions).result.filter(f => f.key === component.state.selectedBetResult)[0].score.toFixed(2);
    }else{
-     score = item.predictions.result[0].score.toFixed(2);
+     score = JSON.parse(item.predictions).result[0].score.toFixed(2);
    }
   }
 
@@ -508,18 +510,11 @@ function getSuccess(marketRatings, type){
 
 
 
-function getGoalsPrediction(result, market){
- if(market === 'results') {
-   return;
- }
-
-  return predictedGoals(result);
-};
-
 
 async function setDataSource(component){
   predictions(component.state.home)
   .then( data => {
+
 
     component.setState({predictions: data, loading: false});
 

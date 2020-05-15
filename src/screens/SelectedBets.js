@@ -99,9 +99,10 @@ _renderItem = ({item}) => (
   }
 }
 
-function setDataSource(component){
+async function setDataSource(component){
    selectedBets()
-  .then( data => component.setState({bets : data, loading: false}))
+  .then( data =>
+    component.setState({bets : data, loading: false}))
   .catch((error) => component.props.navigation.navigate('Splash',{}));
 }
 
@@ -114,12 +115,12 @@ function getRating(item){
   if(item.market === 'goals'){
     //not this is wrong...need to check over + under
     if(item.event === '-2.5'){
-     score = item.predictions.result.filter(f => f.key < 3).map(m => m.score).reduce(reducer).toFixed(2);
+     score = JSON.parse(item.predictions).result.filter(f => f.key < 3).map(m => m.score).reduce(reducer).toFixed(2);
     }else{
-      score = item.predictions.result.filter(f => f.key >= 3).map(m => m.score).reduce(reducer).toFixed(2);
+      score = JSON.parse(item.predictions).result.filter(f => f.key >= 3).map(m => m.score).reduce(reducer).toFixed(2);
     }
   }else if(item.market === 'results'){
-    score = item.predictions.result.filter(f => f.key === item.event).shift().score.toFixed(2);
+    score = JSON.parse(item.predictions).result.filter(f => f.key === item.event).shift().score.toFixed(2);
   }
 
   return score / 100 * 5;

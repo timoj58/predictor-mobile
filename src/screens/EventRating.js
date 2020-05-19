@@ -11,7 +11,6 @@ import {predictions} from "../api/DataService";
 import {globalRating} from "../api/DataService";
 import {getBetRatingColor} from "../util/RenderUtils";
 import {predictedGoals} from "../util/GoalsUtils";
-
 import {styles} from './Styles';
 
 
@@ -28,10 +27,10 @@ class EventRating extends React.Component {
      country: props.navigation.state.params.country,
      competition: props.navigation.state.params.competition,
      loading: true,
-     loading2: true,
-     loading3: true,
-     loading4: true,
-     loadingPreviousMeetings: true,
+     loadingHome: true,
+     loadingAway: true,
+     loadingHomeGoals: true,
+     loadingAwayGoals: true,
      predictions: '',
      market: props.market,
      homeOutcomes: [],
@@ -77,11 +76,97 @@ _renderEventItem = ({item}) => (
 
 );
 
+_renderHomeOutcomes = () => (
+    <View>
+    <FlatList
+   data={this.state.homeOutcomes}
+   renderItem={this._renderEventItem}
+   keyExtractor={(item, index) => index.toString()}
+ />
+ </View>
+
+);
+
+_renderAwayOutcomes = () => (
+    <View>
+    <FlatList
+   data={this.state.awayOutcomes}
+   renderItem={this._renderEventItem}
+   keyExtractor={(item, index) => index.toString()}
+ />
+ </View>
+);
+
+
+_renderHome = () => (
+  <ListItem
+     title={this.state.homeLabel}
+     hideChevron
+     containerStyle={{ borderBottomWidth: 0 }}
+     titleStyle={styles.titleListItem}
+     subtitle={
+       <View>
+       <ListItem
+       title={getTitle(this,'results', true)}
+       hideChevron
+       containerStyle={{ borderBottomWidth: 0 }}
+       titleStyle={styles.listItem}
+       badge={{ value: getOverallRating(this, 'results', true), textStyle: { color: 'green', fontSize: 20 }, containerStyle: {backgroundColor: 'silver'} }}
+        />
+       <ListItem
+       title={getTitle(this,'goals', true)}
+       hideChevron
+       containerStyle={{ borderBottomWidth: 0 }}
+       titleStyle={styles.listItem}
+       badge={{ value: getOverallRating(this, 'goals', true), textStyle: { color: 'green', fontSize: 20 }, containerStyle: {backgroundColor: 'silver'} }}
+        />
+       <ListItem
+        hideChevron
+        containerStyle={{ borderBottomWidth: 0 }}
+        subtitle={this._renderHomeOutcomes()}
+      />
+     </View>
+    }
+    />
+);
+
+
+_renderAway = () => (
+  <ListItem
+      title={this.state.awayLabel}
+      hideChevron
+      containerStyle={{ borderBottomWidth: 0 }}
+      titleStyle={styles.titleListItem}
+      subtitle={
+        <View>
+        <ListItem
+        title={getTitle(this,'results', false)}
+        hideChevron
+        containerStyle={{ borderBottomWidth: 0 }}
+        titleStyle={styles.listItem}
+        badge={{ value: getOverallRating(this, 'results', false), textStyle: { color: 'green', fontSize: 20 }, containerStyle: {backgroundColor: 'silver'} }}
+         />
+        <ListItem
+        title={getTitle(this,'goals', false)}
+        hideChevron
+        containerStyle={{ borderBottomWidth: 0 }}
+        titleStyle={styles.listItem}
+        badge={{ value: getOverallRating(this, 'goals', false), textStyle: { color: 'green', fontSize: 20 }, containerStyle: {backgroundColor: 'silver'}}}
+         />
+         <ListItem
+        hideChevron
+        containerStyle={{ borderBottomWidth: 0 }}
+        subtitle={this._renderAwayOutcomes()}
+         />
+      </View>
+     }
+     />
+);
 
   render() {
     return (
     <View style={styles.container}>
-     {loading(this.state) &&
+     {this.state.loading &&
        <View style={styles.progressContainer}>
        <Progress.Bar
           size={Dimensions.get('window').width/4}
@@ -92,7 +177,7 @@ _renderEventItem = ({item}) => (
           />
         </View>
      }
-     {loaded(this.state) &&
+     {!this.state.loading &&
        <ScrollView style={styles.scrollViewContainer}>
        <View>
        <ListItem
@@ -141,80 +226,8 @@ _renderEventItem = ({item}) => (
          </View>
        }
         />
-        <ListItem
-           title={this.state.homeLabel}
-           hideChevron
-           containerStyle={{ borderBottomWidth: 0 }}
-           titleStyle={styles.titleListItem}
-           subtitle={
-             <View>
-             <ListItem
-             title={getTitle(this,'results', true)}
-             hideChevron
-             containerStyle={{ borderBottomWidth: 0 }}
-             titleStyle={styles.listItem}
-             badge={{ value: getOverallRating(this, 'results', true), textStyle: { color: 'green', fontSize: 20 }, containerStyle: {backgroundColor: 'silver'} }}
-              />
-             <ListItem
-             title={getTitle(this,'goals', true)}
-             hideChevron
-             containerStyle={{ borderBottomWidth: 0 }}
-             titleStyle={styles.listItem}
-             badge={{ value: getOverallRating(this, 'goals', true), textStyle: { color: 'green', fontSize: 20 }, containerStyle: {backgroundColor: 'silver'} }}
-              />
-              <ListItem
-              hideChevron
-              containerStyle={{ borderBottomWidth: 0 }}
-              subtitle={
-                <View>
-                <FlatList
-               data={this.state.homeOutcomes}
-               renderItem={this._renderEventItem}
-               keyExtractor={(item, index) => index.toString()}
-             />
-             </View>
-            }
-            />
-           </View>
-          }
-          />
-         <ListItem
-             title={this.state.awayLabel}
-             hideChevron
-             containerStyle={{ borderBottomWidth: 0 }}
-             titleStyle={styles.titleListItem}
-             subtitle={
-               <View>
-               <ListItem
-               title={getTitle(this,'results', false)}
-               hideChevron
-               containerStyle={{ borderBottomWidth: 0 }}
-               titleStyle={styles.listItem}
-               badge={{ value: getOverallRating(this, 'results', false), textStyle: { color: 'green', fontSize: 20 }, containerStyle: {backgroundColor: 'silver'} }}
-                />
-               <ListItem
-               title={getTitle(this,'goals', false)}
-               hideChevron
-               containerStyle={{ borderBottomWidth: 0 }}
-               titleStyle={styles.listItem}
-               badge={{ value: getOverallRating(this, 'goals', false), textStyle: { color: 'green', fontSize: 20 }, containerStyle: {backgroundColor: 'silver'}}}
-                />
-                <ListItem
-               hideChevron
-               containerStyle={{ borderBottomWidth: 0 }}
-               subtitle={
-                <View>
-                <FlatList
-                 data={this.state.awayOutcomes}
-                 renderItem={this._renderEventItem}
-                 keyExtractor={(item, index) => index.toString()}
-                />
-           </View>
-         }
-          />
-             </View>
-            }
-            />
+        {this._renderHome()}
+        {this._renderAway()}
       </View>
       </ScrollView>
     }
@@ -222,20 +235,6 @@ _renderEventItem = ({item}) => (
   );
 
  }
-}
-
-function loaded(component){
-  if(!component.loading && !component.loading2 && !component.loading3  && !component.loading4){
-   return true;
-  }
-  return false;
-}
-
-function loading(component){
-  if(component.loading || component.loading2 || component.loading3 || component.loading4 ){
-    return true;
-  }
-  return false;
 }
 
 
@@ -322,19 +321,6 @@ function getGoalsStyle(component, item){
 
 }
 
-function getGoalsOutcome(component, item){
-  /*
-   have a hack at this.  so...
-  */
-  var data = getGoalOutcome(component, item);
-
-   if(data.length === 0){
-    return 'primary';
-   }
-
-   return data[0].outcome;
-
-}
 
 function getResultStyle(item, isHome){
 
@@ -374,7 +360,7 @@ function getResultStyle(item, isHome){
 
 function getOverallRating(component, market, isHome){
    var title = getTitle(component,market, isHome);
-   var accuracy;
+   var accuracy = '?';
 
    if(component.state.homeAccuracy.length == 0 || component.state.awayAccuracy.length == 0){
      return '69%';
@@ -399,18 +385,21 @@ function getOverallRating(component, market, isHome){
      accuracy = component.state.awayAccuracy.filter(f => f.type === 'DRAW')[0].accuracy.toFixed(0);
    }
 
+   if(!component.state.loadingHomeGoals && !component.state.loadingAwayGoals){
+
    if(title === 'Under 2.5' && isHome){
      accuracy = component.state.homeGoalAccuracy.filter(f => f.type === 'UNDER_2_5')[0].accuracy.toFixed(0);
    }
    if(title === 'Over 2.5' && isHome){
      accuracy = component.state.homeGoalAccuracy.filter(f => f.type === 'OVER_2_5')[0].accuracy.toFixed(0);
    }
-   if(title === 'Under 2.5' && !isHome){
+   if(title === 'Under 2.5' && !isHome ){
      accuracy = component.state.awayGoalAccuracy.filter(f => f.type === 'UNDER_2_5')[0].accuracy.toFixed(0);
    }
    if(title === 'Over 2.5' && !isHome){
      accuracy = component.state.awayGoalAccuracy.filter(f => f.type === 'OVER_2_5')[0].accuracy.toFixed(0);
    }
+ }
 
    return accuracy+'%';
 
@@ -532,7 +521,7 @@ async function setDataSource(component){
 
 }
 
-function setDataSourceHomeResultsRatings(component, market, team){
+async function setDataSourceHomeResultsRatings(component, market, team){
   globalRating(team,
               market)
               .then(data => {
@@ -541,7 +530,7 @@ function setDataSourceHomeResultsRatings(component, market, team){
                  component.setState({
                    homeOutcomes: data.predictionOutcomes.filter(f => f.outcome !== null).slice(0,5),
                    homeAccuracy: data.accuracy,
-                   loading: false
+                   loadingHome: false
                  });
 
 
@@ -553,7 +542,7 @@ function setDataSourceHomeResultsRatings(component, market, team){
 }
 
 
-function setDataSourceAwayResultsRatings(component, market, team){
+async function setDataSourceAwayResultsRatings(component, market, team){
   globalRating(team,
               market)
               .then(data => {
@@ -561,7 +550,7 @@ function setDataSourceAwayResultsRatings(component, market, team){
                 component.setState({
                     awayOutcomes: data.predictionOutcomes.filter(f => f.outcome !== null).slice(0,5),
                     awayAccuracy: data.accuracy,
-                    loading2: false
+                    loadingAway: false
               });
 
 
@@ -573,7 +562,7 @@ function setDataSourceAwayResultsRatings(component, market, team){
 
 }
 
-function setDataSourceHomeGoalsRatings(component, market, team){
+async function setDataSourceHomeGoalsRatings(component, market, team){
   globalRating(team,
               market)
               .then(data => {
@@ -581,7 +570,7 @@ function setDataSourceHomeGoalsRatings(component, market, team){
                  component.setState({
                    homeGoalOutcomes: data.predictionOutcomes.filter(f => f.outcome !== null).slice(0,5),
                    homeGoalAccuracy: data.accuracy,
-                   loading3: false
+                   loadingHomeGoals: false
                  });
 
               })
@@ -593,7 +582,7 @@ function setDataSourceHomeGoalsRatings(component, market, team){
 }
 
 
-function setDataSourceAwayGoalsRatings(component, market, team){
+async function setDataSourceAwayGoalsRatings(component, market, team){
   globalRating(team,
               market)
               .then(data => {
@@ -601,7 +590,7 @@ function setDataSourceAwayGoalsRatings(component, market, team){
                 component.setState({
                     awayGoalOutcomes: data.predictionOutcomes.filter(f => f.outcome !== null).slice(0,5),
                     awayGoalAccuracy: data.accuracy,
-                    loading4: false
+                    loadingAwayGoals: false
                    });
 
                 })

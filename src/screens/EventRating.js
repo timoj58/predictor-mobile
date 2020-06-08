@@ -246,7 +246,7 @@ function getResultStyleView(component, item, isHome){
 
    var totalGoals;
 
-   if(item.score !== null){
+   if(item.score !== null && item.score !== undefined){
     var score = item.score.replace(" ", "").split("-");
     totalGoals = parseInt(score[0])+parseInt(score[1]);
    }

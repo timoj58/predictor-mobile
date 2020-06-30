@@ -61,7 +61,7 @@ _renderItem = ({item}) => (
 //    titleStyle={styles.listItem}
     containerStyle={{ borderBottomWidth: 0 }}
     hideChevron
-    badge={{ value: item.homeScore+' - '+item.awayScore, textStyle: { color: 'silver', fontSize: 20 }, containerStyle: {backgroundColor: '#36454f'} }}
+    badge={{ value: item.homeScore+' - '+item.awayScore, textStyle: { color: 'silver', fontSize: 16 }, containerStyle: {backgroundColor: '#36454f'} }}
    /*subtitle={
          <View style={styles.listItem}>
          <FlatList

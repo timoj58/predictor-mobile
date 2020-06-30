@@ -69,7 +69,7 @@ _renderEventItem = ({item}) => (
      {getResultStyleView(this, item, false)}
     </View>
     hideChevron
-    badge={{ value: item.score, textStyle: { color: 'silver', fontSize: 20 }, containerStyle: {backgroundColor: '#36454f'}}}
+    badge={{ value: item.score, textStyle: { color: 'silver', fontSize: 16 }, containerStyle: {backgroundColor: '#36454f'}}}
     containerStyle={{ borderBottomWidth: 0 }}
   />
   </View>
@@ -111,14 +111,14 @@ _renderHome = () => (
        hideChevron
        containerStyle={{ borderBottomWidth: 0 }}
        titleStyle={styles.listItem}
-       badge={{ value: getOverallRating(this, 'results', true), textStyle: { color: 'green', fontSize: 20 }, containerStyle: {backgroundColor: 'silver'} }}
+       badge={{ value: getOverallRating(this, 'results', true), textStyle: { color: 'green', fontSize: 16 }, containerStyle: {backgroundColor: 'silver'} }}
         />
        <ListItem
        title={getTitle(this,'goals', true)}
        hideChevron
        containerStyle={{ borderBottomWidth: 0 }}
        titleStyle={styles.listItem}
-       badge={{ value: getOverallRating(this, 'goals', true), textStyle: { color: 'green', fontSize: 20 }, containerStyle: {backgroundColor: 'silver'} }}
+       badge={{ value: getOverallRating(this, 'goals', true), textStyle: { color: 'green', fontSize: 16 }, containerStyle: {backgroundColor: 'silver'} }}
         />
        <ListItem
         hideChevron
@@ -144,14 +144,14 @@ _renderAway = () => (
         hideChevron
         containerStyle={{ borderBottomWidth: 0 }}
         titleStyle={styles.listItem}
-        badge={{ value: getOverallRating(this, 'results', false), textStyle: { color: 'green', fontSize: 20 }, containerStyle: {backgroundColor: 'silver'} }}
+        badge={{ value: getOverallRating(this, 'results', false), textStyle: { color: 'green', fontSize: 16 }, containerStyle: {backgroundColor: 'silver'} }}
          />
         <ListItem
         title={getTitle(this,'goals', false)}
         hideChevron
         containerStyle={{ borderBottomWidth: 0 }}
         titleStyle={styles.listItem}
-        badge={{ value: getOverallRating(this, 'goals', false), textStyle: { color: 'green', fontSize: 20 }, containerStyle: {backgroundColor: 'silver'}}}
+        badge={{ value: getOverallRating(this, 'goals', false), textStyle: { color: 'green', fontSize: 16 }, containerStyle: {backgroundColor: 'silver'}}}
          />
          <ListItem
         hideChevron
@@ -188,41 +188,49 @@ _renderAway = () => (
         subtitle={
           <View>
          <ListItem
-           title={'Result'}
-           badge={{ value: predictedResult(this, getMarket(this.state.predictions, "PREDICT_RESULTS")), textStyle: { color: 'green', fontSize: 20 }, containerStyle: {backgroundColor: 'silver'} }}
-           titleStyle={styles.listItem}
-           hideChevron
-           containerStyle={{ borderBottomWidth: 0 }}
-           subtitle={
+           title=
              <View>
+             <View style={{flexDirection: 'row'}}><Text style={styles.listItemWithSize}>{predictedResult(this, getMarket(this.state.predictions, "PREDICT_RESULTS"))+' '}</Text>
              <Rating
                 type='custom'
-                imageSize={20}
+                imageSize={16}
                 readonly
                 ratingColor='green'
                 ratingBackgroundColor='#36454f'
                 startingValue={getRating(getMarket(this.state.predictions, "PREDICT_RESULTS"), this)}/>
+               {!this.state.selectedBet && <Text style={styles.listItemWithSize}>{' '+predictedResult(this, getMarket(this.state.predictions, "PREDICT_RESULTS"),1)+' '}</Text>}
+                {!this.state.selectedBet && <Rating
+                   type='custom'
+                   imageSize={16}
+                   readonly
+                   ratingColor='green'
+                   ratingBackgroundColor='#36454f'
+                   startingValue={getRating(getMarket(this.state.predictions, "PREDICT_RESULTS"), this,1)}/>}
+                {!this.state.selectedBet && <Text style={styles.listItemWithSize}>{' '+predictedResult(this, getMarket(this.state.predictions, "PREDICT_RESULTS"),2)+' '}</Text>}
+                {!this.state.selectedBet && <Rating
+                   type='custom'
+                   imageSize={16}
+                   readonly
+                   ratingColor='green'
+                   ratingBackgroundColor='#36454f'
+                   startingValue={getRating(getMarket(this.state.predictions, "PREDICT_RESULTS"), this,2)}/>}
+                </View>
+                 <View style={{flexDirection: 'row'}}>
+                 <Text style={styles.listItemWithSize}>{'expected goals ('+predictedGoals(JSON.parse(getMarket(this.state.predictions, "PREDICT_GOALS").predictions).result).toFixed(2)+') '}</Text>
+                 <Rating
+                       type='custom'
+                       imageSize={16}
+                       readonly
+                       ratingColor='green'
+                       ratingBackgroundColor='#36454f'
+                       startingValue={getRating(getMarket(this.state.predictions, "PREDICT_GOALS"), this)}/>
+                </View>
              </View>
-           }
+           //badge={{ value: , textStyle: { color: 'green', fontSize: 20 }, containerStyle: {backgroundColor: 'silver'} }}
+           //titleStyle={styles.listItem}
+           hideChevron
+           containerStyle={{ borderBottomWidth: 0 }}
           />
-          <ListItem
-            title={'Expected Goals'}
-            titleStyle={styles.listItem}
-            badge={{ value: predictedGoals(JSON.parse(getMarket(this.state.predictions, "PREDICT_GOALS").predictions).result).toFixed(2), textStyle: { color: 'green', fontSize: 20 }, containerStyle: {backgroundColor: 'silver'} }}
-            hideChevron
-            containerStyle={{ borderBottomWidth: 0 }}
-            subtitle={
-              <View>
-              <Rating
-                 type='custom'
-                 imageSize={20}
-                 readonly
-                 ratingColor='green'
-                 ratingBackgroundColor='#36454f'
-                 startingValue={getRating(getMarket(this.state.predictions, "PREDICT_GOALS"), this)}/>
-              </View>
-            }
-           />
          </View>
        }
         />
@@ -433,17 +441,17 @@ function getTitle(component, market,isHome){
 
 }
 
-function predictedResult(component, result){
+function predictedResult(component, result, index=0){
 
   var prediction;
   if(component === null || !component.state.selectedBet){
-    prediction = JSON.parse(result.predictions).result[0].key;
+    prediction = JSON.parse(result.predictions).result[index].key;
   }else{
     var res = JSON.parse(result.predictions).result.filter(f => f.key === component.state.selectedBetResult);
     if(res.length > 0){
      return res[0].key;
    }
-   return JSON.parse(result.predictions).result[0].key;
+   return JSON.parse(result.predictions).result[index].key;
   }
   return prediction;
 }
@@ -454,7 +462,7 @@ function getMarket(predictions, market){
   return filtered[filtered.length - 1];
 }
 
-function getRating(item, component){
+function getRating(item, component,index=0){
 
   var score;
 
@@ -474,7 +482,7 @@ function getRating(item, component){
     if(component.state.selectedBet && ["homeWin", "awayWin", "draw"].includes(component.state.selectedBetResult) ){
      score = JSON.parse(item.predictions).result.filter(f => f.key === component.state.selectedBetResult)[0].score.toFixed(2);
    }else{
-     score = JSON.parse(item.predictions).result[0].score.toFixed(2);
+     score = JSON.parse(item.predictions).result[index].score.toFixed(2);
    }
   }
 

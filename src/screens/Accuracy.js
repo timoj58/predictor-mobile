@@ -5,10 +5,11 @@ import {
 
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import {accuracy} from "../api/DataService";
-import { ListItem } from 'react-native-elements';
+import { ListItem, Avatar } from 'react-native-elements';
 import {styles} from './Styles';
 import * as Progress from 'react-native-progress';
 import { Dimensions } from 'react-native'
+import {getAvatarColor} from "../util/RenderUtils";
 
 
 
@@ -31,15 +32,19 @@ _renderItem = ({item}) => (
   JSON.parse(item.validations[this.state.competition]).hasOwnProperty('accuracy')
   && <ListItem
     title={item.type}
-    badge={{ value:  JSON.parse(item.validations[this.state.competition])['accuracy'].toFixed(2)+'%', textStyle: { color: 'green', fontSize: 20 }, containerStyle: {backgroundColor: 'silver'}}}
+    badge={{ value:  JSON.parse(item.validations[this.state.competition])['accuracy'].toFixed(2)+'%', textStyle: { color: 'green', fontSize: 16 }, containerStyle: {backgroundColor: '#36454f'}}}
     hideChevron
     containerStyle={{ borderBottomWidth: 0 }}
-    titleStyle={styles.listItem}
+    titleStyle={styles.listItemSmall}
     subtitle={
       <View style={styles.listItem}>
           <Text style={styles.ratingText}>{JSON.parse(item.validations[this.state.competition])['correct']} / {JSON.parse(item.validations[this.state.competition])['total']}</Text>
       </View>
       }
+      avatar={<Avatar
+             rounded
+             icon={{name: JSON.parse(item.validations[this.state.competition])['movement'], color: getAvatarColor(JSON.parse(item.validations[this.state.competition])['movement']), type: 'font-awesome'}}
+            />}
       />
 );
 
@@ -71,7 +76,9 @@ _renderItem = ({item}) => (
 
 function setDataSource(component){
   accuracy(component.state.competition)
-  .then( data =>   component.setState({loading: false, accuracy : data.sort(sort(component.state.competition))}))
+  .then( data =>   {
+    //console.log(data);
+    component.setState({loading: false, accuracy : data.sort(sort(component.state.competition))});})
   .catch((error) => {
     console.log(error);
     component.props.navigation.navigate('Splash',{});

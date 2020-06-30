@@ -35,9 +35,9 @@ class Splash extends React.Component {
              onPress={() => login(this)}
 
              />
-        <Text style={styles.listItem} onPress={ ()=> Linking.openURL('https://s3.amazonaws.com/tabiiki-privacy-policy/privacy_policy.html') } >
-         Privacy Policy
-         </Text>
+             <Text style={{paddingBottom: 10, paddingTop: 0, paddingRight: 10, textAlign: "center", color: 'tomato'}} onPress={ ()=> Linking.openURL('https://s3.amazonaws.com/tabiiki-privacy-policy/privacy_policy.html') } >
+       Privacy Policy
+       </Text>
         </View>
   );
  }

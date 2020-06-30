@@ -49,8 +49,8 @@ _renderMatch = ({item}) => (
     })}
     title={
       <View>
-        <Text style={styles.listItem}>{item.home.label}</Text>
-        <Text style={styles.listItem}>{item.away.label}</Text>
+        <Text style={styles.listItemSmall}>{item.home.label}</Text>
+        <Text style={styles.listItemSmall}>{item.away.label}</Text>
       </View>
    }
    titleStyle={styles.listItem}

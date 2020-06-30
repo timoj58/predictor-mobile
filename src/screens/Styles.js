@@ -34,11 +34,17 @@ export const styles = StyleSheet.create({
     },
    listItem: {
     color: 'silver',
+     fontSize: 16,
     fontWeight: 'bold'
   },
+  listItemWithSize: {
+   color: 'silver',
+   fontSize: 16,
+   fontWeight: 'bold'
+ },
   listItemSmall: {
    color: 'silver',
-   fontSize: 15
+   fontSize: 14
  },
  listItemSmallRed: {
   color: 'orangered',

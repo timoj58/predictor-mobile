@@ -39,13 +39,12 @@ _renderItem = ({item}) => (
     onPress={() => loadEvent(this, item)}
     title={
       <View>
-        <Text style={styles.listItem}>{item.home}</Text>
-        <Text style={styles.listItem}>{item.away}</Text>
+        <Text style={styles.listItemSmall}>{item.home}</Text>
+        <Text style={styles.listItemSmall}>{item.away}</Text>
       </View>
     }
-    titleStyle={styles.listItem}
     containerStyle={{ borderBottomWidth: 0 }}
-    badge={{ value: item.eventType, textStyle: { color: 'green', fontSize: 20 }, containerStyle: {backgroundColor: 'silver'} }}
+    badge={{ value: ["2.5", "-2.5"].includes(item.event) ? item.eventType : item.event, textStyle: { color: 'gold', fontSize: 16 }, containerStyle: {backgroundColor: '#36454f'} }}
     subtitle={
       <View>
       <Rating

@@ -29,7 +29,7 @@ class Countries extends React.Component {
 _renderCompetition = ({item}) => (
   <ListItem
     title={item.label}
-    titleStyle={styles.listItem}
+    titleStyle={styles.listItemSmall}
     containerStyle={{ borderBottomWidth: 0 }}
     onPress={() => this.props.navigation.navigate('Competition',
       {

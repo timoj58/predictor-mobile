@@ -43,7 +43,7 @@ _renderTile = ({item}) => (
 
 
 const TabNavigator = createBottomTabNavigator({
-  Today:  Events,
+  Upcoming:  Events,
   Selected: SelectedBets,
   Countries: Countries
 },
@@ -51,7 +51,7 @@ const TabNavigator = createBottomTabNavigator({
    defaultNavigationOptions: ({ navigation }) => ({
      tabBarIcon: ({ focused, horizontal, tintColor }) => {
        const { routeName } = navigation.state;
-       if (routeName === 'Today') {
+       if (routeName === 'Upcoming') {
          iconName = `calendar-check-o`;
          // Sometimes we want to add badges to some icons.
          // You can check the implementation below.

@@ -104,7 +104,7 @@ async function setDataSource(component){
    previousFixtures(component.state.competition, component.state.market)
    .then( data => {
      console.log(data);
-     component.setState({loading: false, fixtures : filteredFixtures(data, component.state.market, component.state.event)});
+     component.setState({loading: false, fixtures : filteredFixtures(data['body'], component.state.market, component.state.event)});
    })
    .catch((error) => component.props.navigation.navigate('Splash',{}));
 }
@@ -134,7 +134,7 @@ function filteredFixtures(data, market, event){
     }
     if(market === 'PREDICT_GOALS'){
 
-      res = predictedGoals(JSON.parse(data[x].previousFixtureOutcomes[0].predictions).result).toFixed(2);
+      res = predictedGoals(JSON.parse(data[x].previousFixtureOutcomes[0].predictions).result);
 
       if((event === 'goals 2.5' && res >= 2.5) || (event === 'goals -2.5' && res < 2.5)){
         filtered.push(data[x]);
@@ -223,7 +223,7 @@ function getPrediction(item){
     return JSON.parse(item.predictions).result.map(m => m.key).shift();
   }
 
-  var goals = predictedGoals(JSON.parse(item.predictions).result).toFixed(2);
+  var goals = predictedGoals(JSON.parse(item.predictions).result);
 
   if(goals >= 2.5){
     return '+2.5';

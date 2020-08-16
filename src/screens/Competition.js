@@ -11,15 +11,13 @@ import { createAppContainer } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import Events from './Events';
 import PreviousFixtures from './PreviousFixtures';
-import Accuracy from './Accuracy';
 
 import {styles} from './Styles';
 
 
 const TabNavigator = createBottomTabNavigator({
   Upcoming:  { screen: props => <Events {...props}today='false' />},
-  Previous: PreviousFixtures,
-  Accuracy: Accuracy
+  Previous: PreviousFixtures
 },
 {
    defaultNavigationOptions: ({ navigation }) => ({
@@ -31,10 +29,7 @@ const TabNavigator = createBottomTabNavigator({
          // You can check the implementation below.
        } else if (routeName === 'Upcoming') {
          iconName = `calendar`;
-       }else if (routeName === 'Accuracy') {
-         iconName = `crosshairs`;
        }
-
        // You can return any component that you like here!
       // return {{ name: iconName, type: 'font-awesome', size: iconSize, color: 'silver' }};
 

@@ -89,7 +89,11 @@ _renderItem = ({item}) => (
 
 async function setDataSource(component){
   countriesAndCompetitions().then(
-    data => component.setState({countriesAndCompetitions : data, loading: false}))
+    data => {
+      console.log(data);
+      component.setState({countriesAndCompetitions : data['body'], loading: false});
+    }
+    )
     .catch((error) => component.props.navigation.navigate('Splash',{}));
 
 }

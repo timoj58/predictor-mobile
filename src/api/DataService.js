@@ -16,6 +16,7 @@ console.log(url);
         throw new Error('token');
       }
 
+
       return response.json();
     })
     .then((responseJson) => {
@@ -29,12 +30,8 @@ export function countriesAndCompetitions() {
 }
 
 
-export function events(country, competition){
-  return get(HOST+'/events?country='+country+'&competition='+competition);
-}
-
-export function todaysEvents(){
-  return get(HOST+'/events');
+export function events(competition){
+  return get(HOST+'/events?competition='+competition);
 }
 
 //why using market?
@@ -42,16 +39,16 @@ export function previousFixtures(competition){
  return get(HOST+'/previous-fixtures?competition='+competition);
 }
 
-export function predictions(team){
-  return get(HOST+'/predictions?team-id='+team);
+export function predictions(competition, home, away, type){
+  return get(HOST+'/predictions?competition='+competition+'&home='+home+'&away='+away+'&type='+type);
 }
 
 export function accuracy(key){
   return get(HOST+'/accuracy?key='+encodeURIComponent(key));
 }
 
-export function globalRating(team, market){
-  return get(HOST+'/global-rating?team='+team+'&market='+market);
+export function globalRating(competition, team, type){
+  return get(HOST+'/global-rating?team='+team+'&type='+type+'&competition='+competition);
 }
 
 export function selectedBets(){

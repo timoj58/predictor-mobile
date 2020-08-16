@@ -52,7 +52,7 @@ class EventRating extends React.Component {
 _renderPredictionItem = ({item}) => (
   item.score > 0 &&  <ListItem
      title={item.key}
-     badge={{ value:  item.score.toFixed(2), textStyle: { color: 'orange' }, containerStyle: { marginTop: -5 }, containerStyle: {backgroundColor: 'silver'} }}
+     badge={{ value:  item.score, textStyle: { color: 'orange' }, containerStyle: { marginTop: -5 }, containerStyle: {backgroundColor: 'silver'} }}
      containerStyle={{ borderBottomWidth: 0 }}
      hideChevron
      titleStyle={styles.listItem}
@@ -106,25 +106,22 @@ _renderHome = () => (
      titleStyle={styles.titleListItem}
      subtitle={
        <View>
-       <ListItem
-       title={getTitle(this,'results', true)}
-       hideChevron
-       containerStyle={{ borderBottomWidth: 0 }}
-       titleStyle={styles.listItem}
-       badge={{ value: getOverallRating(this, 'results', true), textStyle: { color: 'green', fontSize: 16 }, containerStyle: {backgroundColor: 'silver'} }}
-        />
-       <ListItem
-       title={getTitle(this,'goals', true)}
-       hideChevron
-       containerStyle={{ borderBottomWidth: 0 }}
-       titleStyle={styles.listItem}
-       badge={{ value: getOverallRating(this, 'goals', true), textStyle: { color: 'green', fontSize: 16 }, containerStyle: {backgroundColor: 'silver'} }}
-        />
+       {this.state.loadingHome &&
+         <Progress.Bar
+            size={Dimensions.get('window').width/4}
+            indeterminate={true}
+            color='black'
+            height={10}
+          //  thickness={20}
+            />
+       }
+       {!this.state.loadingHome &&
        <ListItem
         hideChevron
         containerStyle={{ borderBottomWidth: 0 }}
         subtitle={this._renderHomeOutcomes()}
       />
+    }
      </View>
     }
     />
@@ -139,26 +136,23 @@ _renderAway = () => (
       titleStyle={styles.titleListItem}
       subtitle={
         <View>
-        <ListItem
-        title={getTitle(this,'results', false)}
-        hideChevron
-        containerStyle={{ borderBottomWidth: 0 }}
-        titleStyle={styles.listItem}
-        badge={{ value: getOverallRating(this, 'results', false), textStyle: { color: 'green', fontSize: 16 }, containerStyle: {backgroundColor: 'silver'} }}
-         />
-        <ListItem
-        title={getTitle(this,'goals', false)}
-        hideChevron
-        containerStyle={{ borderBottomWidth: 0 }}
-        titleStyle={styles.listItem}
-        badge={{ value: getOverallRating(this, 'goals', false), textStyle: { color: 'green', fontSize: 16 }, containerStyle: {backgroundColor: 'silver'}}}
-         />
+        {this.state.loadingAway &&
+          <Progress.Bar
+             size={Dimensions.get('window').width/4}
+             indeterminate={true}
+             color='black'
+             height={10}
+           //  thickness={20}
+             />
+        }
+        {!this.state.loadingAway &&
          <ListItem
         hideChevron
         containerStyle={{ borderBottomWidth: 0 }}
         subtitle={this._renderAwayOutcomes()}
          />
-      </View>
+       }
+     </View>
      }
      />
 );
@@ -216,7 +210,7 @@ _renderAway = () => (
                    startingValue={getRating(getMarket(this.state.predictions, "PREDICT_RESULTS"), this,2)}/>}
                 </View>
                  <View style={{flexDirection: 'row'}}>
-                 <Text style={styles.listItemWithSize}>{'expected goals ('+predictedGoals(JSON.parse(getMarket(this.state.predictions, "PREDICT_GOALS").predictions).result).toFixed(2)+') '}</Text>
+                 <Text style={styles.listItemWithSize}>{'expected goals ('+predictedGoals(JSON.parse(getMarket(this.state.predictions, "PREDICT_GOALS").predictions).result)+') '}</Text>
                  <Rating
                        type='custom'
                        imageSize={16}
@@ -319,7 +313,7 @@ function getGoalsStyle(component, item){
     return 'primary';
    }
 
-   var goals = predictedGoals(JSON.parse(data[0].predictions).result).toFixed(2);
+   var goals = predictedGoals(JSON.parse(data[0].predictions).result);
 
    if(goals >= 2.5){
      return '+2.5';
@@ -366,80 +360,6 @@ function getResultStyle(item, isHome){
 
 }
 
-function getOverallRating(component, market, isHome){
-   var title = getTitle(component,market, isHome);
-   var accuracy = '?';
-
-   if(component.state.homeAccuracy.length == 0 || component.state.awayAccuracy.length == 0){
-     return '69%';
-   }
-
-   if(title === 'against' && !isHome){
-     accuracy = component.state.awayAccuracy.filter(f => f.type === 'AWAY_BEATS_HOME')[0].accuracy.toFixed(0);
-   }
-   if(title === 'against' && isHome){
-     accuracy = component.state.homeAccuracy.filter(f => f.type === 'HOME_BEATS_AWAY')[0].accuracy.toFixed(0);
-   }
-   if(title === 'homeWin' && isHome){
-     accuracy = component.state.homeAccuracy.filter(f => f.type === 'HOME_WIN')[0].accuracy.toFixed(0);
-   }
-   if(title === 'awayWin' && !isHome){
-     accuracy = component.state.awayAccuracy.filter(f => f.type === 'AWAY_WIN')[0].accuracy.toFixed(0);
-   }
-   if(title === 'draw' && isHome){
-     accuracy = component.state.homeAccuracy.filter(f => f.type === 'DRAW')[0].accuracy.toFixed(0);
-   }
-   if(title === 'draw' && !isHome){
-     accuracy = component.state.awayAccuracy.filter(f => f.type === 'DRAW')[0].accuracy.toFixed(0);
-   }
-
-   if(!component.state.loadingHomeGoals && !component.state.loadingAwayGoals){
-
-   if(title === 'Under 2.5' && isHome){
-     accuracy = component.state.homeGoalAccuracy.filter(f => f.type === 'UNDER_2_5')[0].accuracy.toFixed(0);
-   }
-   if(title === 'Over 2.5' && isHome){
-     accuracy = component.state.homeGoalAccuracy.filter(f => f.type === 'OVER_2_5')[0].accuracy.toFixed(0);
-   }
-   if(title === 'Under 2.5' && !isHome ){
-     accuracy = component.state.awayGoalAccuracy.filter(f => f.type === 'UNDER_2_5')[0].accuracy.toFixed(0);
-   }
-   if(title === 'Over 2.5' && !isHome){
-     accuracy = component.state.awayGoalAccuracy.filter(f => f.type === 'OVER_2_5')[0].accuracy.toFixed(0);
-   }
- }
-
-   return accuracy+'%';
-
-}
-
-function getTitle(component, market,isHome){
-
-  var result = predictedResult(component,getMarket(component.state.predictions, "PREDICT_RESULTS"))
-  var goals = predictedGoals(JSON.parse(getMarket(component.state.predictions, "PREDICT_GOALS").predictions).result);
-
-
-  if(isHome && market === 'results'){
-     if(result === 'awayWin'){
-       return 'against';
-     }
-     return result;
-  }
-  if(!isHome && market === 'results'){
-     if(result === 'homeWin'){
-       return 'against';
-     }
-     return result;
-  }
-
-  if(market === 'goals'){
-    if(goals < 2.5){
-      return 'Under 2.5';
-    }
-    return 'Over 2.5';
-  }
-
-}
 
 function predictedResult(component, result, index=0){
 
@@ -457,6 +377,7 @@ function predictedResult(component, result, index=0){
 }
 
 function getMarket(predictions, market){
+  console.log(predictions);
   var filtered =  predictions.filter(f => f.eventType === market);
 
   return filtered[filtered.length - 1];
@@ -467,22 +388,24 @@ function getRating(item, component,index=0){
   var score;
 
   if(item.eventType === 'PREDICT_GOALS'){
-    var goals = predictedGoals(JSON.parse(item.predictions).result).toFixed(2);
+    var goals = predictedGoals(JSON.parse(item.predictions).result);
     //need to find the total goals really..
   if(goals < 2.5){
-     score = JSON.parse(item.predictions).result.filter(f => f.key < 3).map(m => m.score).reduce(reducer).toFixed(2);
+     score = JSON.parse(item.predictions).result.filter(f => f.key < 3).map(m => m.score).reduce(reducer);
   }
   else{
-    score = JSON.parse(item.predictions).result.filter(f => f.key >= 3).map(m => m.score).reduce(reducer).toFixed(2);
+    score = JSON.parse(item.predictions).result.filter(f => f.key >= 3).map(m => m.score).reduce(reducer);
   }
   }else if(item.eventType === 'PREDICT_RESULTS'){
     console.log(component.state.selectedBetResult);
     console.log(JSON.parse(item.predictions).result);
 
     if(component.state.selectedBet && ["homeWin", "awayWin", "draw"].includes(component.state.selectedBetResult) ){
-     score = JSON.parse(item.predictions).result.filter(f => f.key === component.state.selectedBetResult)[0].score.toFixed(2);
+     score = JSON.parse(item.predictions).result.filter(f => f.key === component.state.selectedBetResult)[0].score;
    }else{
-     score = JSON.parse(item.predictions).result[index].score.toFixed(2);
+
+     console.log(JSON.parse(item.predictions).result[index].score);
+     score = JSON.parse(item.predictions).result[index].score;
    }
   }
 
@@ -492,33 +415,34 @@ function getRating(item, component,index=0){
 const reducer = (accumulator, currentValue) => accumulator + currentValue;
 
 
-function getAccuracy(marketRatings, type){
 
-  return marketRatings.filter(f => f.type === type).shift().accuracy;
+function filterRatings(data, team, type){
+  return data.map(m => m['body']).filter(f => f.data.length > 0).filter(f => f.type === type).filter(f => f.team === team)[0].data.filter(f => f.outcome !== null).slice(0,3);
 }
-
-function getTotal(marketRatings, type){
-  return marketRatings.filter(f => f.type === type).shift().total;
-}
-
-function getSuccess(marketRatings, type){
-  return marketRatings.filter(f => f.type === type).shift().success;
-}
-
-
-
 
 async function setDataSource(component){
-  predictions(component.state.home)
+  predictionsCombined(component)
   .then( data => {
 
+    if(data.map(m => m['body'])[0] === void 0){
+        component.props.navigation.navigate('Home',{});
+      }else{
+    component.setState({predictions: data.map(m => m['body']), loading: false});
 
-    component.setState({predictions: data, loading: false});
-
-       setDataSourceHomeResultsRatings(component, 'results', component.state.home);
-       setDataSourceAwayResultsRatings(component, 'results', component.state.away);
-       setDataSourceHomeGoalsRatings(component, 'goals', component.state.home);
-       setDataSourceAwayGoalsRatings(component, 'goals', component.state.away);
+    ratings(component)
+    .then( data => {
+      component.setState({
+        homeOutcomes: filterRatings(data, component.state.home, "PREDICT_RESULTS"),
+        awayOutcomes: filterRatings(data, component.state.away, "PREDICT_RESULTS"),
+        homeGoalOutcomes: filterRatings(data, component.state.home, "PREDICT_GOALS"),
+        awayGoalOutcomes: filterRatings(data, component.state.away, "PREDICT_GOALS"),
+        loadingHome: false,
+        loadingAway: false,
+        loadingHomeGoals: false,
+        loadingAwayGoals: false
+      });
+    })
+     }
 
    })
     .catch((error) => {
@@ -529,84 +453,20 @@ async function setDataSource(component){
 
 }
 
-async function setDataSourceHomeResultsRatings(component, market, team){
-  globalRating(team,
-              market)
-              .then(data => {
-
-
-                 component.setState({
-                   homeOutcomes: data.predictionOutcomes.filter(f => f.outcome !== null).slice(0,5),
-                   homeAccuracy: data.accuracy,
-                   loadingHome: false
-                 });
-
-
-              })
-              .catch((error) => {
-                component.props.navigation.navigate('Splash',{});
-              });
-
+function ratings(component){
+  return Promise.all(
+    [globalRating(component.state.competition, component.state.home, "PREDICT_RESULTS"),
+     globalRating(component.state.competition, component.state.away, "PREDICT_RESULTS"),
+     globalRating(component.state.competition, component.state.home, "PREDICT_GOALS"),
+    globalRating(component.state.competition, component.state.away, "PREDICT_GOALS")]
+  )
 }
 
-
-async function setDataSourceAwayResultsRatings(component, market, team){
-  globalRating(team,
-              market)
-              .then(data => {
-
-                component.setState({
-                    awayOutcomes: data.predictionOutcomes.filter(f => f.outcome !== null).slice(0,5),
-                    awayAccuracy: data.accuracy,
-                    loadingAway: false
-              });
-
-
-                })
-                .catch((error) => {
-                  console.log(error);
-                  component.props.navigation.navigate('Splash',{});
-                });
-
-}
-
-async function setDataSourceHomeGoalsRatings(component, market, team){
-  globalRating(team,
-              market)
-              .then(data => {
-
-                 component.setState({
-                   homeGoalOutcomes: data.predictionOutcomes.filter(f => f.outcome !== null).slice(0,5),
-                   homeGoalAccuracy: data.accuracy,
-                   loadingHomeGoals: false
-                 });
-
-              })
-              .catch((error) => {
-                console.log(error);
-                component.props.navigation.navigate('Splash',{});
-              });
-
-}
-
-
-async function setDataSourceAwayGoalsRatings(component, market, team){
-  globalRating(team,
-              market)
-              .then(data => {
-
-                component.setState({
-                    awayGoalOutcomes: data.predictionOutcomes.filter(f => f.outcome !== null).slice(0,5),
-                    awayGoalAccuracy: data.accuracy,
-                    loadingAwayGoals: false
-                   });
-
-                })
-                .catch((error) => {
-                  console.log(error);
-                  component.props.navigation.navigate('Splash',{});
-                });
-
+function predictionsCombined(component){
+  return Promise.all([
+    predictions(component.state.competition, component.state.home, component.state.away, "PREDICT_RESULTS"),
+    predictions(component.state.competition, component.state.home, component.state.away, "PREDICT_GOALS")
+  ]);
 }
 
 

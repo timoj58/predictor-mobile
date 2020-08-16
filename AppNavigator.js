@@ -7,7 +7,6 @@
     import Competition from "./src/screens/Competition";
     import EventRating from "./src/screens/EventRating";
     import Events from "./src/screens/Events";
-    import Accuracy from "./src/screens/Accuracy";
     import Countries from "./src/screens/Countries";
     import SelectedBets from "./src/screens/SelectedBets";
     import PreviousFixtures from "./src/screens/PreviousFixtures";
@@ -89,14 +88,7 @@
        title: `${navigation.state.params.label}`,
        headerStyle: { backgroundColor: 'silver' }
      })
-    },
-    Accuracy: {
-      screen: Accuracy,
-      navigationOptions: ({ navigation }) => ({
-        title: `${navigation.state.params.label}`,
-        headerStyle: { backgroundColor: 'silver' }
-     })
-   }});
+    }});
 
 
   const App = createAppContainer(AppNavigator);

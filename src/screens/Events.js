@@ -8,8 +8,6 @@ import * as Progress from 'react-native-progress';
 import { ListItem, Tile } from 'react-native-elements'
 import { Dimensions } from 'react-native';
 import {events} from "../api/DataService";
-import {todaysEvents} from "../api/DataService";
-
 import {styles} from './Styles';
 
 
@@ -70,7 +68,7 @@ _renderItem = ({item}) => (
 
      subtitle={
        <FlatList
-        data={item.upcomingEventResponses}
+        data={item.upcomingEventResponses.filter(f => toDate(f.eventDate) >= today)}
         renderItem={this._renderMatch}
         keyExtractor={(item, index) => index.toString()}
       />
@@ -128,7 +126,9 @@ function setDataSource(component){
   console.log(component.state.today);
   if(component.state.today === true){
     todaysEvents()
-    .then( data => component.setState({events : data, loading: false}))
+    .then( data =>
+      component.setState({events : data.map(m => m['body']).filter(f => f.upcomingEventResponses.length > 0), loading: false})
+    )
     .catch((error) => {
         console.log(error);
       component.props.navigation.navigate('Splash',{});
@@ -137,11 +137,45 @@ function setDataSource(component){
     );
   }
   else{
-   events(component.state.country, component.state.competition)
-   .then( data => component.setState({events : data, loading: false}))
+   events(component.state.competition)
+   .then( data => component.setState({events : [data['body']], loading: false}))
    .catch((error) => component.props.navigation.navigate('Splash',{}));
 
  }
+}
+
+const toDate = (dateStr) => {
+  const [day, month, year] = dateStr.split("-")
+  return new Date(year, month - 1, day)
+}
+
+const today = new Date().setHours(0,0,0,0);
+
+function todaysEvents(){
+    return Promise.all([
+      events('scotland_1'),
+      events('scotland_2'),
+      events('scotland_3'),
+      events('scotland_4'),
+      events('england_1'),
+      events('england_2'),
+      events('england_3'),
+      events('england_4'),
+      events('italy_1'),
+      events('italy_2'),
+      events('spain_1'),
+      events('spain_2'),
+      events('german_1'),
+      events('german_2'),
+      events('holland_1'),
+      events('belgium_1'),
+      events('sweden_1'),
+      events('portugal_1'),
+      events('turkey_1'),
+      events('greece_1'),
+      events('denmark_1'),
+      events('norway_1')
+    ])
 }
 
 

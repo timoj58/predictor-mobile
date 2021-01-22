@@ -136,6 +136,7 @@ function filteredFixtures(data, market, event){
 
       res = predictedGoals(JSON.parse(data[x].previousFixtureOutcomes[0].predictions).result);
 
+    
       if((event === 'goals 2.5' && res >= 2.5) || (event === 'goals -2.5' && res < 2.5)){
         filtered.push(data[x]);
       }

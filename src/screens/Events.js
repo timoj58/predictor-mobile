@@ -60,7 +60,7 @@ _renderItem = ({item}) => (
   <ListItem
      title={
        <View>
-         <Text style={styles.titleListItem}>{item.competition}</Text>
+         <Text style={styles.titleListItem}>{item.label}</Text>
        </View>
      }
      titleStyle={styles.listItem}

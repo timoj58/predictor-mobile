@@ -377,7 +377,10 @@ function predictedResult(component, result, index=0){
 }
 
 function getMarket(predictions, market){
-  console.log(predictions);
+
+  console.log('here '+market)
+  console.log(predictions)
+
   var filtered =  predictions.filter(f => f.eventType === market);
 
   return filtered[filtered.length - 1];

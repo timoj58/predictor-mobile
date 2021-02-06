@@ -33,7 +33,7 @@ class Events extends React.Component {
 
 _renderMatch = ({item}) => (
   <ListItem
-   onPress={() => this.props.navigation.navigate('EventRating',
+   onPress={() => this.props.navigation.navigate('Event',
    {  market: 'all',
       label: item.home.label + ' vs '+item.away.label,
       event: item,

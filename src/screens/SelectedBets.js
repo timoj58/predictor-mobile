@@ -83,9 +83,9 @@ _renderItem = ({item}) => (
       />}
       {this.state.bets.length == 0 || this.state.bets.length === undefined &&
         <Tile
-                 title={'No Bets'}
+                 title={'Coming soon'}
                  titleStyle={{color: 'silver',fontWeight: 'bold'}}
-                 icon={{ name: 'warning', type: 'font-awesome', color: 'silver', size: 100 }}
+                 icon={{ name: 'info', type: 'font-awesome', color: 'silver', size: 100 }}
                  featured
                  width={Dimensions.get('window').width}
                  height={Dimensions.get('window').height}

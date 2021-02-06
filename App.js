@@ -1,7 +1,7 @@
 
 import React from 'react';
 import AppNavigator from './AppNavigator';
-import {SplashScreen } from 'expo';
+import * as SplashScreen from 'expo-splash-screen'
 
 export default class App extends React.Component {
   constructor(props) {

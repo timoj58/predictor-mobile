@@ -54,3 +54,7 @@ export function globalRating(competition, team, type){
 export function selectedBets(){
   return get(HOST+'/selected-bets');
 }
+
+export function matchSelections(competition, home, away){
+  return get(HOST+"/match-selections?competition="+competition+"&home="+home+"&away="+away);
+}

@@ -7,7 +7,7 @@ import * as Progress from 'react-native-progress';
 import { Dimensions } from 'react-native';
 import { StyleSheet, Text, View, Button, Linking } from 'react-native';
 import { ListItem, Tile} from 'react-native-elements';
-import {SplashScreen } from 'expo';
+import * as SplashScreen from 'expo-splash-screen'
 import {styles} from './Styles';
 
 

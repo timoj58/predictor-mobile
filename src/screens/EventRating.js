@@ -69,7 +69,7 @@ _renderEventItem = ({item}) => (
      {getResultStyleView(this, item, false)}
     </View>
     hideChevron
-    badge={{ value: item.score, textStyle: { color: 'silver', fontSize: 16 }, containerStyle: {backgroundColor: '#36454f'}}}
+    badge={{ value: item.score, textStyle: { color: 'silver', fontSize: 20 }, containerStyle: {backgroundColor: '#36454f'}}}
     containerStyle={{ borderBottomWidth: 0 }}
   />
   </View>
@@ -184,26 +184,26 @@ _renderAway = () => (
          <ListItem
            title=
              <View>
-             <View style={{flexDirection: 'row'}}><Text style={styles.listItemWithSize}>{predictedResult(this, getMarket(this.state.predictions, "PREDICT_RESULTS"))+' '}</Text>
+             <View style={{flexDirection: 'row'}}><Text style={styles.listItemWithSize}>{predictedResult(this, getMarket(this.state.predictions, "PREDICT_RESULTS")).replace('Win','')+' '}</Text>
              <Rating
                 type='custom'
-                imageSize={16}
+                imageSize={18}
                 readonly
                 ratingColor='green'
                 ratingBackgroundColor='#36454f'
                 startingValue={getRating(getMarket(this.state.predictions, "PREDICT_RESULTS"), this)}/>
-               {!this.state.selectedBet && <Text style={styles.listItemWithSize}>{' '+predictedResult(this, getMarket(this.state.predictions, "PREDICT_RESULTS"),1)+' '}</Text>}
+               {!this.state.selectedBet && <Text style={styles.listItemWithSize}>{' '+predictedResult(this, getMarket(this.state.predictions, "PREDICT_RESULTS"),1).replace('Win','')+' '}</Text>}
                 {!this.state.selectedBet && <Rating
                    type='custom'
-                   imageSize={16}
+                   imageSize={18}
                    readonly
                    ratingColor='green'
                    ratingBackgroundColor='#36454f'
                    startingValue={getRating(getMarket(this.state.predictions, "PREDICT_RESULTS"), this,1)}/>}
-                {!this.state.selectedBet && <Text style={styles.listItemWithSize}>{' '+predictedResult(this, getMarket(this.state.predictions, "PREDICT_RESULTS"),2)+' '}</Text>}
+                {!this.state.selectedBet && <Text style={styles.listItemWithSize}>{' '+predictedResult(this, getMarket(this.state.predictions, "PREDICT_RESULTS"),2).replace('Win','')+' '}</Text>}
                 {!this.state.selectedBet && <Rating
                    type='custom'
-                   imageSize={16}
+                   imageSize={18}
                    readonly
                    ratingColor='green'
                    ratingBackgroundColor='#36454f'
@@ -373,13 +373,10 @@ function predictedResult(component, result, index=0){
    }
    return JSON.parse(result.predictions).result[index].key;
   }
-  return prediction;
+  return prediction; //.replace('Win', '');
 }
 
 function getMarket(predictions, market){
-
-  console.log('here '+market)
-  console.log(predictions)
 
   var filtered =  predictions.filter(f => f.eventType === market);
 

@@ -3,7 +3,6 @@
     "name": "TabiikiAI",
     "slug": "tabiikiai",
     "privacy": "public",
-    "sdkVersion": "36.0.0",
     "platforms": [
       "ios",
       "android"
@@ -11,9 +10,9 @@
     "android": {
       "package": "com.timmytyime.tabiikiai",
       "permissions": [],
-      "versionCode": 10
+      "versionCode": 11
     },
-    "version": "2.0.0",
+    "version": "3.0.0",
     "orientation": "portrait",
     "icon": "./assets/logo.png",
     "splash": {

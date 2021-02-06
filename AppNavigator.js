@@ -10,6 +10,9 @@
     import Countries from "./src/screens/Countries";
     import SelectedBets from "./src/screens/SelectedBets";
     import PreviousFixtures from "./src/screens/PreviousFixtures";
+    import Event from "./src/screens/Event";
+    import PlayerEvents from "./src/screens/PlayerEvents";
+
 
 
   /*  const Stack = createStackNavigator();
@@ -68,8 +71,22 @@
        headerStyle: { backgroundColor: 'silver' }
      })
     },
+    Event: {
+      screen: Event,
+      navigationOptions: ({ navigation }) => ({
+       title: `${navigation.state.params.label}`,
+       headerStyle: { backgroundColor: 'silver' }
+     })
+    },
     EventRating: {
       screen: EventRating,
+      navigationOptions: ({ navigation }) => ({
+       title: `${navigation.state.params.label}`,
+       headerStyle: { backgroundColor: 'silver' }
+     })
+    },
+    PlayerEvents: {
+      screen: PlayerEvents,
       navigationOptions: ({ navigation }) => ({
        title: `${navigation.state.params.label}`,
        headerStyle: { backgroundColor: 'silver' }

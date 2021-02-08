@@ -16,7 +16,7 @@ import {styles} from './Styles';
 
 
 const TabNavigator = createBottomTabNavigator({
-  Upcoming:  { screen: props => <Events {...props}today='false' />},
+  Current:  { screen: props => <Events {...props}today='false' />},
   Previous: PreviousFixtures
 },
 {
@@ -27,7 +27,7 @@ const TabNavigator = createBottomTabNavigator({
          iconName = `calendar-check-o`;
          // Sometimes we want to add badges to some icons.
          // You can check the implementation below.
-       } else if (routeName === 'Upcoming') {
+       } else if (routeName === 'Current') {
          iconName = `calendar`;
        }
        // You can return any component that you like here!

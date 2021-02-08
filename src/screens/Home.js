@@ -43,21 +43,21 @@ _renderTile = ({item}) => (
 
 
 const TabNavigator = createBottomTabNavigator({
-  Upcoming:  Events,
+  Today:  Events,
   Selected: SelectedBets,
-  Countries: Countries
+  Leagues: Countries
 },
 {
    defaultNavigationOptions: ({ navigation }) => ({
      tabBarIcon: ({ focused, horizontal, tintColor }) => {
        const { routeName } = navigation.state;
-       if (routeName === 'Upcoming') {
+       if (routeName === 'Today') {
          iconName = `calendar-check-o`;
          // Sometimes we want to add badges to some icons.
          // You can check the implementation below.
        } else if (routeName === 'Selected') {
          iconName = `dollar`;
-       }else if (routeName === 'Countries') {
+       }else if (routeName === 'Leagues') {
          iconName = `globe`;
        }
 

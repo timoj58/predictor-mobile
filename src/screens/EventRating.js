@@ -14,7 +14,6 @@ import {predictedGoals} from "../util/GoalsUtils";
 import {styles} from './Styles';
 
 
-
 class EventRating extends React.Component {
   constructor(props) {
    super(props);
@@ -41,9 +40,28 @@ class EventRating extends React.Component {
      awayGoalOutcomes: [],
      homeGoalAccuracy: [],
      awayGoalAccuracy: [],
+     blink: false,
+     blinkRating: false,
      selectedBet: props.navigation.state.params.selectedBet,
      selectedBetResult: props.navigation.state.params.selectedBetResult
    };
+
+   // Change the state every second
+     setInterval(() => {
+       this.setState(previousState => {
+         return { blink: !previousState.blink };
+       });
+     },
+     // Define any blinking time.
+     4000);
+
+     setInterval(() => {
+       this.setState(previousState => {
+         return { blinkRating: !previousState.blinkRating };
+       });
+     },
+     // Define any blinking time.
+     400);
 
    setDataSource(this);
 }
@@ -185,35 +203,35 @@ _renderAway = () => (
            title=
              <View>
              <View style={{flexDirection: 'row'}}><Text style={styles.listItemWithSize}>{predictedResult(this, getMarket(this.state.predictions, "PREDICT_RESULTS")).replace('Win','')+' '}</Text>
-             <Rating
+             <Rating style ={{paddingTop: 4}}
                 type='custom'
                 imageSize={18}
                 readonly
-                ratingColor='green'
-                ratingBackgroundColor='#36454f'
+                ratingColor={getRatingColor(this.state.blinkRating, getRating(getMarket(this.state.predictions, "PREDICT_RESULTS"), this))}
+           ratingBackgroundColor='#36454f'
                 startingValue={getRating(getMarket(this.state.predictions, "PREDICT_RESULTS"), this)}/>
                {!this.state.selectedBet && <Text style={styles.listItemWithSize}>{' '+predictedResult(this, getMarket(this.state.predictions, "PREDICT_RESULTS"),1).replace('Win','')+' '}</Text>}
-                {!this.state.selectedBet && <Rating
+                {!this.state.selectedBet && <Rating style ={{paddingTop: 4}}
                    type='custom'
                    imageSize={18}
                    readonly
-                   ratingColor='green'
+                   ratingColor={getRatingColor(this.state.blinkRating, getRating(getMarket(this.state.predictions, "PREDICT_RESULTS"), this,1))}
                    ratingBackgroundColor='#36454f'
                    startingValue={getRating(getMarket(this.state.predictions, "PREDICT_RESULTS"), this,1)}/>}
                 {!this.state.selectedBet && <Text style={styles.listItemWithSize}>{' '+predictedResult(this, getMarket(this.state.predictions, "PREDICT_RESULTS"),2).replace('Win','')+' '}</Text>}
-                {!this.state.selectedBet && <Rating
+                {!this.state.selectedBet && <Rating style ={{paddingTop: 4}}
                    type='custom'
                    imageSize={18}
                    readonly
-                   ratingColor='green'
+                   ratingColor={getRatingColor(this.state.blinkRating, getRating(getMarket(this.state.predictions, "PREDICT_RESULTS"), this,2))}
                    ratingBackgroundColor='#36454f'
                    startingValue={getRating(getMarket(this.state.predictions, "PREDICT_RESULTS"), this,2)}/>}
                 </View>
                  <View style={{flexDirection: 'row'}}>
                  <Text style={styles.listItemWithSize}>{'expected goals ('+predictedGoals(JSON.parse(getMarket(this.state.predictions, "PREDICT_GOALS").predictions).result)+') '}</Text>
-                 <Rating
+                 <Rating style ={{paddingTop: 4}}
                        type='custom'
-                       imageSize={16}
+                       imageSize={18}
                        readonly
                        ratingColor='green'
                        ratingBackgroundColor='#36454f'
@@ -242,6 +260,8 @@ _renderAway = () => (
 
 function getResultStyleView(component, item, isHome){
 
+   var textColorGoal = 'silver';
+   var textColorResult = 'silver';
 
    var style = getResultStyle(item, isHome);
    var goals = getGoalsStyle(component, item);
@@ -269,19 +289,32 @@ function getResultStyleView(component, item, isHome){
      goalStyle = 'green';
    }
    else{
-     goalStyle = 'red';
+     goalStyle = 'orangered';
    }
  }
 
+
+ if(!component.state.blink && goalStyle === 'green'){
+   goalStyle = '#36454f';
+   textColorGoal = '#36454f';
+
+ }
+
+ if(component.state.blink && goalStyle === 'orangered'){
+   goalStyle = '#36454f';
+   textColorGoal = '#36454f';
+
+ }
+
   /* if(style === 'primary' && goalsOutcome === 'primary'){
-    return  <View style={component.state.styles.containerRow}><Text style= {component.state.styles.listItemSmall}>{label}</Text></View>;
+    return  <View style={component.state.styles.containerRow}><Text style= {component.state.styles.listItemNormal}>{label}</Text></View>;
    }
 */
 
 
    if(style === 'primary'){
-     return  <View style={styles.containerRow}><Text style= {styles.listItemSmall}>{label+' '}</Text>
-     <Badge status='success' value={goals} containerStyle={{backgroundColor: goalStyle}}  textStyle={{color: 'silver',fontSize: 10}} /></View>;
+     return  <View style={styles.containerRow}><Text style= {styles.listItemNormal}>{label.substring(0,15)+(label.length > 15 ? '...' : '') +' '}</Text>
+     <Badge status='success' value={goals} containerStyle={{backgroundColor: goalStyle}}  textStyle={{color: textColorGoal,fontSize: 12}} /></View>;
    }
 
    var prediction = predictedResult(null, item);
@@ -291,12 +324,32 @@ function getResultStyleView(component, item, isHome){
     if(style === 'success'){
      color = 'green';
    }else{
-     color = 'red';
+     color = 'orangered';
    }
- }
-   return  <View style={styles.containerRow}><Text style= {styles.listItemSmall}>{label+' '}</Text>
-           <Badge status='success' value={prediction} containerStyle={{backgroundColor: color}} textStyle={{color: 'silver',fontSize: 10}} />
-           <Badge status='success' value={goals} containerStyle={{backgroundColor: goalStyle}} textStyle={{color: 'silver',fontSize: 10}} /></View>;
+  }
+
+  if(!component.state.blink && color === 'green'){
+    color = '#36454f';
+    textColorResult = '#36454f';
+
+  }
+
+  if(component.state.blink && color === 'orangered'){
+    color = '#36454f';
+    textColorResult = '#36454f';
+
+  }
+
+   return  <View style={styles.containerRow}><Text style= {styles.listItemNormal}>{label.substring(0,15)+(label.length > 15 ? '...' : '')+' '}</Text>
+           {(component.state.blink && color === 'green')
+           &&<Badge status='success' value={prediction} containerStyle={{backgroundColor: color}} textStyle={{color: textColorResult,fontSize: 12}} />}
+           {(!component.state.blink && color === 'orangered')
+           &&<Badge status='success' value={prediction} containerStyle={{backgroundColor: color}} textStyle={{color: textColorResult,fontSize: 12}} />}
+           {(component.state.blink && goalStyle === 'green')
+           && <Badge status='success' value={goals} containerStyle={{backgroundColor: goalStyle}} textStyle={{color: textColorGoal,fontSize: 12}}/>}
+           {(!component.state.blink && goalStyle === 'orangered')
+           && <Badge status='success' value={goals} containerStyle={{backgroundColor: goalStyle}} textStyle={{color: textColorGoal,fontSize: 12}}/>}
+           </View>;
 
 }
 
@@ -397,14 +450,11 @@ function getRating(item, component,index=0){
     score = JSON.parse(item.predictions).result.filter(f => f.key >= 3).map(m => m.score).reduce(reducer);
   }
   }else if(item.eventType === 'PREDICT_RESULTS'){
-    console.log(component.state.selectedBetResult);
-    console.log(JSON.parse(item.predictions).result);
 
     if(component.state.selectedBet && ["homeWin", "awayWin", "draw"].includes(component.state.selectedBetResult) ){
      score = JSON.parse(item.predictions).result.filter(f => f.key === component.state.selectedBetResult)[0].score;
    }else{
 
-     console.log(JSON.parse(item.predictions).result[index].score);
      score = JSON.parse(item.predictions).result[index].score;
    }
   }
@@ -414,11 +464,22 @@ function getRating(item, component,index=0){
 
 const reducer = (accumulator, currentValue) => accumulator + currentValue;
 
+function getRatingColor(blink, value){
+  if(blink){
+    return "green";
+  }
+  if(!blink && value*20 < 30) {
+    return "green";
+  }
+
+  return "#36454f";
+}
 
 
 function filterRatings(data, team, type){
   return data.map(m => m['body']).filter(f => f.data.length > 0).filter(f => f.type === type).filter(f => f.team === team)[0].data.filter(f => f.outcome !== null).slice(0,3);
 }
+
 
 async function setDataSource(component){
   predictionsCombined(component)

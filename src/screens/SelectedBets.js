@@ -5,7 +5,7 @@ import {
 
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import * as Progress from 'react-native-progress';
-import { ListItem, Tile, Rating } from 'react-native-elements'
+import { ListItem, Tile, Rating, Avatar } from 'react-native-elements'
 import { Dimensions } from 'react-native'
 
 import {selectedBets} from "../api/DataService";
@@ -26,8 +26,28 @@ class SelectedBets extends React.Component {
      event: props.event,
      loading: true,
      start: props.navigation.state.params.start,
-     bets:''
-       };
+     bets:'',
+     blink: false,
+     blinkRating: false
+    };
+
+       // Change the state every second
+       setInterval(() => {
+           this.setState(previousState => {
+             return { blink: !previousState.blink};
+           });
+         },
+         // Define any blinking time.
+       6000);
+
+       // Change the state every second
+       setInterval(() => {
+           this.setState(previousState => {
+             return { blinkRating: !previousState.blinkRating};
+           });
+         },
+         // Define any blinking time.
+       400);
 
 
   setDataSource(this);
@@ -36,26 +56,34 @@ class SelectedBets extends React.Component {
 
 _renderItem = ({item}) => (
   <ListItem
-    onPress={() => loadEvent(this, item)}
+  hideChevron
     title={
-      <View>
-        <Text style={styles.listItemSmall}>{item.home}</Text>
-        <Text style={styles.listItemSmall}>{item.away}</Text>
+      <View style={{flexDirection: 'row'}}>
+        <Text style={styles.listItemWithSize}>{item.label}</Text>
+        <Rating style={{paddingTop: 4}}
+          type='custom'
+          imageSize={18}
+          readonly
+          ratingColor={getRatingBackground(this.state.blink, this.state.blinkRating, item.market)}
+          ratingBackgroundColor='#36454f'
+          startingValue={item.rating.toFixed(0) / 100 * 5}/>
       </View>
     }
+   subtitle={
+     <View>
+       <Text style={styles.listItemSmallGrey}>{item.subtitle}</Text>
+     </View>
+   }
+   avatar={<Avatar
+    rounded
+    icon={{name: getAvatar(item.market), type: 'font-awesome', size: 28, color: getAvatarColor(item.market)}}
+    overlayContainerStyle={{backgroundColor: '#36454f', paddingRight: 5}}
+    />}
     containerStyle={{ borderBottomWidth: 0 }}
-    badge={{ value: ["2.5", "-2.5"].includes(item.event) ? item.eventType : item.event, textStyle: { color: 'gold', fontSize: 16 }, containerStyle: {backgroundColor: '#36454f'} }}
-    subtitle={
-      <View>
-      <Rating
-         type='custom'
-         imageSize={20}
-         readonly
-         ratingColor='green'
-         ratingBackgroundColor='#36454f'
-         startingValue={getRating(item)}/>
-      </View>
-    }
+    badge={{ value: item.market.toLowerCase().replace("yellow_", "").replace("win", "").replace("goals", "goal").replace("assists", "assist"),
+             textStyle: { color: getBlinkText(this.state.blink, item.market), fontSize: 18 },
+             containerStyle: { backgroundColor: getBlinkBackground(this.state.blink, item.market),
+                borderBottomWidth: 0, elevation: 0 }}}
   />
 );
 
@@ -81,16 +109,6 @@ _renderItem = ({item}) => (
         renderItem={this._renderItem}
         keyExtractor={(item, index) => index.toString()}
       />}
-      {this.state.bets.length == 0 || this.state.bets.length === undefined &&
-        <Tile
-                 title={'Coming soon'}
-                 titleStyle={{color: 'silver',fontWeight: 'bold'}}
-                 icon={{ name: 'info', type: 'font-awesome', color: 'silver', size: 100 }}
-                 featured
-                 width={Dimensions.get('window').width}
-                 height={Dimensions.get('window').height}
-                 imageSrc={require('../screens/img/charcoal.png')}
-      />}
       </View>
     }
       </View>
@@ -98,65 +116,86 @@ _renderItem = ({item}) => (
   }
 }
 
-async function setDataSource(component){
-   selectedBets()
-  .then( data =>
-    component.setState({bets : data, loading: false}))
-  .catch((error) => component.props.navigation.navigate('Splash',{}));
-}
-
-const reducer = (accumulator, currentValue) => accumulator + currentValue;
-
-function getRating(item){
-
-  var score;
-
-  if(item.market === 'goals'){
-    //not this is wrong...need to check over + under
-    if(item.event === '-2.5'){
-     score = JSON.parse(item.predictions).result.filter(f => f.key < 3).map(m => m.score).reduce(reducer).toFixed(2);
-    }else{
-      score = JSON.parse(item.predictions).result.filter(f => f.key >= 3).map(m => m.score).reduce(reducer).toFixed(2);
+function getRatingBackground(blink, blinkRating, market){
+    if(blinkRating && blink && (market === 'GOALS' || market === 'ASSISTS' || market === 'YELLOW_CARD')){
+      return "green";
     }
-  }else if(item.market === 'results'){
-    score = JSON.parse(item.predictions).result.filter(f => f.key === item.event).shift().score.toFixed(2);
+    if(!blinkRating && blink && (market === 'GOALS' || market === 'ASSISTS' || market === 'YELLOW_CARD')){
+      return "#36454f";
+    }
+    if(!blinkRating && !blink && (market === 'homeWin' || market === 'awayWin' || market === 'draw')){
+      return "gold";
+    }
+    return "#36454f";
   }
 
-  return score / 100 * 5;
+
+function getBlinkBackground(blink, market){
+  if(blink && (market === 'GOALS' || market === 'ASSISTS' || market === 'YELLOW_CARD')){
+    return "green";
+  }
+  if(!blink && (market === 'GOALS' || market === 'ASSISTS' || market === 'YELLOW_CARD')){
+    return "#36454f";
+  }
+  if(!blink && (market === 'homeWin' || market === 'awayWin' || market === 'draw')){
+    return "gold";
+  }
+  return "#36454f";
 }
 
+function getBlinkText(blink, market){
+  if(blink && (market === 'GOALS' || market === 'ASSISTS' || market === 'YELLOW_CARD')){
+    return "white";
+  }
+  if(!blink && (market === 'GOALS' || market === 'ASSISTS' || market === 'YELLOW_CARD')){
+    return "#36454f";
+  }
+  if(!blink && (market === 'homeWin' || market === 'awayWin' || market === 'draw')){
+    return "black";
+  }
+  return "#36454f";
+}
 
-async function loadEvent(component, item){
+async function setDataSource(component){
+   allSelectedBets()
+  .then( data =>
+    component.setState({bets : data.flatMap(m => m['body']).sort((a,b) => b.rating - a.rating)
+    .filter(f => toDate(f.date) >= todayFilter), loading: false})
+  )
+  .catch((error) =>  component.props.navigation.navigate('Splash',{})
+  );
+}
 
-console.log(item);
+function allSelectedBets(){
+    return Promise.all([
+      selectedBets('homewin'),
+      selectedBets('awaywin'),
+      selectedBets('draw'),
+      selectedBets('goals'),
+      selectedBets('assists'),
+      selectedBets('yellow_card')
+    ])
+}
 
-component.props.navigation.navigate('EventRating',
-  {  market: component.state.market,
-     start: component.state.start,
-     home: item.homeId,
-     homeLabel: item.home,
-     away: item.awayId,
-     awayLabel: item.away,
-     country: item.country,
-     competition: item.competition,
-     adUnitRewardsID: component.state.adUnitRewardsID,
-     selectedBet: true,
-     selectedBetResult: item.event,
-     label: item.home + ' vs '+item.away,
-     event: {
-       home: {
-        type: component.state.type,
-        country: item.country,
-        competition: item.competition,
-        id: item.homeId,
-        label: item.home
-      },
-        away: {
-          id: item.awayId,
-          label: item.away
-        }
-     }
-  });
+const todayFilter = new Date().setHours(0,0,0,0);
+
+const toDate = (dateStr) => {
+  const [day, month, year] = dateStr.split("-")
+  return new Date(year, month - 1, day).setHours(0,0,0,0)
+}
+
+function getAvatar(market){
+   if(market === 'draw' || market === 'homeWin' || market === 'awayWin'){
+     return "trophy";
+   }
+   return "user";
+}
+
+function getAvatarColor(market){
+   if(market === 'draw' || market === 'homeWin' || market === 'awayWin'){
+     return "gold";
+   }
+   return "silver";
 }
 
 

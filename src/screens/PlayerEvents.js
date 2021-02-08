@@ -33,8 +33,17 @@ class PlayerEvents extends React.Component {
      competition:  props.navigation.state.params.competition,
      home:  props.navigation.state.params.home,
      away:  props.navigation.state.params.away,
-     data: []
+     data: [],
+     blink: false
    }
+
+   setInterval(() => {
+     this.setState(previousState => {
+       return { blink: !previousState.blink };
+     });
+   },
+   // Define any blinking time.
+   400);
 
    setDataSource(this);
 
@@ -45,11 +54,11 @@ class PlayerEvents extends React.Component {
    <ListItem
    title={item.label}
    hideChevron
-   titleStyle={styles.listItemSmall}
+   titleStyle={{ color: blinkLabel(this.state.blink, item.fantasyEventScore),fontSize: 16}}
    containerStyle={{ height: 25, borderBottomWidth: 0 }}
-     badge={{ value: item.fantasyEventScore.toFixed(2)+'%',
-              textStyle: { color: 'limegreen', fontSize: 14 },
-              containerStyle: { borderBottomWidth: 0 },
+     badge={{ value: item.fantasyEventScore.toFixed(0)+'%',
+              textStyle: { color: blinkBadge(this.state.blink, item.fantasyEventScore), fontSize: 16 },
+              containerStyle: { backgroundColor: "#36454f", borderBottomWidth: 0 },
               badgeStyle: {backgroundColor: "#36454f", borderWidth: 0}}}
      />
  );
@@ -109,6 +118,32 @@ class PlayerEvents extends React.Component {
      );
   }
 }
+
+function blinkBadge(blink, rating){
+  if(rating < 35){
+    return 'limegreen';
+  }
+
+  if(rating >= 35 && blink){
+    return 'limegreen';
+  }
+
+  return '#36454f';
+
+};
+
+function blinkLabel(blink, rating){
+  if(rating < 35){
+    return 'silver';
+  }
+
+  if(rating >= 35 && blink){
+    return 'silver';
+  }
+
+  return '#36454f';
+
+};
 
 async function setDataSource(component){
    matchSelections(component.state.competition, component.state.home, component.state.away)

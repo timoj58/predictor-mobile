@@ -68,7 +68,7 @@ _renderItem = ({item}) => (
 
      subtitle={
        <FlatList
-        data={item.upcomingEventResponses.filter(f => toDate(f.eventDate) >= today)}
+        data={item.upcomingEventResponses}
         renderItem={this._renderMatch}
         keyExtractor={(item, index) => index.toString()}
       />
@@ -127,7 +127,7 @@ function setDataSource(component){
   if(component.state.today === true){
     todaysEvents()
     .then( data =>
-      component.setState({events : data.map(m => m['body']).filter(f => f.upcomingEventResponses.length > 0), loading: false})
+      component.setState({events : filterEvents(component.state.today, data.map(m => m['body'])), loading: false})
     )
     .catch((error) => {
         console.log(error);
@@ -146,10 +146,22 @@ function setDataSource(component){
 
 const toDate = (dateStr) => {
   const [day, month, year] = dateStr.split("-")
-  return new Date(year, month - 1, day)
+  return new Date(year, month - 1, day).setHours(0,0,0,0)
 }
 
-const today = new Date().setHours(0,0,0,0);
+const todayFilter = new Date().setHours(0,0,0,0);
+
+function filterEvents(today, events){
+  if (today === 'false') {
+    return events;
+  }else{
+    events.forEach((item, i) => {
+      events[i].upcomingEventResponses = item.upcomingEventResponses.filter(f => toDate(f.eventDate) == todayFilter);
+    });
+    return events.filter(f => f.upcomingEventResponses.length > 0);
+
+  }
+}
 
 function todaysEvents(){
     return Promise.all([

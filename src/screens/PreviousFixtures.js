@@ -5,7 +5,7 @@ import {
 
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import * as Progress from 'react-native-progress';
-import { ListItem, Badge} from 'react-native-elements'
+import { ListItem, Badge, Tile} from 'react-native-elements'
 import { Dimensions } from 'react-native';
 import {previousFixtures} from "../api/DataService";
 import {predictedGoals} from "../util/GoalsUtils";
@@ -23,8 +23,18 @@ class PreviousFixtures extends React.Component {
      fixtures: '',
      market: props.navigation.state.params.market,
      event: props.navigation.state.params.event,
-     loading: true
+     loading: true,
+     blink: false
     };
+
+    // Change the state every second
+    setInterval(() => {
+        this.setState(previousState => {
+          return { blink: !previousState.blink };
+        });
+      },
+      // Define any blinking time.
+    6000);
 
 
     setDataSource(this);
@@ -46,13 +56,13 @@ _renderItem = ({item}) => (
       <View>
        <View style={styles.containerRow}>
               <Text style= {styles.listItemSmall}>{item.home.label+' '}</Text>
-              {getResultsBadge(item.previousFixtureOutcomes.filter(f => f.eventType === 'PREDICT_RESULTS')[0], true)}
-              {getGoalsBadge(item.previousFixtureOutcomes.filter(f => f.eventType === 'PREDICT_GOALS')[0])}
+              {getResultsBadge(item.previousFixtureOutcomes.filter(f => f.eventType === 'PREDICT_RESULTS')[0], true, this.state.blink)}
+              {getGoalsBadge(item.previousFixtureOutcomes.filter(f => f.eventType === 'PREDICT_GOALS')[0], this.state.blink)}
       </View>
       <View style={styles.containerRow}>
              <Text style= {styles.listItemSmall}>{item.away.label+' '}</Text>
-             {getResultsBadge(item.previousFixtureOutcomes.filter(f => f.eventType === 'PREDICT_RESULTS')[0], false)}
-             {getGoalsBadge(item.previousFixtureOutcomes.filter(f => f.eventType === 'PREDICT_GOALS')[0])}
+             {getResultsBadge(item.previousFixtureOutcomes.filter(f => f.eventType === 'PREDICT_RESULTS')[0], false, this.state.blink)}
+             {getGoalsBadge(item.previousFixtureOutcomes.filter(f => f.eventType === 'PREDICT_GOALS')[0], this.state.blink)}
      </View>
      </View>
    }
@@ -90,11 +100,21 @@ _renderItem = ({item}) => (
             />
           </View>
        }
-      {!this.state.loading && <FlatList
+      {!this.state.loading && this.state.fixtures.length > 0 && <FlatList
         data={this.state.fixtures}
         renderItem={this._renderItem}
         keyExtractor={(item, index) => index.toString()}
       />}
+      {!this.state.loading && this.state.fixtures.length === 0 &&
+         <Tile
+                   title={'No data available'}
+                   titleStyle={{color: 'silver',fontWeight: 'bold'}}
+                   icon={{ name: 'info', type: 'font-awesome', color: 'silver', size: 100 }}
+                   featured
+                   width={Dimensions.get('window').width}
+                   height={Dimensions.get('window').height}
+                   imageSrc={require('../screens/img/charcoal.png')}
+        />}
       </View>
     );
   }
@@ -136,7 +156,7 @@ function filteredFixtures(data, market, event){
 
       res = predictedGoals(JSON.parse(data[x].previousFixtureOutcomes[0].predictions).result);
 
-    
+
       if((event === 'goals 2.5' && res >= 2.5) || (event === 'goals -2.5' && res < 2.5)){
         filtered.push(data[x]);
       }
@@ -171,27 +191,48 @@ function getStyle(item){
 }
 
 
-function getGoalsBadge(item){
+function getGoalsBadge(item, blink){
 
   var prediction = getPrediction(item);
   var style = getStyle(item);
 
   var color;
+  var textColor = 'silver';
 
   if(style === 'error'){
-     color = 'red';
+     color = 'orangered';
   } else{
     color = 'green';
   }
 
-  return <Badge status='success' containerStyle={{backgroundColor: color}} value={prediction} textStyle={{color: 'silver',fontSize: 10}} />;
+  if(blink){
+    color = '#36454f';
+    textColor = '#36454f';
+  }
+
+
+  return <Badge status='success' containerStyle={{backgroundColor: color}} value={prediction} textStyle={{color: textColor,fontSize: 10}} />;
 }
 
 
-function getResultsBadge(item, isHome){
+function getResultsBadge(item, isHome, blink){
 
   var prediction = getPrediction(item);
   var style = getStyle(item);
+  var textColor = 'silver';
+  var textColorFail = 'silver';
+  var backgroundColor = 'green';
+  var backgroundColorFail = 'orangered';
+
+  if(blink){
+    textColor = '#36454f';
+    backgroundColor = '#36454f';
+  }
+
+  if(!blink){
+    textColorFail = '#36454f';
+    backgroundColorFail = '#36454f';
+  }
 
   if(isHome){
     if(prediction === 'awayWin'){
@@ -199,10 +240,10 @@ function getResultsBadge(item, isHome){
     }
 
     if((prediction === 'homeWin' || prediction === 'draw') && style === 'success'){
-      return <Badge status="success" containerStyle={{backgroundColor: 'green'}} value={prediction} textStyle={{color: 'silver',fontSize: 10}} />;
+      return <Badge status="success" containerStyle={{backgroundColor: backgroundColor}} value={prediction} textStyle={{color: textColor,fontSize: 10}} />;
     }
 
-    return <Badge status="error" containerStyle={{backgroundColor: 'red'}} value={prediction} textStyle={{color: 'silver',fontSize: 10}} />;
+    return <Badge status="error" containerStyle={{backgroundColor: backgroundColorFail}} value={prediction} textStyle={{color: textColorFail,fontSize: 10}} />;
 
   }else{
     if(prediction === 'homeWin'){
@@ -210,10 +251,10 @@ function getResultsBadge(item, isHome){
     }
 
     if((prediction === 'awayWin' || prediction === 'draw') && style === 'success'){
-      return <Badge status="success" containerStyle={{backgroundColor: 'green'}} value={prediction} textStyle={{color: 'silver',fontSize: 10}} />;
+      return <Badge status="success" containerStyle={{backgroundColor: backgroundColor}} value={prediction} textStyle={{color: textColor,fontSize: 10}} />;
     }
 
-    return <Badge status="error" containerStyle={{backgroundColor: 'red'}} value={prediction} textStyle={{color: 'silver',fontSize: 10}} />;
+    return <Badge status="error" containerStyle={{backgroundColor: backgroundColorFail}} value={prediction} textStyle={{color: textColorFail,fontSize: 10}} />;
   }
 
 }

@@ -37,15 +37,23 @@ export const styles = StyleSheet.create({
      fontSize: 16,
     fontWeight: 'bold'
   },
-  listItemWithSize: {
+  listItemNormal: {
    color: 'silver',
-   fontSize: 16,
+    fontSize: 16
+ },
+ listItemWithSize: {
+   color: 'silver',
+   fontSize: 18,
    fontWeight: 'bold'
  },
   listItemSmall: {
    color: 'silver',
    fontSize: 14
  },
+ listItemSmallGrey: {
+  color: 'grey',
+  fontSize: 16
+},
  listItemSmallRed: {
   color: 'orangered',
   fontSize: 15

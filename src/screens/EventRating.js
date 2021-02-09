@@ -87,7 +87,7 @@ _renderEventItem = ({item}) => (
      {getResultStyleView(this, item, false)}
     </View>
     hideChevron
-    badge={{ value: item.score, textStyle: { color: 'silver', fontSize: 20 }, containerStyle: {backgroundColor: '#36454f'}}}
+    badge={{ value: item.score, textStyle: { color: 'silver', fontSize: 18 }, containerStyle: {backgroundColor: '#36454f'}}}
     containerStyle={{ borderBottomWidth: 0 }}
   />
   </View>
@@ -340,7 +340,7 @@ function getResultStyleView(component, item, isHome){
 
   }
 
-   return  <View style={styles.containerRow}><Text style= {styles.listItemNormal}>{label.substring(0,15)+(label.length > 15 ? '...' : '')+' '}</Text>
+   return  <View style={styles.containerRow}><Text style= {styles.listItemNormal}>{label.substring(0,15)+(label.length >= 15 ? '...' : '')+' '}</Text>
            {(component.state.blink && color === 'green')
            &&<Badge status='success' value={prediction} containerStyle={{backgroundColor: color}} textStyle={{color: textColorResult,fontSize: 12}} />}
            {(!component.state.blink && color === 'orangered')

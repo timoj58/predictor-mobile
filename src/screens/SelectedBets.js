@@ -5,7 +5,7 @@ import {
 
 import { StyleSheet, Text, View, Button, FlatList } from 'react-native';
 import * as Progress from 'react-native-progress';
-import { ListItem, Tile, Rating, Avatar } from 'react-native-elements'
+import { ListItem, Tile, Rating, Avatar, Badge } from 'react-native-elements'
 import { Dimensions } from 'react-native'
 
 import {selectedBets} from "../api/DataService";
@@ -26,7 +26,8 @@ class SelectedBets extends React.Component {
      event: props.event,
      loading: true,
      start: props.navigation.state.params.start,
-     bets:'',
+     carousel: [],
+     carouselIndex: 0,
      blink: false,
      blinkRating: false
     };
@@ -34,24 +35,23 @@ class SelectedBets extends React.Component {
        // Change the state every second
        setInterval(() => {
            this.setState(previousState => {
-             return { blink: !previousState.blink};
+             return { blink: !previousState.blink,
+                      carouselIndex: previousState.carouselIndex < previousState.carousel.length-1 ?
+                                     previousState.carouselIndex + 1 : 0
+             };
            });
          },
          // Define any blinking time.
        6000);
 
-       // Change the state every second
-       setInterval(() => {
-           this.setState(previousState => {
-             return { blinkRating: !previousState.blinkRating};
-           });
-         },
-         // Define any blinking time.
-       400);
-
 
   setDataSource(this);
 }
+
+_renderRating = (item) => (
+  <Badge status='success' value={item.rating.toFixed(0)+"%"} containerStyle={{
+    backgroundColor: 'gold'}}
+  textStyle={{color: 'black',fontSize: 14, fontWeight: 'bold'}} />);
 
 
 _renderItem = ({item}) => (
@@ -59,14 +59,8 @@ _renderItem = ({item}) => (
   hideChevron
     title={
       <View style={{flexDirection: 'row'}}>
-        <Text style={styles.listItemWithSize}>{item.label}</Text>
-        <Rating style={{paddingTop: 4}}
-          type='custom'
-          imageSize={18}
-          readonly
-          ratingColor={getRatingBackground(this.state.blink, this.state.blinkRating, item.market)}
-          ratingBackgroundColor='#36454f'
-          startingValue={item.rating.toFixed(0) / 100 * 5}/>
+        <Text style={styles.listItemWithSize}>{item.label.substring(0,17)+(item.label.length > 17 ? '...' : '')+' '}</Text>
+         {this._renderRating(item)}
       </View>
     }
    subtitle={
@@ -76,13 +70,13 @@ _renderItem = ({item}) => (
    }
    avatar={<Avatar
     rounded
-    icon={{name: getAvatar(item.market), type: 'font-awesome', size: 28, color: getAvatarColor(item.market)}}
+    icon={{name: getAvatar(item.market), type: 'font-awesome', size: 28, color: "silver"}}
     overlayContainerStyle={{backgroundColor: '#36454f', paddingRight: 5}}
     />}
     containerStyle={{ borderBottomWidth: 0 }}
     badge={{ value: item.market.toLowerCase().replace("yellow_", "").replace("win", "").replace("goals", "goal").replace("assists", "assist"),
-             textStyle: { color: getBlinkText(this.state.blink, item.market), fontSize: 18 },
-             containerStyle: { backgroundColor: getBlinkBackground(this.state.blink, item.market),
+             textStyle: { color: "white", fontSize: 18 },
+             containerStyle: { backgroundColor: "green",
                 borderBottomWidth: 0, elevation: 0 }}}
   />
 );
@@ -104,63 +98,35 @@ _renderItem = ({item}) => (
      }
     {!this.state.loading &&
       <View style={styles.container}>
-       {this.state.bets.length > 0 &&<FlatList
-        data={this.state.bets}
+       {this.state.carousel.length > 0 &&<FlatList
+        data={this.state.carousel[this.state.carouselIndex]}
         renderItem={this._renderItem}
         keyExtractor={(item, index) => index.toString()}
       />}
-      </View>
+    </View>
     }
       </View>
     );
   }
 }
 
-function getRatingBackground(blink, blinkRating, market){
-    if(blinkRating && blink && (market === 'GOALS' || market === 'ASSISTS' || market === 'YELLOW_CARD')){
-      return "green";
-    }
-    if(!blinkRating && blink && (market === 'GOALS' || market === 'ASSISTS' || market === 'YELLOW_CARD')){
-      return "#36454f";
-    }
-    if(!blinkRating && !blink && (market === 'homeWin' || market === 'awayWin' || market === 'draw')){
-      return "gold";
-    }
-    return "#36454f";
-  }
-
-
-function getBlinkBackground(blink, market){
-  if(blink && (market === 'GOALS' || market === 'ASSISTS' || market === 'YELLOW_CARD')){
-    return "green";
-  }
-  if(!blink && (market === 'GOALS' || market === 'ASSISTS' || market === 'YELLOW_CARD')){
-    return "#36454f";
-  }
-  if(!blink && (market === 'homeWin' || market === 'awayWin' || market === 'draw')){
-    return "gold";
-  }
-  return "#36454f";
-}
-
-function getBlinkText(blink, market){
-  if(blink && (market === 'GOALS' || market === 'ASSISTS' || market === 'YELLOW_CARD')){
-    return "white";
-  }
-  if(!blink && (market === 'GOALS' || market === 'ASSISTS' || market === 'YELLOW_CARD')){
-    return "#36454f";
-  }
-  if(!blink && (market === 'homeWin' || market === 'awayWin' || market === 'draw')){
-    return "black";
-  }
-  return "#36454f";
-}
 
 async function setDataSource(component){
    allSelectedBets()
-  .then( data =>
-    component.setState({bets : data.flatMap(m => m['body']).sort((a,b) => b.rating - a.rating)
-    .filter(f => toDate(f.date) >= todayFilter), loading: false})
+  .then( data => {
+    var filtered = data.flatMap(m => m['body']).sort((a,b) => b.rating - a.rating)
+    .filter(f => toDate(f.date) >= todayFilter);
+    component.setState(
+       { loading: false,
+        carousel: [
+                  filtered.filter(f => f.market === 'homeWin'),
+                  filtered.filter(f => f.market === 'awayWin'),
+                  filtered.filter(f => f.market === 'draw'),
+                  filtered.filter(f => f.market === 'GOALS'),
+                  filtered.filter(f => f.market === 'ASSISTS'),
+                  filtered.filter(f => f.market === 'YELLOW_CARD')
+                 ]});
+   }
   )
   .catch((error) =>  component.props.navigation.navigate('Splash',{})
   );
@@ -189,13 +155,6 @@ function getAvatar(market){
      return "trophy";
    }
    return "user";
-}
-
-function getAvatarColor(market){
-   if(market === 'draw' || market === 'homeWin' || market === 'awayWin'){
-     return "gold";
-   }
-   return "silver";
 }
 
 

@@ -205,7 +205,13 @@ function getGoalsBadge(item, blink){
     color = 'green';
   }
 
-  if(blink){
+  if(!blink && color === 'orangered'){
+    color = '#36454f';
+    textColor = '#36454f';
+  }
+
+
+  if(blink && color === 'green'){
     color = '#36454f';
     textColor = '#36454f';
   }
@@ -240,10 +246,10 @@ function getResultsBadge(item, isHome, blink){
     }
 
     if((prediction === 'homeWin' || prediction === 'draw') && style === 'success'){
-      return <Badge status="success" containerStyle={{backgroundColor: backgroundColor}} value={prediction} textStyle={{color: textColor,fontSize: 10}} />;
+       return blink? null : <Badge status="success" containerStyle={{backgroundColor: backgroundColor}} value={prediction} textStyle={{color: textColor,fontSize: 10}} />;
     }
 
-    return <Badge status="error" containerStyle={{backgroundColor: backgroundColorFail}} value={prediction} textStyle={{color: textColorFail,fontSize: 10}} />;
+    return !blink ? null : <Badge status="error" containerStyle={{backgroundColor: backgroundColorFail}} value={prediction} textStyle={{color: textColorFail,fontSize: 10}} />;
 
   }else{
     if(prediction === 'homeWin'){
@@ -251,10 +257,10 @@ function getResultsBadge(item, isHome, blink){
     }
 
     if((prediction === 'awayWin' || prediction === 'draw') && style === 'success'){
-      return <Badge status="success" containerStyle={{backgroundColor: backgroundColor}} value={prediction} textStyle={{color: textColor,fontSize: 10}} />;
+      return blink ? null : <Badge status="success" containerStyle={{backgroundColor: backgroundColor}} value={prediction} textStyle={{color: textColor,fontSize: 10}} />;
     }
 
-    return <Badge status="error" containerStyle={{backgroundColor: backgroundColorFail}} value={prediction} textStyle={{color: textColorFail,fontSize: 10}} />;
+    return !blink? null : <Badge status="error" containerStyle={{backgroundColor: backgroundColorFail}} value={prediction} textStyle={{color: textColorFail,fontSize: 10}} />;
   }
 
 }

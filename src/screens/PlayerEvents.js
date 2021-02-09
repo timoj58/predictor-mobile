@@ -6,7 +6,7 @@ import React from 'react';
 } from 'react-navigation';
 */
 import { StyleSheet, Text, View, FlatList, ScrollView } from 'react-native';
-import { Icon, Card, ListItem, Avatar, Tile } from 'react-native-elements';
+import { Icon, Card, ListItem, Avatar, Tile, Rating } from 'react-native-elements';
 import * as Progress from 'react-native-progress';
 import { Dimensions } from 'react-native';
 
@@ -52,14 +52,19 @@ class PlayerEvents extends React.Component {
 
  _renderItem = ({item}) => (
    <ListItem
-   title={item.label}
+   title={
+   <View style={{flexDirection: 'row'}}>
+     <Text style={styles.listItem}>{item.label}</Text>
+     <Rating style={{paddingTop: 2}}
+       type='custom'
+       imageSize={18}
+       readonly
+       ratingColor= {getRatingBackground(this.state.blink)}
+       ratingBackgroundColor='#36454f'
+       startingValue={parseFloat(getRating(item.fantasyEventScore))}/>
+   </View>}
    hideChevron
-   titleStyle={{ color: blinkLabel(this.state.blink, item.fantasyEventScore),fontSize: 16}}
    containerStyle={{ height: 25, borderBottomWidth: 0 }}
-     badge={{ value: item.fantasyEventScore.toFixed(0)+'%',
-              textStyle: { color: blinkBadge(this.state.blink, item.fantasyEventScore), fontSize: 16 },
-              containerStyle: { backgroundColor: "#36454f", borderBottomWidth: 0 },
-              badgeStyle: {backgroundColor: "#36454f", borderWidth: 0}}}
      />
  );
 
@@ -119,18 +124,6 @@ class PlayerEvents extends React.Component {
   }
 }
 
-function blinkBadge(blink, rating){
-  if(rating < 35){
-    return 'limegreen';
-  }
-
-  if(rating >= 35 && blink){
-    return 'limegreen';
-  }
-
-  return '#36454f';
-
-};
 
 function blinkLabel(blink, rating){
   if(rating < 35){
@@ -144,6 +137,19 @@ function blinkLabel(blink, rating){
   return '#36454f';
 
 };
+
+function getRatingBackground(blinkRating){
+  if(!blinkRating){
+    return "#36454f";
+  }
+    return 'green';
+  }
+
+
+function getRating(rating){
+   return (rating / 100 * 5).toFixed(2);
+}
+
 
 async function setDataSource(component){
    matchSelections(component.state.competition, component.state.home, component.state.away)

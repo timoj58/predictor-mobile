@@ -50,8 +50,8 @@ class SelectedBets extends React.Component {
 
 _renderRating = (item) => (
   <Badge status='success' value={item.rating.toFixed(0)+"%"} containerStyle={{
-    backgroundColor: 'gold'}}
-  textStyle={{color: 'black',fontSize: 14, fontWeight: 'bold'}} />);
+    backgroundColor: 'gold',  marginTop: 1}}
+  textStyle={{color: 'black',fontSize: 10, fontWeight: 'bold'}} />);
 
 
 _renderItem = ({item}) => (
@@ -59,7 +59,7 @@ _renderItem = ({item}) => (
   hideChevron
     title={
       <View style={{flexDirection: 'row'}}>
-        <Text style={styles.listItemWithSize}>{item.label.substring(0,17)+(item.label.length > 17 ? '...' : '')+' '}</Text>
+        <Text style={styles.listItemNormal}>{item.label.substring(0,17)+(item.label.length > 17 ? '...' : '')+' '}</Text>
          {this._renderRating(item)}
       </View>
     }
@@ -75,7 +75,7 @@ _renderItem = ({item}) => (
     />}
     containerStyle={{ borderBottomWidth: 0 }}
     badge={{ value: item.market.toLowerCase().replace("yellow_", "").replace("win", "").replace("goals", "goal").replace("assists", "assist"),
-             textStyle: { color: "white", fontSize: 18 },
+             textStyle: { color: "white", fontSize: 14 },
              containerStyle: { backgroundColor: "green",
                 borderBottomWidth: 0, elevation: 0 }}}
   />
